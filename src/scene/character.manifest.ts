@@ -1,0 +1,27 @@
+import type { CharacterState } from '../app/contracts';
+
+export interface CharacterManifest {
+  name: string;
+  path: string;
+  transform: { scale: number; position: readonly [number, number, number]; rotationY: number };
+  measurements: { bindPoseHeightMeters: number; sourceFloorY: number; sourceForward: '-Z'; sourceUp: '+Y' };
+  clips: Record<CharacterState, string>;
+  face: { meshNames: readonly string[]; blink: string; mouth: string };
+  requiredBones: readonly string[];
+}
+
+// Names are preserved from the inspected Vita source; clips are embedded by prepare-character.mjs.
+export const characterManifest: CharacterManifest = {
+  name: 'Vita',
+  path: 'models/character.glb',
+  transform: { scale: 1, position: [0, 0.000114792019, 0], rotationY: Math.PI },
+  measurements: { bindPoseHeightMeters: 1.71307699, sourceFloorY: -0.000114792019, sourceForward: '-Z', sourceUp: '+Y' },
+  clips: { idle: 'Vita_Idle', thinking: 'Vita_Thinking', responding: 'Vita_Responding' },
+  face: {
+    meshNames: ['VitaFace', 'VitaFace_1', 'VitaFace_2', 'VitaFace_3', 'VitaFace_4',
+      'VitaFace_5', 'VitaFace_6', 'VitaFace_7', 'VitaFace_8'],
+    blink: 'Face.M_F00_000_00_Fcl_EYE_Close',
+    mouth: 'Face.M_F00_000_00_Fcl_MTH_A',
+  },
+  requiredBones: ['J_Bip_C_Hips', 'J_Bip_C_Head', 'J_Bip_C_Chest', 'J_Bip_L_UpperArm', 'J_Bip_R_UpperArm'],
+};

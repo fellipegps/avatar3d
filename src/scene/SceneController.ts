@@ -1,8 +1,12 @@
 import {
-  BoxGeometry, Color, Mesh, MeshNormalMaterial, PerspectiveCamera, Scene, WebGLRenderer,
+  BoxGeometry, Color, DirectionalLight, HemisphereLight, Mesh, MeshNormalMaterial, PerspectiveCamera, Scene, WebGLRenderer,
 } from 'three';
-import type { QualityProfile, ScenePort } from '../app/contracts';
+import type { CharacterState, QualityProfile, ScenePort } from '../app/contracts';
 import { sceneConfig } from './scene.config';
+import { loadCharacter } from './AssetLoader';
+import type { AssetReport } from './AssetLoader';
+import { characterManifest } from './character.manifest';
+import { CharacterPreview } from './CharacterPreview';
 
 export type SceneAvailability =
   | { available: true }
@@ -12,8 +16,8 @@ export type SceneUpdater = (deltaSeconds: number) => void;
 
 const owners = new WeakMap<HTMLElement, SceneController>();
 
-/** Capacidades desta fase; personagem e boca serão adicionadas nas fases correspondentes. */
-export class SceneController implements Pick<ScenePort, 'setQuality' | 'setReducedMotion' | 'dispose'> {
+/** Um renderer/loop compartilhado; a fase 03 acrescenta a inspeção do GLB e de seus clipes. */
+export class SceneController implements ScenePort {
   readonly scene = new Scene();
   readonly camera = new PerspectiveCamera(
     sceneConfig.camera.fov, 1, sceneConfig.camera.near, sceneConfig.camera.far,
@@ -32,6 +36,9 @@ export class SceneController implements Pick<ScenePort, 'setQuality' | 'setReduc
   private reducedMotion = false;
   private disposed = false;
   private contextLost = false;
+  private character: CharacterPreview | null = null;
+  private assetRequest: AbortController | null = null;
+  private characterView: 'full' | 'face' | null = null;
   private state: SceneAvailability = { available: false, message: 'Cena não inicializada.' };
 
   constructor(container: HTMLElement, onAvailability: (state: SceneAvailability) => void = () => {}) {
@@ -89,8 +96,65 @@ export class SceneController implements Pick<ScenePort, 'setQuality' | 'setReduc
     return () => { this.updaters.delete(update); };
   }
 
+  async loadCharacter(): Promise<AssetReport> {
+    if (this.disposed) throw new Error('A cena não está disponível para carregar a personagem.');
+    this.assetRequest?.abort();
+    const request = new AbortController();
+    this.assetRequest = request;
+    this.character?.dispose();
+    this.character = null;
+    this.renderer?.domElement.setAttribute('aria-label', 'Área 3D: carregando personagem Vita');
+    if (this.reference) {
+      this.scene.remove(this.reference);
+      this.reference.geometry.dispose();
+      this.reference.material.dispose();
+      this.reference = null;
+    }
+    const asset = await loadCharacter(characterManifest, request.signal);
+    if (this.disposed || request.signal.aborted) {
+      asset.dispose();
+      throw new DOMException('Carregamento cancelado.', 'AbortError');
+    }
+    try {
+      this.character = new CharacterPreview(asset, characterManifest);
+      this.character.setReducedMotion(this.reducedMotion);
+      this.scene.add(asset.gltf.scene);
+      if (!this.scene.getObjectByName('inspection-light')) {
+        const light = new HemisphereLight(0xffffff, 0x8b9fb4, 2.0);
+        light.name = 'inspection-light';
+        this.scene.add(light);
+        const key = new DirectionalLight(0xffffff, 2.2);
+        key.position.set(2, 3, 4);
+        this.scene.add(key);
+      }
+      this.setCharacterView('full');
+      this.renderer?.domElement.setAttribute('aria-label', 'Personagem 3D Vita');
+      return asset.report;
+    } catch (error) {
+      asset.dispose();
+      throw error;
+    }
+  }
+
+  setCharacterState(state: CharacterState): void { this.character?.setState(state); }
+  setMouthOpen(value: number): void { this.character?.setMouthOpen(value); }
+  setBlink(value: number): void { this.character?.setBlink(value); }
+
+  setCharacterView(view: 'full' | 'face'): void {
+    this.characterView = view;
+    // Keep the full character visible on narrow containers; face view is for development inspection.
+    const halfHeight = view === 'face' ? 0.21 : 0.98;
+    const halfWidth = view === 'face' ? 0.20 : 0.46;
+    const distance = Math.max(halfHeight, halfWidth / this.camera.aspect) / Math.tan(this.camera.fov * Math.PI / 360);
+    const targetY = view === 'face' ? 1.54 : 0.86;
+    this.camera.position.set(0, targetY, distance + 0.18);
+    this.camera.lookAt(0, targetY, 0);
+    this.camera.updateMatrixWorld(true);
+  }
+
   setReducedMotion(enabled: boolean): void {
     this.reducedMotion = enabled;
+    this.character?.setReducedMotion(enabled);
   }
 
   setQuality(profile: QualityProfile): void {
@@ -132,6 +196,7 @@ export class SceneController implements Pick<ScenePort, 'setQuality' | 'setReduc
       this.renderer.setSize(this.width, this.height, false);
       this.camera.aspect = this.width / this.height;
       this.camera.updateProjectionMatrix();
+      if (this.characterView) this.setCharacterView(this.characterView);
       this.schedule();
     } catch {
       this.fail('Não foi possível redimensionar o 3D. A interface continua disponível.');
@@ -157,6 +222,7 @@ export class SceneController implements Pick<ScenePort, 'setQuality' | 'setReduc
         update(delta);
         if (this.disposed) return;
       }
+      this.character?.update(delta);
       this.renderer?.render(this.scene, this.camera);
       this.schedule();
     } catch {
@@ -179,6 +245,10 @@ export class SceneController implements Pick<ScenePort, 'setQuality' | 'setReduc
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.assetRequest?.abort();
+    this.assetRequest = null;
+    this.character?.dispose();
+    this.character = null;
     this.pause();
     this.observer?.disconnect();
     this.observer = null;

@@ -10,7 +10,7 @@ if (!app) {
 app.innerHTML = `
   <header class="app-header">
     <div>
-      <p class="eyebrow">MVP · Fase 02</p>
+      <p class="eyebrow">MVP · Fase 03</p>
       <h1>Avatar 3D</h1>
     </div>
     <span class="stage-badge">Cena WebGL 2</span>
@@ -24,7 +24,7 @@ app.innerHTML = `
       <div id="scene-container" class="scene-container">
         <p id="scene-fallback" class="scene-placeholder" role="alert" hidden></p>
       </div>
-      <p class="scene-caption">Cubo de referência · Renderer, câmera e ciclo de vida</p>
+      <p class="scene-caption">Vita · Personagem por pixiv / VRoid Project (CC0) · Animações de inspeção</p>
     </section>
     <aside id="interface-container" class="interface-panel" aria-labelledby="interface-title">
       <header class="panel-header">

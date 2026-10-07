@@ -11,7 +11,7 @@ Este diretório contém a sequência de implementação de uma personagem 3D em 
 5. Executar uma fase por vez na ordem abaixo. O fim de uma fase exige critérios de aceitação e evidências, não apenas arquivos criados.
 6. Continuar pelas fases principais após validar as dependências. Áudio é opcional e entra somente quando o núcleo estiver concluído e essa extensão fizer parte do pedido de implementação.
 
-As especificações descrevem a sequência de trabalho. As fases 01 e 02 já foram implementadas; consulte [progresso.md](progresso.md) para o status, as evidências reais e as limitações da verificação. O modelo GLB ainda precisa ser selecionado/fornecido e validado.
+As especificações descrevem a sequência de trabalho. As fases 01, 02 e 03 já foram implementadas; consulte [progresso.md](progresso.md) para o status, as evidências reais e as limitações da verificação. A personagem selecionada é Vita, adaptada para GLB com três clipes corporais e morph targets faciais; [origem e licença](../assets/credits.md).
 
 ## Ordem de execução
 
