@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verificação da fase 02</title>
+  </head>
+  <body>
+    <main id="app">
+      <h1>Verificação da fase 02</h1>
+      <p id="summary" role="status">Executando…</p>
+      <div id="fixture" class="scene-container" style="width:600px;max-width:100%;height:360px">
+        <p id="fallback" class="scene-placeholder" role="alert" hidden></p>
+      </div>
+      <p id="fixture-status" role="status"></p>
+      <aside id="interface">A área de conversa permanece disponível.</aside>
+      <p>
+        <button id="small">Contêiner pequeno</button>
+        <button id="zero">Contêiner sem área</button>
+        <button id="restore">Restaurar tamanho</button>
+        <button id="failure">Mostrar falha de inicialização</button>
+      </p>
+      <h2>Resultados automatizados</h2>
+      <pre id="results" style="white-space:pre-wrap"></pre>
+      <h2>Visibilidade nativa (oculte e reabra o navegador)</h2>
+      <pre id="visibility" style="white-space:pre-wrap">Aguardando ocultação real.</pre>
+    </main>
+    <script type="module" src="/tests/scene.browser.ts"></script>
+  </body>
+</html>

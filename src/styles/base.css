@@ -1,0 +1,43 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #e9eef4;
+  background: #0d131b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+h1, h2, h3, p { margin: 0; }
+#app { max-width: 1440px; margin: 0 auto; padding: 32px; }
+.app-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+.eyebrow { color: #87cfc6; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+h1 { margin-top: 6px; font-size: 1.8rem; font-weight: 650; }
+.stage-badge { border: 1px solid #33434c; border-radius: 999px; padding: 8px 14px; color: #b8c6d3; font-size: 0.8rem; }
+.app-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 20px; }
+.scene-panel, .interface-panel { min-width: 0; border: 1px solid #2b3744; border-radius: 16px; overflow: hidden; background: #141d28; }
+.panel-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid #2b3744; }
+h2 { font-size: 0.95rem; font-weight: 600; }
+.panel-meta { font-size: 0.7rem; color: #9eafc0; }
+.scene-container { height: 440px; position: relative; overflow: hidden; background: #111b25; }
+.scene-canvas { display: block; width: 100%; height: 100%; }
+.scene-caption { padding: 14px 24px; border-top: 1px solid #2b3744; color: #9eafc0; font-size: 0.75rem; line-height: 1.5; }
+.scene-placeholder:not([hidden]) { position: absolute; inset: 0; display: grid; place-content: center; background: #111b25; }
+.scene-placeholder { padding: 32px; text-align: center; color: #a7b8c7; line-height: 1.7; }
+.placeholder-mark { display: block; color: #87cfc6; font-size: 4rem; line-height: 1; margin-bottom: 24px; }
+.placeholder-title { color: #e9eef4; font-size: 1.1rem; margin-bottom: 8px; }
+.interface-placeholder { padding: 32px 24px; line-height: 1.7; color: #a7b8c7; }
+h3 { margin: 12px 0; color: #e9eef4; font-size: 1.2rem; line-height: 1.4; font-weight: 600; }
+.note { margin-top: 32px; padding-top: 20px; border-top: 1px solid #2b3744; font-size: 0.85rem; }
+.app-footer { margin-top: 20px; color: #9eafc0; font-size: 0.75rem; }
+
+@media (max-width: 760px) {
+  #app { padding: 20px; }
+  .app-header { flex-wrap: wrap; }
+  .app-layout { grid-template-columns: minmax(0, 1fr); }
+  .scene-container { height: 300px; }
+  .panel-header { padding: 18px; }
+  .interface-placeholder { padding: 24px 18px; }
+}

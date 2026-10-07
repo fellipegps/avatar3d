@@ -1,0 +1,175 @@
+[
+  {
+    "name": "WebGL 2 real, um canvas e um RAF pendente",
+    "passed": true,
+    "details": {
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "canvases": 1,
+      "frames": 1
+    }
+  },
+  {
+    "name": "Pixel ratio normal limitado a 1,5",
+    "passed": true,
+    "details": {
+      "bufferWidth": 814,
+      "cssWidth": 543,
+      "injectedDPR": 3
+    }
+  },
+  {
+    "name": "Pixel ratio econômico limitado a 1",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Delta em segundos e suspensão limitada a 0,05 s",
+    "passed": true,
+    "details": [
+      0,
+      0.016,
+      0.05
+    ]
+  },
+  {
+    "name": "Movimento reduzido pausa rotação da referência",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Aba oculta cancela RAF e não atualiza módulos",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Retomada agenda somente um RAF",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Primeiro delta após retomar é zero",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "ResizeObserver 240×160: aspecto, projeção e buffer coerentes",
+    "passed": true,
+    "details": {
+      "actualWidth": 240,
+      "actualHeight": 160,
+      "cameraAspect": 1.5,
+      "projectedRatio": 1.0000000000000002
+    }
+  },
+  {
+    "name": "ResizeObserver 32×16: aspecto, projeção e buffer coerentes",
+    "passed": true,
+    "details": {
+      "actualWidth": 32,
+      "actualHeight": 16,
+      "cameraAspect": 2,
+      "projectedRatio": 1
+    }
+  },
+  {
+    "name": "ResizeObserver 1×1: aspecto, projeção e buffer coerentes",
+    "passed": true,
+    "details": {
+      "actualWidth": 1,
+      "actualHeight": 1,
+      "cameraAspect": 1,
+      "projectedRatio": 1
+    }
+  },
+  {
+    "name": "ResizeObserver 600×360: aspecto, projeção e buffer coerentes",
+    "passed": true,
+    "details": {
+      "actualWidth": 543,
+      "actualHeight": 360,
+      "cameraAspect": 1.5083333333333333,
+      "projectedRatio": 1.0000000000000002
+    }
+  },
+  {
+    "name": "Sem área: nenhum RAF e projeção finita",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Área restaurada: um RAF e cena disponível",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Dispose duplo libera recursos uma vez e remove RAF, canvas, listeners e observer",
+    "passed": true,
+    "details": {
+      "geometryDisposals": 1,
+      "materialDisposals": 1,
+      "pending": 0,
+      "listeners": 0,
+      "observers": 0
+    }
+  },
+  {
+    "name": "Remontagem 1: somente um canvas, loop, observer e conjunto de listeners",
+    "passed": true,
+    "details": {
+      "listeners": 6,
+      "initialListeners": 6,
+      "observers": 1,
+      "frames": 1
+    }
+  },
+  {
+    "name": "Remontagem 2: somente um canvas, loop, observer e conjunto de listeners",
+    "passed": true,
+    "details": {
+      "listeners": 6,
+      "initialListeners": 6,
+      "observers": 1,
+      "frames": 1
+    }
+  },
+  {
+    "name": "Remontagem 3: somente um canvas, loop, observer e conjunto de listeners",
+    "passed": true,
+    "details": {
+      "listeners": 6,
+      "initialListeners": 6,
+      "observers": 1,
+      "frames": 1
+    }
+  },
+  {
+    "name": "Nova montagem no mesmo contêiner descarta a anterior",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Perda real de contexto pausa o loop e informa indisponibilidade",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Restauração real de contexto recupera a cena com somente um RAF",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Falha durante o frame é controlada e libera recursos",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Falha de WebGL 2 mostra aviso sem remover a interface",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Falha de inicialização e dispose não deixam listeners/observers",
+    "passed": true,
+    "details": null
+  }
+]

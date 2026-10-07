@@ -1,0 +1,45 @@
+{
+  "productionInspection": {
+    "canvasBuffer": {
+      "height": 300,
+      "width": 541
+    },
+    "canvasCSS": {
+      "height": 300,
+      "width": 541
+    },
+    "canvases": 1,
+    "horizontalOverflow": false,
+    "status": "Cena de referência",
+    "viewport": {
+      "height": 484,
+      "width": 598
+    }
+  },
+  "productionLogs": [
+    {
+      "level": "error",
+      "message": "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+      "timestamp": "2026-10-07T13:25:53.281Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "error",
+      "message": "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+      "timestamp": "2026-10-07T13:27:09.076Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "error",
+      "message": "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+      "timestamp": "2026-10-07T13:27:37.860Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "error",
+      "message": "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+      "timestamp": "2026-10-07T13:29:19.546Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    }
+  ]
+}
