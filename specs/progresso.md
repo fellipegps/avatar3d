@@ -1,6 +1,6 @@
 # Progresso da implementação
 
-As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026; as fases 07–09 foram concluídas em 8 de outubro. Cobertura e limitações estão registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, com transições corporais suaves, piscar automático e boca normalizada. Interface DOM, store e provider local estão implementados; a coordenação de produção ainda não está integrada. As fases 10–12 continuam pendentes.
+As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026; as fases 07–10 foram concluídas em 8 de outubro. Cobertura e limitações estão registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, com transições corporais suaves, piscar automático e boca normalizada. Interface DOM, store e provider local estão integrados à personagem em produção, com texto gradual, cancelamento e preferências funcionais. As fases 11–12 continuam pendentes.
 
 ## Status das fases
 
@@ -17,7 +17,7 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 | [07 — Piscar e controles faciais](07-expressoes-faciais.md) | concluída | 06 | FaceController por morph targets, piscar configurável, boca 0–1, reset e movimento reduzido. [Verificação](evidencias/fase-07/verificacao.md), [41 checks](evidencias/fase-07/checks-face.json), [piscar em resposta](evidencias/fase-07/piscar-responding.png), [preview](evidencias/fase-07/preview.jpg). |
 | [08 — Interface do chat e controles](08-interface-chat-controles.md) | concluída | 07 | Chat DOM, eventos tipados, rascunho/foco/rolagem preservados e fixture DEV. [Verificação](evidencias/fase-08/verificacao.md), [31 checks](evidencias/fase-08/checks-interface.json), [teclado](evidencias/fase-08/eventos-teclado.json), [desktop](evidencias/fase-08/preview.jpg), [estreito](evidencias/fase-08/estreito-dev.jpg). |
 | [09 — Estado da conversa e provider local](09-estado-conversa-mock.md) | concluída | 08 | Store imutável por eventos, catálogo normalizado, Promise cancelável de 800 ms e proteção por ID ativo. [Verificação](evidencias/fase-09/verificacao.md), [29 testes](evidencias/fase-09/testes.log), [demonstração](evidencias/fase-09/demonstracao.json), [resposta](evidencias/fase-09/resposta.jpg), [falha DEV](evidencias/fase-09/erro-simulado.jpg). |
-| [10 — Integração entre chat e personagem](10-integracao-chat-personagem.md) | pendente | 09 | — |
+| [10 — Integração entre chat e personagem](10-integracao-chat-personagem.md) | concluída | 09 | AppController, apresentação cancelável, proteção contra resultados antigos e chat sem 3D. [Verificação](evidencias/fase-10/verificacao.md), [18 checks](evidencias/fase-10/checks-integracao.json), [vídeo](evidencias/fase-10/fluxo-integrado.webm), [preview](evidencias/fase-10/preview.jpg). |
 | [11 — Responsividade e acessibilidade](11-responsividade-acessibilidade.md) | pendente | 10 | — |
 | [12 — Resiliência, desempenho e entrega do núcleo](12-resiliencia-performance-entrega.md) | pendente | 11 | — |
 | [13 — Áudio gravado — extensão opcional](13-audio-gravado-opcional.md) | não solicitada | 12 | Extensão opcional. |
@@ -152,6 +152,20 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 - Decisões e mudanças de contrato: `ConversationSnapshot` readonly e limite compartilhado de 2.000 unidades UTF-16 adicionados a contracts; `ChatProvider`/`ScenePort` preservados. Store conserva texto original e não chama provider; consumidor deve abortar o sinal ao cancelar/reiniciar, além de invalidar ID no store. `cancel` conserva histórico, `reset` limpa, ambos retornam a idle sem erro. Normalização só seleciona intenção, com prioridade ajuda/apresentação/cenário/saudação/padrão. Falha DEV separada, sem gatilho textual no catálogo normal. Testes `.test.mjs` usam runner nativo após compilar TS para `.tmp/domain-tests/`, ignorado pelo Git. Sem framework de testes adicional.
 - Bloqueios e próximo passo concreto: nenhum bloqueio da fase 09. Próxima fase pendente: 10 — integração entre chat e personagem, quando solicitada. Núcleo permanece incompleto.
 
+### Fase 10 — Integração entre chat e personagem
+
+- Status: concluída.
+- Data: 08/10/2026.
+- Resultado obtido: AppController coordena UI/store/provider/cena; saudação percorre idle → thinking → responding → idle. Resposta completa fica no domínio e texto parcial somente na UI. Reinício cancela provider e apresentação, limpa histórico/rascunho e neutraliza face. Preferências funcionais, painel sem remontagem e conversa disponível sem 3D.
+- Arquivos alterados: [AppController](../src/app/AppController.ts), [contratos](../src/app/contracts.ts), [entrada](../src/main.ts), [ChatView](../src/ui/ChatView.ts), [ControlsView](../src/ui/ControlsView.ts), [página de verificação](../tests/app-controller.html), [checks e demonstração](../tests/app-controller.browser.ts), [README do projeto](../README.md), [guia](README.md), [contratos da spec](00-escopo-e-contratos.md), [fase 10](10-integracao-chat-personagem.md), este registro e [evidências](evidencias/fase-10/verificacao.md). Sem dependências novas; store/provider/módulos 3D preservados.
+- Critérios de aceitação atendidos: fluxo completo, digitação durante espera sem segundo envio, reset antes/durante apresentação, resposta/rejeição/finally antigos ignorados, erro recuperável, chat sem cena e painel preservado. [Matriz de aceitação](evidencias/fase-10/verificacao.md).
+- Comandos/checks executados e resultados: `npm test` **29/29**, `npm run typecheck` e `npm run build`, saída 0 ([testes](evidencias/fase-10/testes-dominio.log), [tipos](evidencias/fase-10/typecheck.log), [build](evidencias/fase-10/build.log)); navegador: **18/18** integração, **31/31** UI e **24/24** ciclo de vida ([integração](evidencias/fase-10/checks-integracao.json), [interface](evidencias/fase-10/checks-interface.json), [cena](evidencias/fase-10/checks-ciclo-de-vida.json)).
+- Evidências visuais: [vídeo do fluxo integrado](evidencias/fase-10/fluxo-integrado.webm), [metadados](evidencias/fase-10/video.json), [preview de produção](evidencias/fase-10/preview.jpg), [rascunho e canvas](evidencias/fase-10/preview.json), [erro/recuperação e perda/restauração real do contexto](evidencias/fase-10/demonstracao.json). [Console](evidencias/fase-10/console.json) sem warn/error capturados nas abas de produção/integração/UI.
+- Equipamento/resolução/perfil: Windows, Chromium integrado, viewport padrão 1280×720; preview com perfil econômico e um canvas. Vídeo de verificação 1100×560, composto do WebGL real e texto do DOM; não é captura da página inteira nem benchmark.
+- Limitações ou cobertura não executada: sem celular, leitor de tela, matriz de navegadores/GPU, nova ocultação nativa ou FPS sustentado. Corridas automatizadas usam ScenePort/provider/relógio controlados; demonstração separada usa renderer/GLB/provider reais. JS 672,15 kB / 172,51 kB gzip, aviso acima de 500 kB para fase 12. Responsividade/acessibilidade completa permanece na fase 11.
+- Decisões e mudanças de contrato: `ScenePort.resetFace()` explicita método existente; dependências opcionais do AppController preservam construtor anterior. Texto a 55 pontos de código/s por tempo decorrido com timer de 32 ms, cancelável; zero atualizações por letra no store. Movimento reduzido apresenta imediatamente e escolha manual prevalece sobre futuras mudanças do sistema. Guardas de ID/identidade e AbortSignal impedem efeitos tardios, incluindo finally. Ferramentas de gravação/falha apenas em DEV.
+- Bloqueios e próximo passo concreto: nenhum bloqueio da fase 10. Próxima fase pendente: 11 — responsividade e acessibilidade, quando solicitada. Núcleo permanece incompleto.
+
 Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões e atualizar o resumo de status correspondente.
 
 ```md
@@ -174,8 +188,8 @@ Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões 
 - [ ] Fases principais concluídas com critérios verificados.
 - [ ] Personagem real GLB validada, com rig, clipes e rosto funcional.
 - [ ] Sala, personagem e objetos no mesmo canvas.
-- [ ] Chat local e transições funcionando na versão de produção em preview.
-- [ ] Reinício impede respostas e apresentações antigas.
+- [x] Chat local e transições funcionando na versão de produção em preview.
+- [x] Reinício impede respostas e apresentações antigas.
 - [ ] Layout desktop/móvel, teclado e movimento reduzido verificados.
 - [ ] Falhas de asset/renderer e fallback tratados.
 - [ ] Desempenho medido, com limitações e cobertura registradas.

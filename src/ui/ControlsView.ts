@@ -6,7 +6,7 @@ export interface ControlsViewEvents {
   onReducedMotion(enabled: boolean): void;
 }
 
-/** Preferências emitidas para a futura coordenação; nunca importa Three.js. */
+/** Preferências emitidas para a coordenação; nunca importa Three.js. */
 export class ControlsView {
   private readonly listeners = new AbortController();
   private readonly toggle: HTMLButtonElement;
@@ -42,6 +42,8 @@ export class ControlsView {
     this.open = open; this.toggle.textContent = open ? 'Fechar conversa' : 'Abrir conversa';
     this.toggle.setAttribute('aria-expanded', String(open));
   }
+  setReducedMotion(enabled: boolean): void { if (!this.disposed) this.motion.checked = enabled; }
+  setQuality(profile: QualityProfile): void { if (!this.disposed) this.quality.value = profile; }
   focusToggle(): void { if (!this.disposed) this.toggle.focus({ preventScroll: true }); }
   dispose(): void {
     if (this.disposed) return;

@@ -1,0 +1,127 @@
+[
+  {
+    "stage": "provider-error",
+    "timeline": [
+      {
+        "atMs": 237,
+        "phase": "idle",
+        "character": "loading",
+        "messages": 0
+      },
+      {
+        "atMs": 884,
+        "phase": "idle",
+        "character": "idle",
+        "messages": 0
+      },
+      {
+        "atMs": 1508,
+        "phase": "waiting",
+        "character": "thinking",
+        "messages": 1
+      },
+      {
+        "atMs": 2310,
+        "phase": "revealing",
+        "character": "responding",
+        "messages": 2
+      },
+      {
+        "atMs": 3914,
+        "phase": "idle",
+        "character": "idle",
+        "messages": 2
+      },
+      {
+        "atMs": 25853,
+        "phase": "waiting",
+        "character": "thinking",
+        "messages": 3
+      },
+      {
+        "atMs": 26655,
+        "phase": "error",
+        "character": "idle",
+        "messages": 3
+      }
+    ]
+  },
+  {
+    "stage": "reply-with-context-lost",
+    "timeline": [
+      {
+        "atMs": 237,
+        "phase": "idle",
+        "character": "loading",
+        "messages": 0
+      },
+      {
+        "atMs": 884,
+        "phase": "idle",
+        "character": "idle",
+        "messages": 0
+      },
+      {
+        "atMs": 1508,
+        "phase": "waiting",
+        "character": "thinking",
+        "messages": 1
+      },
+      {
+        "atMs": 2310,
+        "phase": "revealing",
+        "character": "responding",
+        "messages": 2
+      },
+      {
+        "atMs": 3914,
+        "phase": "idle",
+        "character": "idle",
+        "messages": 2
+      },
+      {
+        "atMs": 25853,
+        "phase": "waiting",
+        "character": "thinking",
+        "messages": 3
+      },
+      {
+        "atMs": 26655,
+        "phase": "error",
+        "character": "idle",
+        "messages": 3
+      },
+      {
+        "atMs": 97110,
+        "phase": "waiting",
+        "character": "thinking",
+        "messages": 4
+      },
+      {
+        "atMs": 97919,
+        "phase": "revealing",
+        "character": "responding",
+        "messages": 5
+      },
+      {
+        "atMs": 100443,
+        "phase": "idle",
+        "character": "idle",
+        "messages": 5
+      }
+    ],
+    "messages": [
+      "Olá!",
+      "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?",
+      "Teste de falha",
+      "Ajuda sem 3D",
+      "Você pode me cumprimentar, perguntar quem sou ou conhecer o cenário. Enter envia e Shift+Enter quebra a linha. Reiniciar limpa a conversa."
+    ],
+    "fallback": "O contexto gráfico foi perdido. Aguardando recuperação do navegador."
+  },
+  {
+    "stage": "context-restored",
+    "status": "Vita · Modelo carregado",
+    "fallbackHidden": ""
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "bytes": 403317,
+  "mimeType": "video/webm;codecs=vp9",
+  "frames": 332,
+  "phases": [
+    {
+      "at": 0.009,
+      "phase": "idle",
+      "character": "idle"
+    },
+    {
+      "at": 0.604,
+      "phase": "waiting",
+      "character": "thinking"
+    },
+    {
+      "at": 1.4215,
+      "phase": "revealing",
+      "character": "responding"
+    },
+    {
+      "at": 3.023899999976158,
+      "phase": "idle",
+      "character": "idle"
+    }
+  ],
+  "durationSeconds": 5.564200000047684
+}

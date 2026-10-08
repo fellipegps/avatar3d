@@ -74,6 +74,7 @@ interface ChatProvider {
 interface ScenePort {
   setCharacterState(state: CharacterState): void;
   setMouthOpen(value: number): void;
+  resetFace(): void;
   setReducedMotion(enabled: boolean): void;
   setQuality(profile: QualityProfile): void;
   dispose(): void;
@@ -100,17 +101,23 @@ Nenhuma atualização por frame da personagem passa pelo store. Nenhum texto do 
 
 ## Ciclo da conversa
 
+### Integração da fase 10
+
+`ScenePort.resetFace()` passa a explicitar o método já existente para neutralizar olhos/boca ao reiniciar ou encerrar a conversa. `AppController` recebe contêineres de UI e dependências opcionais de provider/store/fábrica de cena para verificação; monta as views e coordena uma única solicitação com AbortController e ID do store. O construtor de três argumentos permanece compatível com os testes anteriores de cena.
+
+`ChatView.presentMessages(messages, replyId, signal)` recebe o texto completo e apresenta uma cópia parcial no DOM, usando timer cancelável e tempo decorrido; não grava letras no store. Movimento reduzido exibe a resposta imediatamente. Reinício/descarte abortam provider e apresentação antes de limpar o histórico. Preferência manual de movimento prevalece sobre mudanças posteriores do sistema durante a sessão.
+
 ### Contratos adicionais entregues na fase 09
 
 `ConversationSnapshot` contém mensagens somente de leitura, fase, erro opcional e `activeRequestId` numérico ou `null`. `ConversationStore` oferece início, recebimento, conclusão de apresentação, falha, cancelamento, reinício e inscrição; mutações de uma solicitação exigem seu ID ativo. O ID nunca é reutilizado no mesmo store, inclusive após reinício, impedindo escrita tardia. O histórico conserva o texto original; a normalização pertence somente à seleção de intenção do provider.
 
-O limite de 2.000 unidades UTF-16 é uma constante compartilhada nos contratos, preservando o valor e a exportação atual da UI. O provider usa 800 ms por padrão, com agendador/latência injetáveis para testes sem espera real. Cancelamento rejeita com `AbortError` e libera timer/listener. O store não chama provider nem aborta sinais: essa coordenação permanece na fase 10. Falha simulada fica em módulo DEV/verificação separado, sem gatilho textual no provider de produção. [Evidências da fase 09](evidencias/fase-09/verificacao.md).
+O limite de 2.000 unidades UTF-16 é uma constante compartilhada nos contratos, preservando o valor e a exportação atual da UI. O provider usa 800 ms por padrão, com agendador/latência injetáveis para testes sem espera real. Cancelamento rejeita com `AbortError` e libera timer/listener. O store não chama provider nem aborta sinais: essa coordenação pertence ao AppController, entregue na fase 10. Falha simulada fica em módulo DEV/verificação separado, sem gatilho textual no provider de produção. [Evidências da fase 09](evidencias/fase-09/verificacao.md).
 
 ### Camada DOM entregue na fase 08
 
 `ChatView` recebe snapshots `readonly ChatMessage[]`, fase visual e disponibilidade; emite intenções de envio, reinício e fechamento. `ControlsView` emite abertura, `QualityProfile` e movimento reduzido. Ambas liberam listeners no descarte e não importam Three.js, store ou provider. O limite de entrada é de 2.000 unidades UTF-16 (`maxlength`). A coordenação decide quando limpar o rascunho; a view preserva texto, seleção e foco ao receber estados. Mensagens usam `textContent` e IDs estáveis, com rolagem preservada quando o leitor estiver longe do final.
 
-A fixture DEV da fase 08 demonstra esses eventos sem respostas ou comandos à personagem. Produção ainda mantém envio/reinício e preferências em preparação e desabilitados; abrir/fechar funciona no DOM. Store/provider foram entregues separadamente na fase 09; integração permanece na fase 10. `ChatProvider` e `ScenePort` permanecem iguais.
+A fixture DEV da fase 08 demonstra esses eventos sem respostas ou comandos à personagem em `/tests/chat.html`. Store/provider foram entregues separadamente na fase 09. A fase 10 habilita envio, reinício e preferências na aplicação principal, com apresentação gradual e comandos à personagem. `ChatProvider` permanece igual; `ScenePort` explicita `resetFace()` conforme registrado acima.
 
 | Evento | Fase | Personagem |
 | --- | --- | --- |

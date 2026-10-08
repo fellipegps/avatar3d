@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–09 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. A integração de produção com a personagem entra na fase 10.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–10 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. O chat de produção está integrado à personagem, com resposta gradual, reinício cancelável e preferências funcionais.
 
 ## Ambiente
 
@@ -29,7 +29,7 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 
 - `index.html`: documento em português e único script de entrada, `src/main.ts`.
 - `src/main.ts`: inicialização única e contêineres semânticos da aplicação, cena e interface.
-- `src/app/AppController.ts`: coordenação da disponibilidade do 3D e da preferência de movimento reduzido.
+- `src/app/AppController.ts`: coordenação do store, provider, UI, estados da personagem, disponibilidade do 3D e preferências.
 - `src/app/contracts.ts`: fronteiras tipadas da especificação 00, sem implementações antecipadas.
 - `src/app/ConversationStore.ts`: histórico em memória, snapshots imutáveis, inscrição e transições protegidas pelo ID da solicitação ativa.
 - `src/chat/MockChatProvider.ts` e `responses.ts`: catálogo local, normalização e Promise com latência cancelável de 800 ms por padrão.
@@ -56,9 +56,7 @@ Não foi necessário criar `vite.config.ts`: os padrões atendem à fase 01. Pla
 
 ### Interface da conversa — fase 08
 
-Em desenvolvimento, a página principal mostra duas mensagens de exemplo e o seletor **Estado visual**. Enter emite o texto completo; Shift+Enter insere uma linha. O limite é de 2.000 unidades UTF-16 (`maxlength`). Envio adiciona apenas a mensagem do usuário à fixture e mostra espera; selecione Pronto para continuar. Reiniciar restaura os exemplos. Abra **Eventos da demonstração** para conferir envio, reinício, abrir/fechar e preferências. Qualidade/movimento nessa fixture apenas registram eventos; ainda não comandam a cena.
-
-Em produção, envio, reinício e preferências ficam desabilitados com avisos de preparação. Abrir/fechar preserva o rascunho. Provider/store já existem independentemente; sua integração à aplicação principal será feita na fase 10.
+A fixture da fase 08 está em `/tests/chat.html`, com mensagens de exemplo e eventos de interface. A aplicação principal usa a integração da fase 10 descrita abaixo. Enter envia; Shift+Enter insere uma linha. O limite é de 2.000 unidades UTF-16 (`maxlength`).
 
 `ChatView` expõe `renderMessages`, `setState`, `setAvailable`, `getDraft`, `setDraft`, `setOpen`, `focusInput` e `dispose`; recebe callbacks de envio, reinício e fechamento. `ControlsView` emite abertura, qualidade e movimento reduzido, com `setEnabled`, `setOpen`, `focusToggle` e `dispose`. A coordenação decide quando limpar o campo. Mensagens usam `textContent` e IDs estáveis. Atualizações preservam o campo e a leitura do histórico; não passam pelo loop 3D.
 
@@ -73,6 +71,16 @@ Abra `/tests/chat.html` em desenvolvimento para os 31 checks de interface e uma 
 `MockChatProvider` implementa `ChatProvider.reply(text, signal)`. Há saudação, apresentação, cenário, ajuda e resposta padrão. Seleção ignora caixa, acentos e pontuação; usa palavras/frases inteiras com prioridade ajuda → apresentação → cenário → saudação. Latência padrão fixa de 800 ms, configurável por `latencyMs`; `schedule` pode ser injetado para verificação. Cancelar rejeita `AbortError` e limpa timer/listener. IDs identificam cada instância/resposta; não há persistência ou chamadas externas.
 
 Em desenvolvimento, abra `/tests/conversation.html`. Envie “OLÁ!”, “quem é você?”, “cenário”, “ajuda” ou assunto desconhecido. Resposta chega completa e fica em revealing até **Concluir apresentação**. **Cancelar resposta** conserva histórico; **Reiniciar conversa** aborta e limpa. **Simular falha na próxima resposta** usa um provider DEV separado e permite conferir recuperação. A página não monta renderer nem modifica a aplicação principal; animação e apresentação gradual entram na fase 10.
+
+### Integração entre chat e personagem — fase 10
+
+Na página principal, envie “Olá!”. A personagem passa de repouso para pensamento durante os 800 ms do provider, gesticula enquanto a UI revela o texto e volta ao repouso. É possível preparar o próximo rascunho durante a espera; o segundo envio fica bloqueado até a conclusão. A resposta completa entra no store de uma vez. A UI mostra 55 pontos de código por segundo usando tempo decorrido e um timer cancelável de 32 ms, independente do loop 3D.
+
+**Reiniciar conversa** aborta provider/apresentação, limpa histórico e rascunho e neutraliza a face. ID e identidade da solicitação impedem que uma resposta ou `finally` antigos afetem a conversa nova. Fechar/reabrir preserva histórico e rascunho, sem remontar a cena. Qualidade comanda o perfil do renderer. Movimento reduzido congela animações conforme a cena e apresenta o texto imediatamente; a escolha manual prevalece sobre alterações posteriores da preferência do sistema nesta sessão. Falhas do 3D mantêm o chat disponível.
+
+Abra `/tests/app-controller.html` no servidor de desenvolvimento: executa 18 checks de integração com provider/relógio/cena controlados e oferece uma demonstração separada com WebGL/GLB reais. Os botões permitem simular erro do provider, perder/restaurar contexto gráfico e gravar o fluxo integrado. O vídeo compõe o canvas real com o texto apresentado no DOM usando o loop existente; não adiciona loop de produção. Essas ferramentas não entram no build de produção.
+
+[Evidências e limites](specs/evidencias/fase-10/verificacao.md), [vídeo](specs/evidencias/fase-10/fluxo-integrado.webm) e [preview](specs/evidencias/fase-10/preview.jpg). Responsividade/acessibilidade completa e desempenho permanecem nas fases 11 e 12.
 
 ### Renderer e ciclo de vida
 

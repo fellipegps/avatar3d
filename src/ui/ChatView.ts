@@ -7,6 +7,11 @@ export interface ChatViewEvents {
   onClose(): void;
 }
 let nextId = 0;
+export interface PresentationOptions {
+  charactersPerSecond?: number;
+  now?: () => number;
+  schedule?: (callback: () => void, delayMs: number) => () => void;
+}
 
 /** Camada DOM: recebe snapshots e emite intenções, sem provider, store ou cena. */
 export class ChatView {
@@ -31,8 +36,19 @@ export class ChatView {
   private closedScrollTop = 0;
   private closedAtBottom = true;
   private disposed = false;
+  private reducedMotion = false;
+  private presentation: { abort(): void; finish(): void } | null = null;
+  private readonly speed: number;
+  private readonly now: () => number;
+  private readonly schedule: NonNullable<PresentationOptions['schedule']>;
 
-  constructor(private readonly container: HTMLElement, private readonly events: ChatViewEvents) {
+  constructor(private readonly container: HTMLElement, private readonly events: ChatViewEvents, presentationOptions: PresentationOptions = {}) {
+    this.speed = presentationOptions.charactersPerSecond ?? 55;
+    if (!Number.isFinite(this.speed) || this.speed <= 0) throw new RangeError('Velocidade de apresentação inválida.');
+    this.now = presentationOptions.now ?? (() => performance.now());
+    this.schedule = presentationOptions.schedule ?? ((callback, delay) => {
+      const timer = window.setTimeout(callback, delay); return () => window.clearTimeout(timer);
+    });
     const prefix = `chat-${++nextId}`;
     if (!container.id) container.id = `${prefix}-panel`;
     container.classList.add('chat-panel');
@@ -167,8 +183,58 @@ export class ChatView {
 
   focusInput(): void { if (!this.disposed && this.open) this.input.focus({ preventScroll: true }); }
 
+  setReducedMotion(enabled: boolean): void {
+    if (this.disposed) return;
+    this.reducedMotion = enabled;
+    if (enabled) this.presentation?.finish();
+  }
+
+  cancelPresentation(): void { this.presentation?.abort(); }
+
+  /** Texto parcial fica somente na view; nenhum tick altera o domínio. */
+  presentMessages(messages: readonly ChatMessage[], replyId: string, signal: AbortSignal): Promise<void> {
+    this.cancelPresentation();
+    return new Promise((resolve, reject) => {
+      if (this.disposed || signal.aborted) { reject(new DOMException('Apresentação cancelada.', 'AbortError')); return; }
+      const reply = messages.find(message => message.id === replyId);
+      if (!reply) { reject(new Error('Resposta ausente na apresentação.')); return; }
+      const characters = Array.from(reply.text), started = this.now();
+      let cancelTimer: (() => void) | undefined, settled = false, shown = -1;
+      const cleanup = (): void => {
+        cancelTimer?.(); signal.removeEventListener('abort', abort); this.list.setAttribute('aria-busy', 'false');
+        if (this.presentation === session) this.presentation = null;
+      };
+      const abort = (): void => {
+        if (settled) return;
+        settled = true; cleanup(); reject(new DOMException('Apresentação cancelada.', 'AbortError'));
+      };
+      const finish = (): void => {
+        if (settled) return;
+        if (signal.aborted || this.disposed) { abort(); return; }
+        settled = true; cleanup(); this.renderMessages(messages); resolve();
+      };
+      const session = { abort, finish }; this.presentation = session;
+      const tick = (): void => {
+        try {
+          if (settled) return;
+          if (signal.aborted || this.disposed) { abort(); return; }
+          const count = Math.min(characters.length, Math.floor(Math.max(0, this.now() - started) * this.speed / 1000));
+          if (this.reducedMotion || count >= characters.length) { finish(); return; }
+          if (count !== shown) {
+            shown = count;
+            this.renderMessages(messages.map(message => message.id === replyId ? { ...message, text: characters.slice(0, count).join('') } : message));
+          }
+          cancelTimer = this.schedule(tick, 32);
+        } catch (error) { settled = true; cleanup(); reject(error); }
+      };
+      signal.addEventListener('abort', abort, { once: true });
+      this.list.setAttribute('aria-busy', 'true');
+      tick();
+    });
+  }
+
   dispose(): void {
     if (this.disposed) return;
-    this.disposed = true; this.listeners.abort(); this.messages.clear(); this.container.replaceChildren();
+    this.disposed = true; this.cancelPresentation(); this.listeners.abort(); this.messages.clear(); this.container.replaceChildren();
   }
 }

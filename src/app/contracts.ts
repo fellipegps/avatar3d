@@ -30,6 +30,7 @@ export interface ChatProvider {
 export interface ScenePort {
   setCharacterState(state: CharacterState): void;
   setMouthOpen(value: number): void;
+  resetFace(): void;
   setReducedMotion(enabled: boolean): void;
   setQuality(profile: QualityProfile): void;
   dispose(): void;

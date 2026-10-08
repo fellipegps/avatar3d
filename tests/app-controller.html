@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Integração · Fase 10</title></head>
+<body><div id="app">
+  <h1>Integração da conversa · Fase 10</h1><p id="summary" role="status">Executando…</p>
+  <div id="test-host"></div>
+  <details><summary>Resultados automatizados</summary><pre id="results" style="white-space:pre-wrap"></pre></details>
+  <section class="chat-demo"><p>Demonstração integrada · Somente desenvolvimento</p>
+    <label><input id="failure" type="checkbox" /> Simular próxima falha</label>
+    <button id="lose-context">Interromper 3D</button><button id="restore-context">Restaurar 3D</button>
+    <button id="record" disabled>Gravar fluxo integrado</button><p id="record-status" role="status">Carregando personagem…</p>
+  </section>
+  <nav id="live-controls" aria-label="Controles da experiência"></nav>
+  <main id="live-layout" class="app-layout">
+    <section class="scene-panel"><header class="panel-header"><h2>Espaço 3D</h2><span id="live-status" role="status"></span></header>
+      <div id="live-scene" class="scene-container"><p id="live-fallback" class="scene-placeholder" role="alert" hidden></p></div></section>
+    <aside id="live-panel" class="interface-panel"></aside>
+  </main>
+  <p id="live-state" role="status"></p><pre id="timeline" style="white-space:pre-wrap"></pre>
+  <video id="video" controls hidden style="max-width:100%"></video>
+  <pre id="record-info" style="white-space:pre-wrap"></pre><pre id="video-data" hidden></pre>
+</div><script type="module" src="./app-controller.browser.ts"></script></body></html>
