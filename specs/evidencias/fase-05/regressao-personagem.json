@@ -1,0 +1,136 @@
+[
+  {
+    "name": "GLB real: rig, 26.130 triângulos e 16 meshes materiais",
+    "passed": true,
+    "details": {
+      "bytes": 8834484,
+      "bones": 155,
+      "meshes": 16,
+      "triangles": 26130
+    }
+  },
+  {
+    "name": "Transformação: chão em zero e altura aproximada de 1,713 m",
+    "passed": true,
+    "details": {
+      "min": [
+        -0.6924216792586184,
+        1.5243780715116324e-9,
+        -0.23989964637512612
+      ],
+      "max": [
+        0.6915780343625364,
+        1.7130769921220093,
+        0.19819507363363453
+      ],
+      "size": [
+        1.3839997136211548,
+        1.713076990597631,
+        0.43809472000876065
+      ]
+    }
+  },
+  {
+    "name": "41 morph targets com nomes reais nos nove meshes faciais",
+    "passed": true
+  },
+  {
+    "name": "Manifesto rejeita clipe inexistente",
+    "passed": true,
+    "details": "Error: Clipe obrigatório ausente ou vazio: missing"
+  },
+  {
+    "name": "Manifesto rejeita morph inexistente",
+    "passed": true,
+    "details": "Error: Controle facial ausente em VitaFace: missing"
+  },
+  {
+    "name": "idle: animação de rig e limites finitos durante o ciclo",
+    "passed": true
+  },
+  {
+    "name": "idle: loop retorna à pose sem deslocar o chão",
+    "passed": true
+  },
+  {
+    "name": "thinking: animação de rig e limites finitos durante o ciclo",
+    "passed": true
+  },
+  {
+    "name": "thinking: loop retorna à pose sem deslocar o chão",
+    "passed": true
+  },
+  {
+    "name": "responding: animação de rig e limites finitos durante o ciclo",
+    "passed": true
+  },
+  {
+    "name": "responding: loop retorna à pose sem deslocar o chão",
+    "passed": true
+  },
+  {
+    "name": "Clipes corporais preservam os valores faciais manuais",
+    "passed": true
+  },
+  {
+    "name": "Retorno após três estados restaura a pose idle",
+    "passed": true
+  },
+  {
+    "name": "Movimento reduzido congela o corpo",
+    "passed": true
+  },
+  {
+    "name": "Valores faciais são limitados a 0–1",
+    "passed": true
+  },
+  {
+    "name": "Valor facial não finito volta a zero",
+    "passed": true
+  },
+  {
+    "name": "Dispose repetido libera cada geometria uma vez",
+    "passed": true
+  },
+  {
+    "name": "Abort anterior ao fetch",
+    "passed": true,
+    "details": "AbortError: signal is aborted without reason"
+  },
+  {
+    "name": "HTTP 404 controlado",
+    "passed": true,
+    "details": "Error: Não foi possível carregar o modelo (HTTP 404)."
+  },
+  {
+    "name": "HTML no lugar de GLB é rejeitado",
+    "passed": true,
+    "details": "Error: O arquivo recebido não é um GLB válido."
+  },
+  {
+    "name": "Abort durante parse ignora resultado tardio",
+    "passed": true,
+    "details": "AbortError: signal is aborted without reason"
+  },
+  {
+    "name": "GLB que termina após abort libera geometrias",
+    "passed": true
+  },
+  {
+    "name": "Integração usa um canvas, sem cubo de teste e mantém cena disponível",
+    "passed": true
+  },
+  {
+    "name": "Descarte durante download cancela carga",
+    "passed": true,
+    "details": "AbortError: signal is aborted without reason"
+  },
+  {
+    "name": "Descarte não reinsere canvas/modelo tardiamente",
+    "passed": true
+  },
+  {
+    "name": "Erro do asset mostra aviso e preserva interface",
+    "passed": true
+  }
+]

@@ -10,6 +10,8 @@ Assumimos uma personagem estilizada atrás de uma mesa, sala escura com monitore
 
 ## Resultado do núcleo
 
+Na fase 05, o escritório recebeu materiais escuros, acentos emissivos, luzes ambiente/rosto/contorno, luz explícita da luminária e painéis CanvasTexture locais identificados como DEMO. Foram escolhidas sombras de contato radiais, sem shadow maps. Os contratos públicos abaixo permanecem iguais; [verificação e métricas](evidencias/fase-05/verificacao.md).
+
 - Personagem 3D com rig e clipes para repouso, pensamento e resposta.
 - Piscar e controle de abertura da boca compatíveis com o modelo.
 - Sala e objetos em geometria 3D, compartilhando iluminação, profundidade e canvas com a personagem.

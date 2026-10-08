@@ -44,4 +44,4 @@ Nenhum asset da referência Kady foi copiado. A licença do modelo não altera a
 
 ## Ambiente geométrico — fase 04
 
-Piso, paredes, mesa, monitores, luminária, planta e caneca foram construídos localmente em `src/scene/Environment.ts`, usando primitivas do Three.js e configuração em metros. Não usam modelos, imagens ou texturas de terceiros. Materiais são provisórios. A origem e a licença de Vita acima permanecem aplicáveis à personagem.
+Piso, paredes, mesa, monitores, luminária, planta e caneca foram construídos localmente em `src/scene/Environment.ts`, usando primitivas do Three.js e configuração em metros. Não usam modelos, imagens ou texturas de terceiros. Na fase 04, os materiais eram provisórios. A fase 05 acrescentou acabamento, faixas emissivas e três texturas procedurais locais: dois painéis DEMO e uma sombra radial compartilhada. Textos, números fictícios e gráficos são definidos no próprio projeto, sem fontes externas ou fontes tipográficas baixadas. A origem e a licença de Vita acima permanecem aplicáveis à personagem.

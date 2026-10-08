@@ -1,6 +1,6 @@
 # Fase 05 — Materiais, iluminação e painéis
 
-Status inicial: pendente. Tipo: MVP principal.
+Status atual: concluída em 07/10/2026. Tipo: MVP principal. [Verificação e limites](evidencias/fase-05/verificacao.md).
 
 ## Dependências
 
@@ -21,14 +21,14 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Tarefas
 
-- [ ] Definir paleta escura e acentos azul, verde e roxo em configuração.
-- [ ] Adicionar luz ambiente, luz principal do rosto e luz de contorno.
-- [ ] Aplicar materiais emissivos às faixas e painéis; usar luz explícita quando for necessário iluminar outros objetos.
-- [ ] Escolher sombra simples de contato ou uma única luz com sombras, conforme medição.
-- [ ] Desenhar conteúdo decorativo em canvas 2D e aplicar CanvasTexture aos monitores/painéis 3D.
-- [ ] Identificar números decorativos como DEMO e manter o conteúdo inteiramente local.
-- [ ] Atualizar texturas somente quando seu conteúdo mudar, evitando uploads a cada frame.
-- [ ] Registrar contagem inicial de triângulos e draw calls para detectar crescimento.
+- [x] Definir paleta escura e acentos azul, verde e roxo em configuração.
+- [x] Adicionar luz ambiente, luz principal do rosto e luz de contorno.
+- [x] Aplicar materiais emissivos às faixas e painéis; usar luz explícita quando for necessário iluminar outros objetos.
+- [x] Escolher sombra simples de contato ou uma única luz com sombras, conforme medição.
+- [x] Desenhar conteúdo decorativo em canvas 2D e aplicar CanvasTexture aos monitores/painéis 3D.
+- [x] Identificar números decorativos como DEMO e manter o conteúdo inteiramente local.
+- [x] Atualizar texturas somente quando seu conteúdo mudar, evitando uploads a cada frame.
+- [x] Registrar contagem inicial de triângulos e draw calls para detectar crescimento.
 
 ## Fora do escopo
 
@@ -37,12 +37,12 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Critérios de aceitação
 
-- [ ] Olhos e rosto são legíveis sem perder a composição escura.
-- [ ] As luzes separam personagem e fundo visualmente.
-- [ ] Monitores e painéis permanecem superfícies da cena 3D.
-- [ ] Texturas de painel não são redesenhadas continuamente.
-- [ ] Conteúdo fictício está identificado.
-- [ ] Materiais/texturas criados têm descarte definido.
+- [x] Olhos e rosto são legíveis sem perder a composição escura.
+- [x] As luzes separam personagem e fundo visualmente.
+- [x] Monitores e painéis permanecem superfícies da cena 3D.
+- [x] Texturas de painel não são redesenhadas continuamente.
+- [x] Conteúdo fictício está identificado.
+- [x] Materiais/texturas criados têm descarte definido.
 
 ## Verificação
 

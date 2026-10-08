@@ -1,0 +1,39 @@
+{
+  "normal": {
+    "calls": 59,
+    "triangles": 28664,
+    "geometries": 24,
+    "textures": 32,
+    "programs": 10,
+    "width": 795,
+    "height": 440,
+    "pixelRatio": 1,
+    "shadowMap": false
+  },
+  "noContactShadows": {
+    "calls": 54,
+    "triangles": 28654,
+    "geometries": 24,
+    "textures": 32,
+    "programs": 10,
+    "width": 795,
+    "height": 440,
+    "pixelRatio": 1,
+    "shadowMap": false
+  },
+  "economy": {
+    "calls": 59,
+    "triangles": 28664,
+    "geometries": 24,
+    "textures": 32,
+    "programs": 10,
+    "width": 795,
+    "height": 440,
+    "pixelRatio": 1,
+    "shadowMap": false
+  },
+  "gpu": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  }
+}

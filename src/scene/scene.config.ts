@@ -1,4 +1,21 @@
 type Point = readonly [number, number, number];
+export const visualConfig = {
+  accents: { blue: 0x45a9ff, green: 0x51ddb2, purple: 0xa887ff },
+  emissiveIntensity: { strip: 1.8, screen: 0.75, lamp: 0.25 },
+  lighting: {
+    sky: 0xaecbff, ground: 0x161322, ambientIntensity: 0.65,
+    key: { color: 0xffeee2, intensity: 2.5, position: [1.2, 2.6, 3], target: [0, 1.4, 0] },
+    rim: { color: 0xa48aff, intensity: 3.5, position: [-1.3, 2.2, -0.9], target: [0, 1.3, 0] },
+    lamp: { color: 0xffdaa4, intensity: 0.4, distance: 1.4 },
+    exposure: 1,
+  },
+  contactShadow: { opacity: 0.5, textureSize: 128 },
+  panels: {
+    width: 768, height: 384,
+    background: '#0b1421', foreground: '#dcebf5', muted: '#8da7bf', grid: '#23384c',
+    accent: ['#51ddb2', '#45a9ff'],
+  },
+} as const;
 export interface EnvironmentConfig {
   room: { size: Point; backZ: number; thickness: number };
   desk: { position: Point; size: Point; legWidth: number };
@@ -20,7 +37,7 @@ export const environmentConfig = {
   lamp: { position: [-1.06, 0.82, 0.66], height: 0.64 },
   plant: { position: [1.05, 0.82, 0.47], height: 0.48 },
   mug: { position: [0.48, 0.82, 0.94], radius: 0.055, height: 0.12 },
-  colors: { wall: 0x25303c, floor: 0x38414b, wood: 0x79634f, metal: 0x171f28, screen: 0x526779, ceramic: 0xb9c3c6, leaf: 0x467958, coffee: 0x2d1e15 },
+  colors: { wall: 0x121824, floor: 0x1c2431, wood: 0x302d35, metal: 0x101923, screen: 0xffffff, ceramic: 0xaac0c8, leaf: 0x2f6c50, coffee: 0x2d1e15 },
 } as const satisfies EnvironmentConfig;
 
 export const sceneConfig = {

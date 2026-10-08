@@ -1,8 +1,8 @@
 import {
-  Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector3, WebGLRenderer,
+  ACESFilmicToneMapping, Color, DirectionalLight, HemisphereLight, PerspectiveCamera, PointLight, Scene, SRGBColorSpace, Vector3, WebGLRenderer,
 } from 'three';
 import type { CharacterState, QualityProfile, ScenePort } from '../app/contracts';
-import { sceneConfig } from './scene.config';
+import { environmentConfig, sceneConfig, visualConfig } from './scene.config';
 import { loadCharacter } from './AssetLoader';
 import type { AssetReport } from './AssetLoader';
 import { characterManifest } from './character.manifest';
@@ -55,6 +55,9 @@ export class SceneController implements ScenePort {
     try {
       // A versão instalada de WebGLRenderer usa exclusivamente WebGL 2.
       this.renderer = new WebGLRenderer({ antialias: true, powerPreference: 'default' });
+      this.renderer.outputColorSpace = SRGBColorSpace;
+      this.renderer.toneMapping = ACESFilmicToneMapping;
+      this.renderer.toneMappingExposure = visualConfig.lighting.exposure;
       const canvas = this.renderer.domElement;
       canvas.className = 'scene-canvas';
       canvas.setAttribute('role', 'img');
@@ -65,13 +68,22 @@ export class SceneController implements ScenePort {
 
       this.environment = new Environment();
       this.scene.add(this.environment.root);
-      // Iluminação provisória da inspeção; acabamento e sombras ficam na fase 05.
-      const light = new HemisphereLight(0xffffff, 0x8b9fb4, 2.0);
-      light.name = 'inspection-light';
+      const lighting = visualConfig.lighting;
+      const light = new HemisphereLight(lighting.sky, lighting.ground, lighting.ambientIntensity);
+      light.name = 'ambient-light';
       this.scene.add(light);
-      const key = new DirectionalLight(0xffffff, 2.2);
-      key.position.set(2, 3, 4);
-      this.scene.add(key);
+      for (const [name, spec] of [['face-light', lighting.key], ['rim-light', lighting.rim]] as const) {
+        const directional = new DirectionalLight(spec.color, spec.intensity);
+        directional.name = name; directional.position.fromArray(spec.position);
+        directional.target.position.fromArray(spec.target);
+        this.scene.add(directional, directional.target);
+      }
+      // Emissivo é aparência; esta luz explícita da luminária ilumina o tampo ao redor.
+      const lamp = new PointLight(lighting.lamp.color, lighting.lamp.intensity, lighting.lamp.distance, 2);
+      lamp.name = 'desk-lamp-light';
+      const lampConfig = environmentConfig.lamp;
+      lamp.position.set(lampConfig.position[0], lampConfig.position[1] + lampConfig.height - 0.16, lampConfig.position[2]);
+      this.scene.add(lamp);
 
       document.addEventListener('visibilitychange', this.onVisibilityChange);
       this.observer = new ResizeObserver((entries) => {
@@ -89,6 +101,18 @@ export class SceneController implements ScenePort {
 
   get availability(): SceneAvailability {
     return { ...this.state };
+  }
+
+  /** Snapshot para inspeção: não expõe o renderer nem acrescenta trabalho ao loop. */
+  getRenderStats() {
+    if (!this.renderer) return null;
+    const { render, memory, programs } = this.renderer.info;
+    return {
+      calls: render.calls, triangles: render.triangles, geometries: memory.geometries,
+      textures: memory.textures, programs: programs?.length ?? 0,
+      width: this.width, height: this.height, pixelRatio: this.renderer.getPixelRatio(),
+      shadowMap: this.renderer.shadowMap.enabled,
+    };
   }
 
   registerUpdater(update: SceneUpdater): () => void {

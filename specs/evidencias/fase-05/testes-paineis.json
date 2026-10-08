@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Custo do frame comum dentro da referência de 80 calls, sem shadow map",
+    "passed": true,
+    "details": {
+      "calls": 59,
+      "triangles": 28664,
+      "geometries": 24,
+      "textures": 32,
+      "programs": 10,
+      "width": 795,
+      "height": 440,
+      "pixelRatio": 1,
+      "shadowMap": false
+    }
+  },
+  {
+    "name": "Contato adiciona cinco desenhos simples e dez triângulos, sem passes de sombras",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Ambiente, rosto, contorno e luminária usam luzes explícitas",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Dois painéis CanvasTexture sRGB nos meshes 3D, com mapa emissivo",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "45 quadros reais sem invalidar ou reenviar os painéis estáticos",
+    "passed": true,
+    "details": {
+      "updates": 45,
+      "uploads": 0,
+      "before": [
+        2,
+        2
+      ],
+      "after": [
+        2,
+        2
+      ]
+    }
+  },
+  {
+    "name": "Conteúdo idêntico não redesenha nem marca upload",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Mudança no conteúdo redesenha exatamente uma vez",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Painel descartado uma vez, sem atualizações tardias e com bitmap liberado",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Ambiente libera materiais, geometrias e três texturas compartilhadas uma única vez",
+    "passed": true,
+    "details": {
+      "geometries": 8,
+      "materials": 14,
+      "textures": 3,
+      "textureDisposals": [
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  {
+    "name": "Falha parcial de canvas 2D libera a textura já criada",
+    "passed": true,
+    "details": null
+  }
+]

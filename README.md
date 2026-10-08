@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–04 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e a personagem Vita em GLB dentro de um escritório geométrico. Materiais finais, painéis e chat continuam nas fases seguintes.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–05 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação e painéis decorativos locais. Transições, expressões automáticas e chat continuam nas fases seguintes.
 
 ## Ambiente
 
@@ -33,6 +33,7 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 - `src/scene/SceneController.ts`: renderer, câmera, ResizeObserver, loop, inscrição de atualizações e descarte idempotente.
 - `src/scene/scene.config.ts`: parâmetros de enquadramento, pixel ratio e delta máximo.
 - `src/scene/Environment.ts`: piso, paredes, mesa, dois monitores, luminária, planta e caneca, com recursos compartilhados e descarte próprio.
+- `src/scene/PanelTexture.ts`: conteúdo fictício DEMO desenhado em CanvasTexture, com atualização apenas quando muda.
 - `src/styles/base.css`: aparência inicial e empilhamento em telas estreitas.
 - `src/scene/AssetLoader.ts`: carregamento cancelável do GLB, inspeção, validação do manifesto e liberação dos recursos.
 - `src/scene/character.manifest.ts`: clipes, meshes, controles faciais e transformações reais de Vita.
@@ -66,8 +67,18 @@ Os caminhos do GLB usam `import.meta.env.BASE_URL`. Também foi verificado build
 
 ## Sala e verificação da fase 04
 
-`environmentConfig`, em `src/scene/scene.config.ts`, concentra medidas em metros, posições e materiais provisórios. A sala mede 4 × 2,7 × 3,6 m e usa um corte com frente e lateral direita abertas. O tampo de 2,5 × 0,9 m fica a 0,82 m do chão, à frente da personagem, sem modificar o transform do manifesto. A câmera e seu alvo ficam em `sceneConfig.composition`.
+`environmentConfig`, em `src/scene/scene.config.ts`, concentra medidas em metros, posições e cores dos materiais. A sala mede 4 × 2,7 × 3,6 m e usa um corte com frente e lateral direita abertas. O tampo de 2,5 × 0,9 m fica a 0,82 m do chão, à frente da personagem, sem modificar o transform do manifesto. A câmera e seu alvo ficam em `sceneConfig.composition`.
 
 Abra `/tests/environment.html` em desenvolvimento para repetir os 14 checks de integração, oclusão por raycast, enquadramento, configuração alternativa e descarte único de recursos compartilhados. As regressões da cena (24 checks) e do GLB (26 checks) passaram com o ambiente integrado. As verificações e capturas estão em [evidências da fase 04](specs/evidencias/fase-04/verificacao.md).
 
-O ambiente tem 31 meshes, 1.528 triângulos, sete geometrias e oito materiais, sem texturas externas. Usa a iluminação provisória de inspeção da personagem. Sombras, acabamento e conteúdo dos monitores pertencem à fase 05.
+Na entrega da fase 04, o ambiente tinha 31 meshes e 1.528 triângulos, com materiais e iluminação provisórios. A fase 05 acrescentou o acabamento descrito abaixo.
+
+## Materiais, luzes e painéis — fase 05
+
+`visualConfig` define os acentos azul/verde/roxo, exposição, luz ambiente, luz do rosto, luz de contorno e luz explícita da luminária. Renderer com saída sRGB e tone mapping ACES. Faixas e monitores têm materiais emissivos; somente as luzes explícitas iluminam os objetos próximos. Sem bloom, pós-processamento ou mapas de sombra.
+
+Sombras de contato são manchas radiais em cinco planos no piso, compartilhando uma textura local de 128×128. Não acompanham contornos do corpo ou projeções de luz; pressupõem a personagem e a mesa nas posições atuais. Os monitores usam CanvasTexture 768×384, com gráficos e números fixos identificados como DEMO / DADOS FICTÍCIOS. Não há consultas externas nem texto do chat nos painéis. `PanelTexture.update()` compara conteúdo antes de redesenhar e marcar upload; não é chamado pelo loop.
+
+Abra `/tests/lighting.html` em desenvolvimento para repetir os dez checks de custo, texturas, ausência de uploads durante 45 quadros e descarte/falha parcial. A página mostra snapshots de `renderer.info`. Na Intel Iris Xe disponível, canvas 795×440 / DPR 1: 59 draw calls e 28.664 triângulos desenhados por frame, contra 51 / 28.618 antes. Sem sombras de contato, 54 / 28.654. Essas contagens não são benchmark de FPS. O ambiente atual tem 39 meshes, 1.574 triângulos únicos, oito geometrias, 14 materiais e três texturas locais.
+
+Tipos, build, preview e 74 checks passaram; veja [evidências da fase 05](specs/evidencias/fase-05/verificacao.md). O aviso do chunk JS acima de 500 kB permanece registrado para a fase 12. Não houve medição sustentada de FPS nem teste em celular físico.
