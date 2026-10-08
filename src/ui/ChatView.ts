@@ -1,6 +1,6 @@
 import type { ChatMessage, ConversationPhase } from '../app/contracts';
-
-export const MAX_MESSAGE_LENGTH = 2000;
+import { MAX_MESSAGE_LENGTH } from '../app/contracts';
+export { MAX_MESSAGE_LENGTH } from '../app/contracts';
 export interface ChatViewEvents {
   onSubmit(text: string): void;
   onReset(): void;

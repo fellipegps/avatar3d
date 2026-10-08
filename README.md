@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–08 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático e interface DOM do chat. Respostas locais e integração com a personagem entram nas fases 09 e 10.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–09 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. A integração de produção com a personagem entra na fase 10.
 
 ## Ambiente
 
@@ -18,6 +18,7 @@ Abrir o endereço informado pelo Vite (normalmente `http://localhost:5173`).
 
 ```sh
 npm run typecheck
+npm test
 npm run build
 npm run preview
 ```
@@ -30,6 +31,8 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 - `src/main.ts`: inicialização única e contêineres semânticos da aplicação, cena e interface.
 - `src/app/AppController.ts`: coordenação da disponibilidade do 3D e da preferência de movimento reduzido.
 - `src/app/contracts.ts`: fronteiras tipadas da especificação 00, sem implementações antecipadas.
+- `src/app/ConversationStore.ts`: histórico em memória, snapshots imutáveis, inscrição e transições protegidas pelo ID da solicitação ativa.
+- `src/chat/MockChatProvider.ts` e `responses.ts`: catálogo local, normalização e Promise com latência cancelável de 800 ms por padrão.
 - `src/scene/SceneController.ts`: renderer, câmera, ResizeObserver, loop, inscrição de atualizações e descarte idempotente.
 - `src/scene/scene.config.ts`: parâmetros de enquadramento, pixel ratio e delta máximo.
 - `src/scene/Environment.ts`: piso, paredes, mesa, dois monitores, luminária, planta e caneca, com recursos compartilhados e descarte próprio.
@@ -55,11 +58,21 @@ Não foi necessário criar `vite.config.ts`: os padrões atendem à fase 01. Pla
 
 Em desenvolvimento, a página principal mostra duas mensagens de exemplo e o seletor **Estado visual**. Enter emite o texto completo; Shift+Enter insere uma linha. O limite é de 2.000 unidades UTF-16 (`maxlength`). Envio adiciona apenas a mensagem do usuário à fixture e mostra espera; selecione Pronto para continuar. Reiniciar restaura os exemplos. Abra **Eventos da demonstração** para conferir envio, reinício, abrir/fechar e preferências. Qualidade/movimento nessa fixture apenas registram eventos; ainda não comandam a cena.
 
-Em produção, envio, reinício e preferências ficam desabilitados com avisos de preparação. Abrir/fechar preserva o rascunho. Provider, store e integração serão implementados nas fases 09/10.
+Em produção, envio, reinício e preferências ficam desabilitados com avisos de preparação. Abrir/fechar preserva o rascunho. Provider/store já existem independentemente; sua integração à aplicação principal será feita na fase 10.
 
 `ChatView` expõe `renderMessages`, `setState`, `setAvailable`, `getDraft`, `setDraft`, `setOpen`, `focusInput` e `dispose`; recebe callbacks de envio, reinício e fechamento. `ControlsView` emite abertura, qualidade e movimento reduzido, com `setEnabled`, `setOpen`, `focusToggle` e `dispose`. A coordenação decide quando limpar o campo. Mensagens usam `textContent` e IDs estáveis. Atualizações preservam o campo e a leitura do histórico; não passam pelo loop 3D.
 
 Abra `/tests/chat.html` em desenvolvimento para os 31 checks de interface e uma fixture interativa sem canvas. [Evidências da fase 08](specs/evidencias/fase-08/verificacao.md): tipos/build, teclado real, desktop/tela estreita e 24 checks de regressão do ciclo de vida.
+
+### Domínio e provider local — fase 09
+
+`npm test` compila somente os módulos de domínio em `.tmp/domain-tests/` e executa 29 testes com o runner nativo do Node, sem DOM, Three.js, rede ou timers reais. O diretório de saída é ignorado pelo Git. [Evidências](specs/evidencias/fase-09/verificacao.md).
+
+`ConversationStore` oferece `getSnapshot`, `subscribe` (entrega inicial imediata e função de remoção), `begin(text)`, `receive(id, reply)`, `complete(id)`, `fail(id, error?)`, `cancel(id)`, `reset` e `dispose`. `begin` retorna ID ou `null`; operações de solicitação retornam se foram aceitas. Texto original fica no histórico. Só uma solicitação pode permanecer ativa em waiting/revealing; respostas e finalizações antigas são ignoradas após reset/cancelamento. Snapshots, arrays e mensagens são congelados. Assinantes devem tratar suas próprias exceções.
+
+`MockChatProvider` implementa `ChatProvider.reply(text, signal)`. Há saudação, apresentação, cenário, ajuda e resposta padrão. Seleção ignora caixa, acentos e pontuação; usa palavras/frases inteiras com prioridade ajuda → apresentação → cenário → saudação. Latência padrão fixa de 800 ms, configurável por `latencyMs`; `schedule` pode ser injetado para verificação. Cancelar rejeita `AbortError` e limpa timer/listener. IDs identificam cada instância/resposta; não há persistência ou chamadas externas.
+
+Em desenvolvimento, abra `/tests/conversation.html`. Envie “OLÁ!”, “quem é você?”, “cenário”, “ajuda” ou assunto desconhecido. Resposta chega completa e fica em revealing até **Concluir apresentação**. **Cancelar resposta** conserva histórico; **Reiniciar conversa** aborta e limpa. **Simular falha na próxima resposta** usa um provider DEV separado e permite conferir recuperação. A página não monta renderer nem modifica a aplicação principal; animação e apresentação gradual entram na fase 10.
 
 ### Renderer e ciclo de vida
 

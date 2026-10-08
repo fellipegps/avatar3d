@@ -100,11 +100,17 @@ Nenhuma atualização por frame da personagem passa pelo store. Nenhum texto do 
 
 ## Ciclo da conversa
 
+### Contratos adicionais entregues na fase 09
+
+`ConversationSnapshot` contém mensagens somente de leitura, fase, erro opcional e `activeRequestId` numérico ou `null`. `ConversationStore` oferece início, recebimento, conclusão de apresentação, falha, cancelamento, reinício e inscrição; mutações de uma solicitação exigem seu ID ativo. O ID nunca é reutilizado no mesmo store, inclusive após reinício, impedindo escrita tardia. O histórico conserva o texto original; a normalização pertence somente à seleção de intenção do provider.
+
+O limite de 2.000 unidades UTF-16 é uma constante compartilhada nos contratos, preservando o valor e a exportação atual da UI. O provider usa 800 ms por padrão, com agendador/latência injetáveis para testes sem espera real. Cancelamento rejeita com `AbortError` e libera timer/listener. O store não chama provider nem aborta sinais: essa coordenação permanece na fase 10. Falha simulada fica em módulo DEV/verificação separado, sem gatilho textual no provider de produção. [Evidências da fase 09](evidencias/fase-09/verificacao.md).
+
 ### Camada DOM entregue na fase 08
 
 `ChatView` recebe snapshots `readonly ChatMessage[]`, fase visual e disponibilidade; emite intenções de envio, reinício e fechamento. `ControlsView` emite abertura, `QualityProfile` e movimento reduzido. Ambas liberam listeners no descarte e não importam Three.js, store ou provider. O limite de entrada é de 2.000 unidades UTF-16 (`maxlength`). A coordenação decide quando limpar o rascunho; a view preserva texto, seleção e foco ao receber estados. Mensagens usam `textContent` e IDs estáveis, com rolagem preservada quando o leitor estiver longe do final.
 
-A fixture DEV demonstra esses eventos sem respostas ou comandos à personagem. Na produção da fase 08, envio/reinício e preferências estão em preparação e desabilitados. Abrir/fechar funciona no DOM. Os contratos de domínio e `ScenePort` permanecem iguais; provider/store e integração continuam nas fases 09 e 10.
+A fixture DEV da fase 08 demonstra esses eventos sem respostas ou comandos à personagem. Produção ainda mantém envio/reinício e preferências em preparação e desabilitados; abrir/fechar funciona no DOM. Store/provider foram entregues separadamente na fase 09; integração permanece na fase 10. `ChatProvider` e `ScenePort` permanecem iguais.
 
 | Evento | Fase | Personagem |
 | --- | --- | --- |
