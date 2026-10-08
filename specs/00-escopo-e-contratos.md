@@ -100,6 +100,12 @@ Nenhuma atualização por frame da personagem passa pelo store. Nenhum texto do 
 
 ## Ciclo da conversa
 
+### Camada DOM entregue na fase 08
+
+`ChatView` recebe snapshots `readonly ChatMessage[]`, fase visual e disponibilidade; emite intenções de envio, reinício e fechamento. `ControlsView` emite abertura, `QualityProfile` e movimento reduzido. Ambas liberam listeners no descarte e não importam Three.js, store ou provider. O limite de entrada é de 2.000 unidades UTF-16 (`maxlength`). A coordenação decide quando limpar o rascunho; a view preserva texto, seleção e foco ao receber estados. Mensagens usam `textContent` e IDs estáveis, com rolagem preservada quando o leitor estiver longe do final.
+
+A fixture DEV demonstra esses eventos sem respostas ou comandos à personagem. Na produção da fase 08, envio/reinício e preferências estão em preparação e desabilitados. Abrir/fechar funciona no DOM. Os contratos de domínio e `ScenePort` permanecem iguais; provider/store e integração continuam nas fases 09 e 10.
+
 | Evento | Fase | Personagem |
 | --- | --- | --- |
 | Pronto | idle | idle |

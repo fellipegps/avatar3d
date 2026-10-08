@@ -1,6 +1,6 @@
 # Fase 08 — Interface do chat e controles
 
-Status inicial: pendente. Tipo: MVP principal.
+Status: concluída em 08/10/2026. Tipo: MVP principal. [Verificação e limites](evidencias/fase-08/verificacao.md).
 
 ## Dependências
 
@@ -22,14 +22,14 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Tarefas
 
-- [ ] Criar painel lateral com título, lista de mensagens, textarea, envio e reinício.
-- [ ] Adicionar abrir/fechar painel, seleção de qualidade e preferência de movimento reduzido.
-- [ ] Expor eventos de UI e métodos de renderização; deixar a coordenação funcional para a fase 10.
-- [ ] Inserir conteúdo de mensagens por textContent ou nós de texto.
-- [ ] Adicionar estados visuais de espera, erro e envio indisponível.
-- [ ] Implementar Enter para envio e Shift+Enter para nova linha; rejeitar entrada vazia e limitar tamanho.
-- [ ] Cuidar de foco e rolagem; preservar leitura de mensagens antigas quando o usuário rolar para cima.
-- [ ] Usar uma pequena fixture de demonstração apenas em desenvolvimento para verificar o layout.
+- [x] Criar painel lateral com título, lista de mensagens, textarea, envio e reinício.
+- [x] Adicionar abrir/fechar painel, seleção de qualidade e preferência de movimento reduzido.
+- [x] Expor eventos de UI e métodos de renderização; deixar a coordenação funcional para a fase 10.
+- [x] Inserir conteúdo de mensagens por textContent ou nós de texto.
+- [x] Adicionar estados visuais de espera, erro e envio indisponível.
+- [x] Implementar Enter para envio e Shift+Enter para nova linha; rejeitar entrada vazia e limitar tamanho.
+- [x] Cuidar de foco e rolagem; preservar leitura de mensagens antigas quando o usuário rolar para cima.
+- [x] Usar uma pequena fixture de demonstração apenas em desenvolvimento para verificar o layout.
 
 ## Fora do escopo
 
@@ -38,12 +38,12 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Critérios de aceitação
 
-- [ ] O chat é HTML e permanece independente do canvas.
-- [ ] Mensagens com tags são exibidas como texto.
-- [ ] Eventos de enviar/reiniciar/abrir/fechar são demonstráveis.
-- [ ] O campo não perde texto ao alternar estados visuais.
-- [ ] Os controles têm rótulos acessíveis e foco visível.
-- [ ] Fechar e reabrir preserva o conteúdo exibido.
+- [x] O chat é HTML e permanece independente do canvas.
+- [x] Mensagens com tags são exibidas como texto.
+- [x] Eventos de enviar/reiniciar/abrir/fechar são demonstráveis.
+- [x] O campo não perde texto ao alternar estados visuais.
+- [x] Os controles têm rótulos acessíveis e foco visível.
+- [x] Fechar e reabrir preserva o conteúdo exibido.
 
 ## Verificação
 
@@ -54,6 +54,9 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 - Controles desta fase podem ser demonstrados por handlers de desenvolvimento, mas não devem aparecer como recurso funcional final antes da integração.
 - Não reconstruir todo o painel a cada frame da cena.
+- Limite de 2.000 unidades UTF-16, conforme `maxlength`; a API evita cortar pares de emoji. Enter durante composição IME não envia.
+- Produção mantém envio/reinício e preferências desabilitados, com avisos de preparação; abrir/fechar e editar rascunho já funcionam. A fixture de desenvolvimento registra intenções e estados visuais sem provider ou aplicação das preferências à cena.
+- Mensagens são reconciliadas por ID; rascunho, seleção e foco não são reconstruídos. A rolagem acompanha o final somente quando o leitor já estava próximo dele.
 
 ## Evidências e atualização do progresso
 

@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–07 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves e piscar automático. O chat continua nas fases seguintes.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–08 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático e interface DOM do chat. Respostas locais e integração com a personagem entram nas fases 09 e 10.
 
 ## Ambiente
 
@@ -35,6 +35,9 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 - `src/scene/Environment.ts`: piso, paredes, mesa, dois monitores, luminária, planta e caneca, com recursos compartilhados e descarte próprio.
 - `src/scene/PanelTexture.ts`: conteúdo fictício DEMO desenhado em CanvasTexture, com atualização apenas quando muda.
 - `src/styles/base.css`: aparência inicial e empilhamento em telas estreitas.
+- `src/ui/ChatView.ts` e `ControlsView.ts`: mensagens seguras, estados visuais, rascunho, foco, rolagem e eventos tipados, sem importação de Three.js.
+- `src/styles/layout.css` e `chat.css`: painel lateral, empilhamento, controles e foco visível.
+- `src/dev/ChatDemo.ts`: fixture de interface e registro de eventos, somente em desenvolvimento.
 - `src/scene/AssetLoader.ts`: carregamento cancelável do GLB, inspeção, validação do manifesto e liberação dos recursos.
 - `src/scene/character.manifest.ts`: clipes, meshes, controles faciais e transformações reais de Vita.
 - `src/scene/CharacterController.ts`: mixer, transições corporais, canais faciais independentes e descarte, no loop existente.
@@ -47,6 +50,18 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 Não foi necessário criar `vite.config.ts`: os padrões atendem à fase 01. Planejamento e evidências estão em [specs/README.md](specs/README.md) e [specs/progresso.md](specs/progresso.md).
 
 ## Cena e verificação
+
+### Interface da conversa — fase 08
+
+Em desenvolvimento, a página principal mostra duas mensagens de exemplo e o seletor **Estado visual**. Enter emite o texto completo; Shift+Enter insere uma linha. O limite é de 2.000 unidades UTF-16 (`maxlength`). Envio adiciona apenas a mensagem do usuário à fixture e mostra espera; selecione Pronto para continuar. Reiniciar restaura os exemplos. Abra **Eventos da demonstração** para conferir envio, reinício, abrir/fechar e preferências. Qualidade/movimento nessa fixture apenas registram eventos; ainda não comandam a cena.
+
+Em produção, envio, reinício e preferências ficam desabilitados com avisos de preparação. Abrir/fechar preserva o rascunho. Provider, store e integração serão implementados nas fases 09/10.
+
+`ChatView` expõe `renderMessages`, `setState`, `setAvailable`, `getDraft`, `setDraft`, `setOpen`, `focusInput` e `dispose`; recebe callbacks de envio, reinício e fechamento. `ControlsView` emite abertura, qualidade e movimento reduzido, com `setEnabled`, `setOpen`, `focusToggle` e `dispose`. A coordenação decide quando limpar o campo. Mensagens usam `textContent` e IDs estáveis. Atualizações preservam o campo e a leitura do histórico; não passam pelo loop 3D.
+
+Abra `/tests/chat.html` em desenvolvimento para os 31 checks de interface e uma fixture interativa sem canvas. [Evidências da fase 08](specs/evidencias/fase-08/verificacao.md): tipos/build, teclado real, desktop/tela estreita e 24 checks de regressão do ciclo de vida.
+
+### Renderer e ciclo de vida
 
 O navegador precisa suportar WebGL 2. Falhas de renderer/modelo são apresentadas na área 3D e mantêm a área de interface disponível. Vita e escritório compartilham uma cena, uma câmera e um canvas. O cubo de teste foi removido. A câmera de produção é fixa; não há controles de órbita.
 
