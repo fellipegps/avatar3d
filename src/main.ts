@@ -10,7 +10,7 @@ if (!app) {
 app.innerHTML = `
   <header class="app-header">
     <div>
-      <p class="eyebrow">MVP · Fase 05</p>
+      <p class="eyebrow">MVP · Fase 06</p>
       <h1>Avatar 3D</h1>
     </div>
     <span class="stage-badge">Cena WebGL 2</span>

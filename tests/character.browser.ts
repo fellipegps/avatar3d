@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { loadCharacter, inspectCharacter } from '../src/scene/AssetLoader';
 import type { LoadedCharacter } from '../src/scene/AssetLoader';
 import { characterManifest } from '../src/scene/character.manifest';
-import { CharacterPreview } from '../src/scene/CharacterPreview';
+import { CharacterController } from '../src/scene/CharacterController';
 import { SceneController } from '../src/scene/SceneController';
 import { AppController } from '../src/app/AppController';
 import type { CharacterState } from '../src/app/contracts';
@@ -30,7 +30,7 @@ async function run(): Promise<void> {
   const nativeFetch = window.fetch;
   const nativeParse = GLTFLoader.prototype.parseAsync;
   let asset: LoadedCharacter | null = null;
-  let preview: CharacterPreview | null = null;
+  let preview: CharacterController | null = null;
   let scene: SceneController | null = null;
   let app: AppController | null = null;
   try {
@@ -50,7 +50,7 @@ async function run(): Promise<void> {
     ] as const) {
       await rejects(`Manifesto rejeita ${label}`, async () => inspectCharacter(asset!.gltf, changed, asset!.report.bytes), expected);
     }
-    preview = new CharacterPreview(asset, characterManifest);
+    preview = new CharacterController(asset, characterManifest);
     const root = asset.gltf.scene;
     const head = root.getObjectByName('J_Bip_C_Head');
     if (!head) throw new Error('Cabeça ausente');
@@ -63,6 +63,7 @@ async function run(): Promise<void> {
     const loopReports = [];
     for (const state of ['idle', 'thinking', 'responding'] as CharacterState[]) {
       preview.setState(state);
+      preview.update(characterManifest.animation.transitionSeconds);
       const start = head.quaternion.clone();
       const clip = asset.gltf.animations.find(c => c.name === characterManifest.clips[state]);
       if (!clip) throw new Error('Clipe ausente');
@@ -85,11 +86,14 @@ async function run(): Promise<void> {
     }
     check('Clipes corporais preservam os valores faciais manuais', face.morphTargetInfluences[blink] === 1 && face.morphTargetInfluences[mouth] === 0.75);
     preview.setState('idle');
+    preview.update(characterManifest.animation.transitionSeconds);
     const idle = head.quaternion.clone();
     preview.setState('thinking'); preview.update(0.7);
     preview.setState('responding'); preview.update(0.8);
     preview.setState('idle');
-    check('Retorno após três estados restaura a pose idle', head.quaternion.angleTo(idle) < 0.00001);
+    preview.update(characterManifest.animation.transitionSeconds);
+    check('Retorno após três estados conclui mistura em idle', preview.getAnimationStatus().targetState === 'idle'
+      && !preview.getAnimationStatus().transitioning && head.quaternion.angleTo(idle) < 0.03);
     preview.setReducedMotion(true);
     const paused = head.quaternion.clone(); preview.update(2);
     check('Movimento reduzido congela o corpo', head.quaternion.angleTo(paused) < 0.00001);

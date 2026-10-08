@@ -6,7 +6,7 @@ import { environmentConfig, sceneConfig, visualConfig } from './scene.config';
 import { loadCharacter } from './AssetLoader';
 import type { AssetReport } from './AssetLoader';
 import { characterManifest } from './character.manifest';
-import { CharacterPreview } from './CharacterPreview';
+import { CharacterController } from './CharacterController';
 import { Environment } from './Environment';
 
 export type SceneView = 'room' | 'side' | 'full' | 'face';
@@ -39,7 +39,8 @@ export class SceneController implements ScenePort {
   private reducedMotion = false;
   private disposed = false;
   private contextLost = false;
-  private character: CharacterPreview | null = null;
+  private character: CharacterController | null = null;
+  private characterState: CharacterState = 'idle';
   private assetRequest: AbortController | null = null;
   private characterView: SceneView = 'room';
   private state: SceneAvailability = { available: false, message: 'Cena não inicializada.' };
@@ -135,8 +136,9 @@ export class SceneController implements ScenePort {
       throw new DOMException('Carregamento cancelado.', 'AbortError');
     }
     try {
-      this.character = new CharacterPreview(asset, characterManifest);
+      this.character = new CharacterController(asset, characterManifest);
       this.character.setReducedMotion(this.reducedMotion);
+      this.character.setState(this.characterState);
       this.scene.add(asset.gltf.scene);
       this.setCharacterView('room');
       this.renderer?.domElement.setAttribute('aria-label', 'Vita atrás da mesa no escritório 3D, com monitores, luminária, planta e caneca');
@@ -147,7 +149,12 @@ export class SceneController implements ScenePort {
     }
   }
 
-  setCharacterState(state: CharacterState): void { this.character?.setState(state); }
+  setCharacterState(state: CharacterState): void {
+    if (this.disposed) return;
+    this.characterState = state;
+    this.character?.setState(state);
+  }
+  getAnimationStatus() { return this.character?.getAnimationStatus() ?? null; }
   setMouthOpen(value: number): void { this.character?.setMouthOpen(value); }
   setBlink(value: number): void { this.character?.setBlink(value); }
 

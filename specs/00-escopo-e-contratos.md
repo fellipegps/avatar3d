@@ -12,6 +12,8 @@ Assumimos uma personagem estilizada atrás de uma mesa, sala escura com monitore
 
 Na fase 05, o escritório recebeu materiais escuros, acentos emissivos, luzes ambiente/rosto/contorno, luz explícita da luminária e painéis CanvasTexture locais identificados como DEMO. Foram escolhidas sombras de contato radiais, sem shadow maps. Os contratos públicos abaixo permanecem iguais; [verificação e métricas](evidencias/fase-05/verificacao.md).
 
+Na fase 06, `CharacterController` passou a executar os três clipes mapeados com mistura ajustável de 0,3 s no loop existente. Cada estado é sustentado em loop até outro comando; `idle` encerra a resposta. Comandos repetidos preservam o tempo, trocas durante uma mistura partem dos pesos atuais e movimento reduzido congela a pose até a retomada, guardando o último pedido. Cópias dos clipes excluem animação do transform global e translação dos nós de root motion definidos no manifesto; morph targets corporais são rejeitados. `ScenePort` permanece igual; [verificação e vídeo](evidencias/fase-06/verificacao.md).
+
 - Personagem 3D com rig e clipes para repouso, pensamento e resposta.
 - Piscar e controle de abertura da boca compatíveis com o modelo.
 - Sala e objetos em geometria 3D, compartilhando iluminação, profundidade e canvas com a personagem.

@@ -1,6 +1,6 @@
 # Progresso da implementação
 
-As fases 01–05 foram implementadas e verificadas em 7 de outubro de 2026, com cobertura e limitações registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO. As fases 06–12 continuam pendentes.
+As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026, com cobertura e limitações registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, agora com transições corporais suaves. As fases 07–12 continuam pendentes.
 
 ## Status das fases
 
@@ -13,7 +13,7 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 | [03 — Validação do modelo da personagem](03-validacao-asset-personagem.md) | concluída | 02 | Vita (CC0), GLB de 8,83 MB, rig, três clipes e face demonstrados. [Verificação](evidencias/fase-03/verificacao.md), [26 checks](evidencias/fase-03/testes-browser.json), [preview](evidencias/fase-03/preview.jpg), [créditos](../assets/credits.md). |
 | [04 — Sala e objetos 3D](04-sala-e-objetos-3d.md) | concluída | 03 | Escritório configurável, composição frontal/lateral e descarte compartilhado. [Verificação](evidencias/fase-04/verificacao.md), [14 checks](evidencias/fase-04/testes-ambiente.json), [preview](evidencias/fase-04/preview.jpg). |
 | [05 — Materiais, iluminação e painéis](05-materiais-luzes-paineis.md) | concluída | 04 | Materiais escuros, luzes, contato e painéis CanvasTexture locais. [Verificação](evidencias/fase-05/verificacao.md), [métricas](evidencias/fase-05/metricas-depois.json), [10 checks](evidencias/fase-05/testes-paineis.json), [preview](evidencias/fase-05/preview.jpg). |
-| [06 — Animações corporais e transições](06-animacoes-corporais.md) | pendente | 05 | — |
+| [06 — Animações corporais e transições](06-animacoes-corporais.md) | concluída | 05 | Mixer encapsulado, transições de 0,3 s, interrupções/repetições, root motion e face separados. [Verificação](evidencias/fase-06/verificacao.md), [21 checks](evidencias/fase-06/checks-animacao.json), [vídeo](evidencias/fase-06/transicoes.webm), [preview](evidencias/fase-06/preview.jpg). |
 | [07 — Piscar e controles faciais](07-expressoes-faciais.md) | pendente | 06 | — |
 | [08 — Interface do chat e controles](08-interface-chat-controles.md) | pendente | 07 | — |
 | [09 — Estado da conversa e provider local](09-estado-conversa-mock.md) | pendente | 08 | — |
@@ -95,6 +95,20 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 - Limitações ou cobertura não executada: sombras de contato estáticas e aproximadas, sem silhuetas ou sombras projetadas sobre a mesa; pressupõem posições atuais. Textos pequenos dos painéis são decorativos. Sem comparação com alternativa de shadow map, FPS sustentado, celular físico ou matriz de GPUs/navegadores. Chunk JS continua acima de 500 kB: 650,64 kB / 166,37 kB gzip, registrado para a fase 12. Contagens de desenho não equivalem a desempenho garantido.
 - Decisões e mudanças de contrato: ScenePort preservado. Saída sRGB e ACES; luzes explícitas independentes dos emissivos. Painéis 768×384 desenhados uma vez e atualizáveis somente por mudança de conteúdo; nunca pelo loop. Sombra radial 128×128 compartilhada em cinco planos, escolhida após medir custo dentro da referência de 80 calls. Environment descarta os próprios materiais/geometrias/painéis e limpa recursos se a construção falhar. `getRenderStats()` fornece snapshot para inspeção sem expor o renderer ou adicionar coleta por frame.
 - Bloqueios e próximo passo concreto: nenhum bloqueio da fase 05. Próxima fase pendente: 06 — animações corporais e transições, quando solicitada. Núcleo permanece incompleto.
+
+### Fase 06 — Animações corporais e transições
+
+- Status: concluída.
+- Data: 07/10/2026.
+- Resultado obtido: `CharacterController` substitui a reprodução de inspeção, com os três clipes reais, mistura gradual de 0,3 s ajustável, interrupção a partir dos pesos correntes e comandos repetidos sem reinício. Mixer atualizado no loop existente; posição atrás da mesa e canais faciais preservados.
+- Arquivos alterados: [CharacterController](../src/scene/CharacterController.ts) criado e `CharacterPreview.ts` removido; [SceneController](../src/scene/SceneController.ts), [manifesto](../src/scene/character.manifest.ts), `../src/main.ts`, [testes das transições](../tests/animation.browser.ts), `../tests/animation.html`, `../tests/character.browser.ts`, `../README.md`, `README.md`, `00-escopo-e-contratos.md`, `06-animacoes-corporais.md`, este registro e [evidências](evidencias/fase-06/verificacao.md). GLB, dependências e lockfile preservados.
+- Critérios de aceitação atendidos: três estados por comando; transições contínuas com raiz estável; repetições sem reset; retorno a idle; ausência de dependência do chat; um loop e descarte de mixer/asset. [Relação entre critérios e evidências](evidencias/fase-06/verificacao.md).
+- Comandos/checks executados e resultados: [npm run typecheck](evidencias/fase-06/typecheck.txt) e [npm run build](evidencias/fase-06/build.txt), código 0. **21/21** [checks de transições](evidencias/fase-06/checks-animacao.json), **26/26** [GLB](evidencias/fase-06/checks-personagem.json), **24/24** [cena](evidencias/fase-06/checks-cena.json) e **14/14** [ambiente](evidencias/fase-06/checks-ambiente.json), **85/85** no total. Root motion incompatível injetado em cópias dos clipes para testar a proteção. Maior passo angular amostrado em cabeça/braço: 0,00760013 rad em trocas rápidas. Quaternions idênticos sem avanço são comparados por componentes para evitar erro de normalização em `angleTo`.
+- Evidências visuais: [vídeo VP9/WebM](evidencias/fase-06/transicoes.webm), reaberto no navegador; 7,95822 s, 795×440, 569.652 bytes. [Linha do tempo](evidencias/fase-06/gravacao.json) com sequência normal, trocas rápidas e retorno ao repouso; [preview de produção](evidencias/fase-06/preview.jpg).
+- Equipamento/resolução/perfil: Windows, Node 24.15.0, npm 12.0.2, Chromium integrado com WebGL 2. Gravação em canvas 795×440, página 1280×720. Preview em 425×570, canvas 368×300, DPR 1. [DOM/console](evidencias/fase-06/preview-navegador.json): um canvas, zero inspetores e zero erros/avisos. Nenhum novo benchmark ou override de viewport.
+- Limitações ou cobertura não executada: sem celular físico, matriz de GPUs/navegadores ou amostragem de todos os ossos/vértices. Os dez checks de iluminação não foram reexecutados. Ocultação nativa mantém a limitação anterior. Gestos discretos dos clipes existentes; sem retargeting/física. Aviso JS acima de 500 kB: 652,86 kB / 166,99 kB gzip, a revisar na fase 12. Chat e piscar automático continuam pendentes.
+- Decisões e mudanças de contrato: `ScenePort` preservado; estados em loop até próximo comando, idle encerra a resposta. Movimento reduzido congela corpo/fade e guarda último pedido; retomada parte da pose congelada. Comandos anteriores à carga são preservados. Cópias dos clipes excluem transform global e translação de Root/Hips do manifesto; morph targets corporais rejeitados. Painel existente e página de gravação somente no desenvolvimento; comandos da gravação usam o loop da cena, sem outro RAF.
+- Bloqueios e próximo passo concreto: nenhum bloqueio da fase 06. Próxima fase pendente: 07 — piscar e controles faciais, quando solicitada. Núcleo permanece incompleto.
 
 Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões e atualizar o resumo de status correspondente.
 

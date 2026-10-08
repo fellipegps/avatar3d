@@ -6,6 +6,7 @@ export interface CharacterManifest {
   transform: { scale: number; position: readonly [number, number, number]; rotationY: number };
   measurements: { bindPoseHeightMeters: number; sourceFloorY: number; sourceForward: '-Z'; sourceUp: '+Y' };
   clips: Record<CharacterState, string>;
+  animation: { transitionSeconds: number; lockedTranslationNodes: readonly string[] };
   face: { meshNames: readonly string[]; blink: string; mouth: string };
   requiredBones: readonly string[];
 }
@@ -17,6 +18,7 @@ export const characterManifest: CharacterManifest = {
   transform: { scale: 1, position: [0, 0.000114792019, 0], rotationY: Math.PI },
   measurements: { bindPoseHeightMeters: 1.71307699, sourceFloorY: -0.000114792019, sourceForward: '-Z', sourceUp: '+Y' },
   clips: { idle: 'Vita_Idle', thinking: 'Vita_Thinking', responding: 'Vita_Responding' },
+  animation: { transitionSeconds: 0.3, lockedTranslationNodes: ['Root', 'J_Bip_C_Hips'] },
   face: {
     meshNames: ['VitaFace', 'VitaFace_1', 'VitaFace_2', 'VitaFace_3', 'VitaFace_4',
       'VitaFace_5', 'VitaFace_6', 'VitaFace_7', 'VitaFace_8'],
