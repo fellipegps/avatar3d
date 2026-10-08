@@ -14,6 +14,8 @@ Na fase 05, o escritório recebeu materiais escuros, acentos emissivos, luzes am
 
 Na fase 06, `CharacterController` passou a executar os três clipes mapeados com mistura ajustável de 0,3 s no loop existente. Cada estado é sustentado em loop até outro comando; `idle` encerra a resposta. Comandos repetidos preservam o tempo, trocas durante uma mistura partem dos pesos atuais e movimento reduzido congela a pose até a retomada, guardando o último pedido. Cópias dos clipes excluem animação do transform global e translação dos nós de root motion definidos no manifesto; morph targets corporais são rejeitados. `ScenePort` permanece igual; [verificação e vídeo](evidencias/fase-06/verificacao.md).
 
+Na fase 07, `FaceController` passou a resolver os índices de olhos/boca pelo manifesto, com a mesma validação usada no carregamento. Atualização facial após o mixer no loop único; piscar automático com espera de 2,5–5,5 s e ciclo de 0,2 s, configuráveis. Movimento reduzido suspende o piscar e permite ajustes manuais estáticos. Boca normalizada de 0 a 1; não há simulação automática de fala. `resetFace()` na personagem/cena neutraliza os dois canais, preservando a preferência de automático; ajuste manual de olhos o desativa até nova ativação explícita. Esses métodos adicionais de coordenação/inspeção não alteram o contrato mínimo de `ScenePort`; [evidências e limites](evidencias/fase-07/verificacao.md).
+
 - Personagem 3D com rig e clipes para repouso, pensamento e resposta.
 - Piscar e controle de abertura da boca compatíveis com o modelo.
 - Sala e objetos em geometria 3D, compartilhando iluminação, profundidade e canvas com a personagem.

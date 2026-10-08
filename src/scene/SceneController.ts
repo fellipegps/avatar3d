@@ -157,6 +157,9 @@ export class SceneController implements ScenePort {
   getAnimationStatus() { return this.character?.getAnimationStatus() ?? null; }
   setMouthOpen(value: number): void { this.character?.setMouthOpen(value); }
   setBlink(value: number): void { this.character?.setBlink(value); }
+  setAutoBlink(enabled: boolean): void { this.character?.setAutoBlink(enabled); }
+  resetFace(): void { this.character?.resetFace(); }
+  getFaceStatus() { return this.character?.getFaceStatus() ?? null; }
 
   setCharacterView(view: SceneView): void {
     this.characterView = view;

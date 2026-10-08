@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–06 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais e transições corporais suaves. Expressões automáticas e chat continuam nas fases seguintes.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–07 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves e piscar automático. O chat continua nas fases seguintes.
 
 ## Ambiente
 
@@ -38,6 +38,7 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 - `src/scene/AssetLoader.ts`: carregamento cancelável do GLB, inspeção, validação do manifesto e liberação dos recursos.
 - `src/scene/character.manifest.ts`: clipes, meshes, controles faciais e transformações reais de Vita.
 - `src/scene/CharacterController.ts`: mixer, transições corporais, canais faciais independentes e descarte, no loop existente.
+- `src/scene/FaceController.ts`: índices faciais validados e resolvidos uma vez, boca normalizada, piscar por delta, reset e movimento reduzido.
 - `public/models/character.glb`: modelo local autossuficiente; [créditos e preparação](assets/credits.md).
 - `three`: renderer, GLTFLoader e animação, importados somente pela camada da cena na aplicação.
 - `@types/three`: tipos da biblioteca para TypeScript.
@@ -57,7 +58,7 @@ Para repetir as verificações, execute `npm run dev` e abra `/tests/scene.html`
 
 ## Personagem e verificação da fase 03
 
-Em desenvolvimento, a página principal oferece um painel para selecionar repouso/pensamento/resposta, inspecionar a sala frontalmente ou pela lateral, isolar o corpo/rosto, variar olhos/boca e congelar o corpo. Esse painel é removido do JavaScript de produção. Desde a fase 06, mudanças corporais usam a mistura gradual descrita abaixo; piscar automático fica para a fase 07.
+Em desenvolvimento, a página principal oferece um painel para selecionar repouso/pensamento/resposta, inspecionar a sala frontalmente ou pela lateral, isolar o corpo/rosto, variar olhos/boca, ativar piscar automático e congelar o corpo. Esse painel é removido do JavaScript de produção. Mudanças corporais usam a mistura gradual da fase 06; o controle facial da fase 07 está descrito abaixo.
 
 Abra `/tests/character.html` em desenvolvimento para repetir os 26 checks do GLB, animações, manifesto, cancelamento e erros. A página carrega o modelo real, registra inventário e amostras de limites da geometria deformada, e simula somente os pontos necessários de falha HTTP/aborto de parse. Os 24 checks de ciclo de vida da fase 02 também foram reexecutados com sucesso.
 
@@ -90,3 +91,13 @@ Tipos, build, preview e 74 checks passaram; veja [evidências da fase 05](specs/
 Os clipes ficam em loop até o próximo comando. `setCharacterState('idle')` encerra a resposta; não há retorno automático pelo fim do clipe. Movimento reduzido congela corpo e mistura, guarda o último estado solicitado e retoma da pose congelada. O transform global não é animado; translações dos nós `Root` e `J_Bip_C_Hips` são removidas de cópias dos clipes para impedir root motion incompatível. Canais de morph targets são rejeitados nos clipes corporais, preservando boca e olhos manuais.
 
 Abra `/tests/animation.html` em desenvolvimento para executar 21 checks e gravar uma sequência de aproximadamente oito segundos, incluindo trocas rápidas e retorno ao repouso. A gravação usa `MediaRecorder` sobre o canvas, sem áudio, e os comandos são agendados pelo loop já existente da cena. Essas ferramentas não integram o build de produção. Tipos/build e 85 checks passaram (21 novos, 26 da personagem, 24 da cena e 14 do ambiente). Veja [verificação e limites](specs/evidencias/fase-06/verificacao.md) e [vídeo](specs/evidencias/fase-06/transicoes.webm).
+
+## Piscar e controles faciais — fase 07
+
+`FaceController` usa somente os morph targets de Vita definidos no manifesto, com índices resolvidos e validados para os nove meshes faciais. `setMouthOpen` limita valores finitos a 0–1; valores não finitos viram zero. Zero fecha a boca, 0,5 é intermediário e 1 usa o máximo do morph `Face.M_F00_000_00_Fcl_MTH_A`. `resetFace()` na personagem/cena neutraliza olhos e boca imediatamente, preservando a preferência de piscar automático.
+
+`characterManifest.face.blinkTiming` configura espera aleatória entre 2,5 e 5,5 s, fechamento de 0,06 s, pausa fechada de 0,04 s e abertura de 0,1 s. A espera começa novamente após cada piscada. O rosto é atualizado depois do mixer, no mesmo loop da cena, sem timers ou outro RAF. Movimento reduzido interrompe o piscar automático e deixa os olhos abertos; ajustes manuais estáticos continuam permitidos. A retomada espera um novo intervalo. `setBlink` desativa o automático para inspeção até `setAutoBlink(true)`; o botão de restauração do inspetor também o reativa. Deltas acima de 0,25 s reiniciam a espera, evitando acumular piscadas após suspensão.
+
+A boca permanece no valor solicitado até novo comando/reset, inclusive durante piscar e transições corporais. Não há sincronização de fala ou movimento sintético automático da boca nesta fase.
+
+Abra `/tests/face.html` em desenvolvimento para os 41 checks faciais e controles de demonstração. O botão de captura registra um quadro efetivamente renderizado durante o fechamento automático. Tipos/build, 41 checks novos e 71 regressões passaram: **112/112**. Veja [verificação, imagens e limites](specs/evidencias/fase-07/verificacao.md).

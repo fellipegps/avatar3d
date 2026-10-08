@@ -3,6 +3,7 @@ import type { Object3D } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { CharacterManifest } from './character.manifest';
+import { resolveFaceBindings } from './FaceController';
 
 export interface AssetReport {
   name: string;
@@ -78,13 +79,7 @@ export function inspectCharacter(gltf: GLTF, manifest: CharacterManifest, bytes:
       throw new Error(`O clipe corporal ${name} sobrescreve controles faciais.`);
     }
   }
-  for (const name of manifest.face.meshNames) {
-    const mesh = gltf.scene.getObjectByName(name);
-    if (!(mesh instanceof Mesh)) throw new Error(`Mesh facial ausente: ${name}`);
-    for (const morph of [manifest.face.blink, manifest.face.mouth]) {
-      if (mesh.morphTargetDictionary?.[morph] === undefined) throw new Error(`Controle facial ausente em ${name}: ${morph}`);
-    }
-  }
+  resolveFaceBindings(gltf.scene, manifest.face);
   gltf.scene.updateMatrixWorld(true);
   const bounds = new Box3().setFromObject(gltf.scene, true);
   const size = bounds.getSize(new Vector3());

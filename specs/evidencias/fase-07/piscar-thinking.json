@@ -1,0 +1,39 @@
+{
+  "face": {
+    "mouth": 0.5,
+    "blink": 1,
+    "phase": "closed",
+    "wait": 2.8157158498744557,
+    "automatic": true,
+    "manual": false,
+    "reducedMotion": false,
+    "disposed": false
+  },
+  "animation": {
+    "requestedState": "thinking",
+    "targetState": "thinking",
+    "transitioning": false,
+    "reducedMotion": false,
+    "disposed": false,
+    "actions": [
+      {
+        "state": "idle",
+        "time": 0,
+        "weight": 0,
+        "running": false
+      },
+      {
+        "state": "thinking",
+        "time": 3.0498999999999965,
+        "weight": 1,
+        "running": true
+      },
+      {
+        "state": "responding",
+        "time": 0,
+        "weight": 0,
+        "running": false
+      }
+    ]
+  }
+}

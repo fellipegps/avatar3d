@@ -7,7 +7,8 @@ export interface CharacterManifest {
   measurements: { bindPoseHeightMeters: number; sourceFloorY: number; sourceForward: '-Z'; sourceUp: '+Y' };
   clips: Record<CharacterState, string>;
   animation: { transitionSeconds: number; lockedTranslationNodes: readonly string[] };
-  face: { meshNames: readonly string[]; blink: string; mouth: string };
+  face: { meshNames: readonly string[]; blink: string; mouth: string;
+    blinkTiming: { intervalMin: number; intervalMax: number; closing: number; closed: number; opening: number } };
   requiredBones: readonly string[];
 }
 
@@ -24,6 +25,7 @@ export const characterManifest: CharacterManifest = {
       'VitaFace_5', 'VitaFace_6', 'VitaFace_7', 'VitaFace_8'],
     blink: 'Face.M_F00_000_00_Fcl_EYE_Close',
     mouth: 'Face.M_F00_000_00_Fcl_MTH_A',
+    blinkTiming: { intervalMin: 2.5, intervalMax: 5.5, closing: 0.06, closed: 0.04, opening: 0.1 },
   },
   requiredBones: ['J_Bip_C_Hips', 'J_Bip_C_Head', 'J_Bip_C_Chest', 'J_Bip_L_UpperArm', 'J_Bip_R_UpperArm'],
 };

@@ -1,8 +1,9 @@
-import { AnimationMixer, LoopRepeat, Mesh, PropertyBinding } from 'three';
+import { AnimationMixer, LoopRepeat, PropertyBinding } from 'three';
 import type { AnimationAction, Object3D } from 'three';
 import type { CharacterState } from '../app/contracts';
 import type { LoadedCharacter } from './AssetLoader';
 import type { CharacterManifest } from './character.manifest';
+import { FaceController } from './FaceController';
 
 const states: readonly CharacterState[] = ['idle', 'thinking', 'responding'];
 type Weights = Record<CharacterState, number>;
@@ -11,7 +12,7 @@ type Weights = Record<CharacterState, number>;
 export class CharacterController {
   private readonly mixer: AnimationMixer;
   private readonly actions: Record<CharacterState, AnimationAction>;
-  private readonly face: Mesh[];
+  private readonly face: FaceController;
   private readonly weights: Weights = { idle: 1, thinking: 0, responding: 0 };
   private requestedState: CharacterState = 'idle';
   private targetState: CharacterState = 'idle';
@@ -23,11 +24,6 @@ export class CharacterController {
     if (!Number.isFinite(manifest.animation.transitionSeconds) || manifest.animation.transitionSeconds <= 0) {
       throw new Error('Duração de transição inválida.');
     }
-    this.face = manifest.face.meshNames.map(name => {
-      const mesh = asset.gltf.scene.getObjectByName(name);
-      if (!(mesh instanceof Mesh)) throw new Error(`Mesh facial ausente: ${name}`);
-      return mesh;
-    });
     const clips = states.map(state => {
       const source = asset.gltf.animations.find(clip => clip.name === manifest.clips[state]);
       if (!source || source.duration <= 0) throw new Error(`Clipe ausente ou inválido: ${state} (${manifest.clips[state]})`);
@@ -47,6 +43,7 @@ export class CharacterController {
       if (!clip.tracks.length) throw new Error(`Clipe corporal sem canais utilizáveis: ${source.name}`);
       return clip;
     });
+    this.face = new FaceController(asset.gltf.scene, manifest.face);
     this.mixer = new AnimationMixer(asset.gltf.scene);
     this.actions = {
       idle: this.mixer.clipAction(clips[0]!), thinking: this.mixer.clipAction(clips[1]!), responding: this.mixer.clipAction(clips[2]!),
@@ -74,20 +71,15 @@ export class CharacterController {
   setReducedMotion(enabled: boolean): void {
     if (this.disposed || enabled === this.reducedMotion) return;
     this.reducedMotion = enabled;
+    this.face.setReducedMotion(enabled);
     if (!enabled && this.requestedState !== this.targetState) this.transitionTo(this.requestedState);
   }
 
-  setBlink(value: number): void { this.setMorph(this.manifest.face.blink, value); }
-  setMouthOpen(value: number): void { this.setMorph(this.manifest.face.mouth, value); }
-
-  private setMorph(name: string, value: number): void {
-    if (this.disposed) return;
-    const clamped = Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0;
-    for (const mesh of this.face) {
-      const index = mesh.morphTargetDictionary?.[name];
-      if (index !== undefined && mesh.morphTargetInfluences) mesh.morphTargetInfluences[index] = clamped;
-    }
-  }
+  setBlink(value: number): void { this.face.setBlink(value); }
+  setMouthOpen(value: number): void { this.face.setMouthOpen(value); }
+  setAutoBlink(enabled: boolean): void { this.face.setAutoBlink(enabled); }
+  resetFace(): void { this.face.reset(); }
+  getFaceStatus() { return this.face.getStatus(); }
 
   update(delta: number): void {
     if (this.disposed || this.reducedMotion || !Number.isFinite(delta) || delta <= 0) return;
@@ -103,6 +95,7 @@ export class CharacterController {
       if (t === 1) this.transition = null;
     }
     this.mixer.update(delta);
+    this.face.update(delta);
   }
 
   /** Snapshot usado pela inspeção/testes, sem coletar dados a cada frame na aplicação. */
@@ -121,6 +114,7 @@ export class CharacterController {
     this.transition = null;
     this.mixer.stopAllAction();
     this.mixer.uncacheRoot(this.asset.gltf.scene);
+    this.face.dispose();
     this.asset.dispose();
   }
 }
