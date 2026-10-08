@@ -136,7 +136,7 @@ async function run(): Promise<void> {
 
     scene = new SceneController(element('fixture'));
     await scene.loadCharacter();
-    check('Integração usa um canvas, substitui cubo e mantém cena disponível',
+    check('Integração usa um canvas, sem cubo de teste e mantém cena disponível',
       element('fixture').querySelectorAll('canvas').length === 1 && scene.availability.available
       && scene.scene.getObjectByName('J_Bip_C_Head') !== undefined && !scene.scene.children.some(c => c instanceof Mesh));
     scene.dispose();

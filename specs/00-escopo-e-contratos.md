@@ -6,7 +6,7 @@ Versão da especificação: 1.0. Data: 5 de outubro de 2026. Este arquivo define
 
 A arquitetura se baseia no e-mail de Marlon fornecido por Fellipe e na captura do site Kady. O e-mail informa JavaScript modular com Vite, UI no DOM, Three.js, modelos do Blender em GLB, animação esquelética, atlas facial e abertura de boca pela amplitude do áudio. O funcionamento do site ao vivo e seu código não foram verificados.
 
-Assumimos uma personagem estilizada atrás de uma mesa, sala escura com monitores, luminária, planta e caneca, acentos luminosos e chat lateral. O planejamento original não fornecia um GLB. Na fase 03, em 07/10/2026, foi selecionada Vita (pixiv / VRoid Project, CC0), adaptada para GLB com clipes feitos no próprio rig. [Origem e adaptações](../assets/credits.md); [validação](evidencias/fase-03/verificacao.md). A composição atrás da mesa será construída nas próximas fases.
+Assumimos uma personagem estilizada atrás de uma mesa, sala escura com monitores, luminária, planta e caneca, acentos luminosos e chat lateral. O planejamento original não fornecia um GLB. Na fase 03, em 07/10/2026, foi selecionada Vita (pixiv / VRoid Project, CC0), adaptada para GLB com clipes feitos no próprio rig. [Origem e adaptações](../assets/credits.md); [validação](evidencias/fase-03/verificacao.md). Na fase 04, foi construída e verificada a composição geométrica atrás da mesa, com materiais e iluminação provisórios; [evidências](evidencias/fase-04/verificacao.md).
 
 ## Resultado do núcleo
 

@@ -41,3 +41,7 @@ O script verifica o SHA-256 de entrada e informa tamanho/hash de saída. Usa ape
 - [Michelle.glb nos exemplos do Three.js](https://github.com/mrdoob/three.js/blob/dev/examples/models/gltf/Michelle.glb): não foi adotado porque a seleção exigia comprovação específica de direitos e controles faciais, já disponível para Vita. Não se presume que a licença do código Three.js cubra qualquer modelo externo.
 
 Nenhum asset da referência Kady foi copiado. A licença do modelo não altera a licença do código do projeto.
+
+## Ambiente geométrico — fase 04
+
+Piso, paredes, mesa, monitores, luminária, planta e caneca foram construídos localmente em `src/scene/Environment.ts`, usando primitivas do Three.js e configuração em metros. Não usam modelos, imagens ou texturas de terceiros. Materiais são provisórios. A origem e a licença de Vita acima permanecem aplicáveis à personagem.

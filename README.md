@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–03 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e a personagem Vita em GLB com rig, três clipes e controles faciais validados. Sala e chat continuam nas fases seguintes.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–04 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e a personagem Vita em GLB dentro de um escritório geométrico. Materiais finais, painéis e chat continuam nas fases seguintes.
 
 ## Ambiente
 
@@ -32,6 +32,7 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 - `src/app/contracts.ts`: fronteiras tipadas da especificação 00, sem implementações antecipadas.
 - `src/scene/SceneController.ts`: renderer, câmera, ResizeObserver, loop, inscrição de atualizações e descarte idempotente.
 - `src/scene/scene.config.ts`: parâmetros de enquadramento, pixel ratio e delta máximo.
+- `src/scene/Environment.ts`: piso, paredes, mesa, dois monitores, luminária, planta e caneca, com recursos compartilhados e descarte próprio.
 - `src/styles/base.css`: aparência inicial e empilhamento em telas estreitas.
 - `src/scene/AssetLoader.ts`: carregamento cancelável do GLB, inspeção, validação do manifesto e liberação dos recursos.
 - `src/scene/character.manifest.ts`: clipes, meshes, controles faciais e transformações reais de Vita.
@@ -45,7 +46,7 @@ Não foi necessário criar `vite.config.ts`: os padrões atendem à fase 01. Pla
 
 ## Cena e verificação
 
-O navegador precisa suportar WebGL 2. Falhas de renderer/modelo são apresentadas na área 3D e mantêm a área de interface disponível. A aplicação exibe Vita com materiais PBR; o cubo é usado apenas pela verificação isolada da fase 02. A câmera é fixa; não há controles de órbita.
+O navegador precisa suportar WebGL 2. Falhas de renderer/modelo são apresentadas na área 3D e mantêm a área de interface disponível. Vita e escritório compartilham uma cena, uma câmera e um canvas. O cubo de teste foi removido. A câmera de produção é fixa; não há controles de órbita.
 
 O controlador mantém um loop de `requestAnimationFrame`, atualiza o mixer da personagem e permite registrar módulos com `registerUpdater(deltaSeconds)`, que retorna uma função de remoção. O primeiro delta é zero e os demais são limitados a 0,05 s. Uma aba oculta ou um contêiner sem área pausa o loop. O perfil normal limita pixel ratio a 1,5; o econômico a 1. A preferência de movimento reduzido suspende a animação corporal.
 
@@ -55,10 +56,18 @@ Para repetir as verificações, execute `npm run dev` e abra `/tests/scene.html`
 
 ## Personagem e verificação da fase 03
 
-Em desenvolvimento, a página principal oferece um painel para selecionar repouso/pensamento/resposta, aproximar o rosto, variar olhos/boca e congelar o corpo. Esse painel é removido do JavaScript de produção. A mudança de estado é direta nesta fase; transições suaves e piscar automático serão implementados nas fases 06–07.
+Em desenvolvimento, a página principal oferece um painel para selecionar repouso/pensamento/resposta, inspecionar a sala frontalmente ou pela lateral, isolar o corpo/rosto, variar olhos/boca e congelar o corpo. Esse painel é removido do JavaScript de produção. A mudança de estado é direta nesta fase; transições suaves e piscar automático serão implementados nas fases 06–07.
 
 Abra `/tests/character.html` em desenvolvimento para repetir os 26 checks do GLB, animações, manifesto, cancelamento e erros. A página carrega o modelo real, registra inventário e amostras de limites da geometria deformada, e simula somente os pontos necessários de falha HTTP/aborto de parse. Os 24 checks de ciclo de vida da fase 02 também foram reexecutados com sucesso.
 
 O modelo tem 26.130 triângulos, 155 ossos, 16 meshes e 41 morph targets faciais. O GLB de 8,83 MB já está em `public/models/`; não exige download em tempo de execução de um serviço externo. Consulte [créditos, hashes e preparação reproduzível](assets/credits.md) e [evidências da fase 03](specs/evidencias/fase-03/verificacao.md).
 
 Os caminhos do GLB usam `import.meta.env.BASE_URL`. Também foi verificado build/preview com `--base=/avatar3d/`. Não há benchmark ou teste em celular físico. Duas texturas 2048×2048 e o aviso de chunk JS acima de 500 kB ficam registrados para a fase 12.
+
+## Sala e verificação da fase 04
+
+`environmentConfig`, em `src/scene/scene.config.ts`, concentra medidas em metros, posições e materiais provisórios. A sala mede 4 × 2,7 × 3,6 m e usa um corte com frente e lateral direita abertas. O tampo de 2,5 × 0,9 m fica a 0,82 m do chão, à frente da personagem, sem modificar o transform do manifesto. A câmera e seu alvo ficam em `sceneConfig.composition`.
+
+Abra `/tests/environment.html` em desenvolvimento para repetir os 14 checks de integração, oclusão por raycast, enquadramento, configuração alternativa e descarte único de recursos compartilhados. As regressões da cena (24 checks) e do GLB (26 checks) passaram com o ambiente integrado. As verificações e capturas estão em [evidências da fase 04](specs/evidencias/fase-04/verificacao.md).
+
+O ambiente tem 31 meshes, 1.528 triângulos, sete geometrias e oito materiais, sem texturas externas. Usa a iluminação provisória de inspeção da personagem. Sombras, acabamento e conteúdo dos monitores pertencem à fase 05.

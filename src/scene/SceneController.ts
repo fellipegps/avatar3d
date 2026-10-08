@@ -1,5 +1,5 @@
 import {
-  BoxGeometry, Color, DirectionalLight, HemisphereLight, Mesh, MeshNormalMaterial, PerspectiveCamera, Scene, WebGLRenderer,
+  Color, DirectionalLight, HemisphereLight, PerspectiveCamera, Scene, Vector3, WebGLRenderer,
 } from 'three';
 import type { CharacterState, QualityProfile, ScenePort } from '../app/contracts';
 import { sceneConfig } from './scene.config';
@@ -7,6 +7,9 @@ import { loadCharacter } from './AssetLoader';
 import type { AssetReport } from './AssetLoader';
 import { characterManifest } from './character.manifest';
 import { CharacterPreview } from './CharacterPreview';
+import { Environment } from './Environment';
+
+export type SceneView = 'room' | 'side' | 'full' | 'face';
 
 export type SceneAvailability =
   | { available: true }
@@ -16,7 +19,7 @@ export type SceneUpdater = (deltaSeconds: number) => void;
 
 const owners = new WeakMap<HTMLElement, SceneController>();
 
-/** Um renderer/loop compartilhado; a fase 03 acrescenta a inspeção do GLB e de seus clipes. */
+/** Um renderer/loop compartilhado para personagem, sala e objetos. */
 export class SceneController implements ScenePort {
   readonly scene = new Scene();
   readonly camera = new PerspectiveCamera(
@@ -27,7 +30,7 @@ export class SceneController implements ScenePort {
   private readonly updaters = new Set<SceneUpdater>();
   private renderer: WebGLRenderer | null = null;
   private observer: ResizeObserver | null = null;
-  private reference: Mesh<BoxGeometry, MeshNormalMaterial> | null = null;
+  private environment: Environment | null = null;
   private frame: number | null = null;
   private previousTime: number | null = null;
   private width = 0;
@@ -38,7 +41,7 @@ export class SceneController implements ScenePort {
   private contextLost = false;
   private character: CharacterPreview | null = null;
   private assetRequest: AbortController | null = null;
-  private characterView: 'full' | 'face' | null = null;
+  private characterView: SceneView = 'room';
   private state: SceneAvailability = { available: false, message: 'Cena não inicializada.' };
 
   constructor(container: HTMLElement, onAvailability: (state: SceneAvailability) => void = () => {}) {
@@ -55,22 +58,20 @@ export class SceneController implements ScenePort {
       const canvas = this.renderer.domElement;
       canvas.className = 'scene-canvas';
       canvas.setAttribute('role', 'img');
-      canvas.setAttribute('aria-label', 'Cubo 3D de referência para validar o enquadramento');
+      canvas.setAttribute('aria-label', 'Escritório 3D: carregando personagem Vita');
       canvas.addEventListener('webglcontextlost', this.onContextLost);
       canvas.addEventListener('webglcontextrestored', this.onContextRestored);
       this.container.append(canvas);
 
-      this.reference = new Mesh(
-        new BoxGeometry(sceneConfig.reference.size, sceneConfig.reference.size, sceneConfig.reference.size),
-        new MeshNormalMaterial(),
-      );
-      this.reference.rotation.set(0.3, 0.5, 0);
-      this.scene.add(this.reference);
-      this.updaters.add((delta) => {
-        if (this.reference && !this.reducedMotion) {
-          this.reference.rotation.y += delta * sceneConfig.reference.radiansPerSecond;
-        }
-      });
+      this.environment = new Environment();
+      this.scene.add(this.environment.root);
+      // Iluminação provisória da inspeção; acabamento e sombras ficam na fase 05.
+      const light = new HemisphereLight(0xffffff, 0x8b9fb4, 2.0);
+      light.name = 'inspection-light';
+      this.scene.add(light);
+      const key = new DirectionalLight(0xffffff, 2.2);
+      key.position.set(2, 3, 4);
+      this.scene.add(key);
 
       document.addEventListener('visibilitychange', this.onVisibilityChange);
       this.observer = new ResizeObserver((entries) => {
@@ -104,12 +105,6 @@ export class SceneController implements ScenePort {
     this.character?.dispose();
     this.character = null;
     this.renderer?.domElement.setAttribute('aria-label', 'Área 3D: carregando personagem Vita');
-    if (this.reference) {
-      this.scene.remove(this.reference);
-      this.reference.geometry.dispose();
-      this.reference.material.dispose();
-      this.reference = null;
-    }
     const asset = await loadCharacter(characterManifest, request.signal);
     if (this.disposed || request.signal.aborted) {
       asset.dispose();
@@ -119,16 +114,8 @@ export class SceneController implements ScenePort {
       this.character = new CharacterPreview(asset, characterManifest);
       this.character.setReducedMotion(this.reducedMotion);
       this.scene.add(asset.gltf.scene);
-      if (!this.scene.getObjectByName('inspection-light')) {
-        const light = new HemisphereLight(0xffffff, 0x8b9fb4, 2.0);
-        light.name = 'inspection-light';
-        this.scene.add(light);
-        const key = new DirectionalLight(0xffffff, 2.2);
-        key.position.set(2, 3, 4);
-        this.scene.add(key);
-      }
-      this.setCharacterView('full');
-      this.renderer?.domElement.setAttribute('aria-label', 'Personagem 3D Vita');
+      this.setCharacterView('room');
+      this.renderer?.domElement.setAttribute('aria-label', 'Vita atrás da mesa no escritório 3D, com monitores, luminária, planta e caneca');
       return asset.report;
     } catch (error) {
       asset.dispose();
@@ -140,8 +127,20 @@ export class SceneController implements ScenePort {
   setMouthOpen(value: number): void { this.character?.setMouthOpen(value); }
   setBlink(value: number): void { this.character?.setBlink(value); }
 
-  setCharacterView(view: 'full' | 'face'): void {
+  setCharacterView(view: SceneView): void {
     this.characterView = view;
+    if (this.environment) this.environment.root.visible = view === 'room' || view === 'side';
+    if (view === 'room' || view === 'side') {
+      const config = sceneConfig.composition;
+      const distance = Math.max(config.halfHeight, config.halfWidth / this.camera.aspect)
+        / Math.tan(this.camera.fov * Math.PI / 360);
+      const target = new Vector3(...config.target);
+      const direction = view === 'side' ? config.sideDirection : config.frontDirection;
+      this.camera.position.copy(new Vector3(...direction).normalize().multiplyScalar(distance).add(target));
+      this.camera.lookAt(target);
+      this.camera.updateMatrixWorld(true);
+      return;
+    }
     // Keep the full character visible on narrow containers; face view is for development inspection.
     const halfHeight = view === 'face' ? 0.21 : 0.98;
     const halfWidth = view === 'face' ? 0.20 : 0.46;
@@ -254,9 +253,8 @@ export class SceneController implements ScenePort {
     this.observer = null;
     document.removeEventListener('visibilitychange', this.onVisibilityChange);
     this.updaters.clear();
-    this.reference?.geometry.dispose();
-    this.reference?.material.dispose();
-    this.reference = null;
+    this.environment?.dispose();
+    this.environment = null;
     this.scene.clear();
     if (this.renderer) {
       const canvas = this.renderer.domElement;

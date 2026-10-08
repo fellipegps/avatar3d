@@ -1,6 +1,6 @@
 # Progresso da implementação
 
-As fases 01, 02 e 03 foram implementadas e verificadas em 7 de outubro de 2026, com cobertura e limitações registradas abaixo. Vita foi selecionada e validada como personagem real do MVP. As fases 04–12 continuam pendentes.
+As fases 01–04 foram implementadas e verificadas em 7 de outubro de 2026, com cobertura e limitações registradas abaixo. Vita foi validada como personagem real e compartilha a cena com o escritório geométrico. As fases 05–12 continuam pendentes.
 
 ## Status das fases
 
@@ -11,7 +11,7 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 | [01 — Base Vite e TypeScript](01-base-vite-typescript.md) | concluída | — | Tipos, build, desenvolvimento e preview verificados. [Checks](evidencias/fase-01/verificacao.md), [dev](evidencias/fase-01/desenvolvimento.jpg), [preview](evidencias/fase-01/preview.jpg). |
 | [02 — Renderer, câmera e ciclo de vida](02-renderer-camera-ciclo-de-vida.md) | concluída | 01 | WebGL 2 real, 24 checks de ciclo de vida, tipos/build e preview. Visibilidade testada por simulação controlada. [Verificação e limites](evidencias/fase-02/verificacao.md), [preview](evidencias/fase-02/preview.jpg). |
 | [03 — Validação do modelo da personagem](03-validacao-asset-personagem.md) | concluída | 02 | Vita (CC0), GLB de 8,83 MB, rig, três clipes e face demonstrados. [Verificação](evidencias/fase-03/verificacao.md), [26 checks](evidencias/fase-03/testes-browser.json), [preview](evidencias/fase-03/preview.jpg), [créditos](../assets/credits.md). |
-| [04 — Sala e objetos 3D](04-sala-e-objetos-3d.md) | pendente | 03 | — |
+| [04 — Sala e objetos 3D](04-sala-e-objetos-3d.md) | concluída | 03 | Escritório configurável, composição frontal/lateral e descarte compartilhado. [Verificação](evidencias/fase-04/verificacao.md), [14 checks](evidencias/fase-04/testes-ambiente.json), [preview](evidencias/fase-04/preview.jpg). |
 | [05 — Materiais, iluminação e painéis](05-materiais-luzes-paineis.md) | pendente | 04 | — |
 | [06 — Animações corporais e transições](06-animacoes-corporais.md) | pendente | 05 | — |
 | [07 — Piscar e controles faciais](07-expressoes-faciais.md) | pendente | 06 | — |
@@ -66,6 +66,20 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 - Limitações ou cobertura não executada: gestos discretos em pé, sem física de cabelo/roupa, sem contornos MToon; duas texturas 2048×2048 preservadas e JS minificado 639,16 kB (161,84 kB gzip), a revisar na fase 12. Não houve teste em celular real ou matriz de navegadores. Transições suaves, piscar automático e composição na sala continuam para fases 04–07. O painel de inspeção não aparece no build de produção.
 - Decisões e mudanças de contrato: ScenePort de 00 preservado e agora implementado com comportamento de reprodução simples; face por morph targets existentes. O original não tinha clipes: três poses animadas foram criadas e embutidas diretamente no rig, sem retargeting. Dados não usados removidos e 82 primitivas agrupadas em 16, preservando 26.130 triângulos. A preparação não demanda ferramentas externas ao Node/Three já disponíveis. Original fixado por revisão e SHA-256, fora do build; GLB final versionado. `fetch` usa a base do Vite e AbortSignal; parse concluído após cancelamento é descartado. AppController preserva disponibilidade da interface em falha de asset/renderer. UI de inspeção não importa Three.js.
 - Bloqueios e próximo passo concreto: nenhum bloqueio da fase 03. Próxima fase pendente: 04 — sala e objetos 3D, quando solicitada. O núcleo permanece incompleto.
+
+### Fase 04 — Sala e objetos 3D
+
+- Status: concluída.
+- Data: 07/10/2026.
+- Resultado obtido: escritório procedural com piso, paredes, mesa, dois monitores, luminária, planta e caneca. Vita atrás da mesa, com rosto e gestos visíveis no desktop, usando a mesma cena, câmera, renderer e loop. Cubo de teste removido.
+- Arquivos alterados: [Environment](../src/scene/Environment.ts), [configuração](../src/scene/scene.config.ts), [SceneController](../src/scene/SceneController.ts), [inspeção de desenvolvimento](../src/dev/CharacterInspector.ts), `../src/main.ts`, [testes do ambiente](../tests/environment.browser.ts), `../tests/environment.html`, `../tests/scene.browser.ts`, `../tests/character.browser.ts`, `../README.md`, `../assets/credits.md`, `README.md`, `00-escopo-e-contratos.md`, `04-sala-e-objetos-3d.md`, este registro e [evidências](evidencias/fase-04/verificacao.md). Nenhuma dependência adicionada ou alteração do GLB/manifesto.
+- Critérios de aceitação atendidos: objetos essenciais em meshes 3D; um canvas e cena/câmera compartilhadas; mesa intercepta a visão de parte do corpo; rosto livre e dentro do quadro; medidas/posições ajustáveis; descarte idempotente com uma liberação de cada recurso compartilhado. [Relação entre critérios e evidências](evidencias/fase-04/verificacao.md).
+- Comandos/checks executados e resultados: [npm run typecheck](evidencias/fase-04/typecheck.txt) e [npm run build](evidencias/fase-04/build.txt), código 0. **14/14** [checks do ambiente](evidencias/fase-04/testes-ambiente.json), **24/24** [regressões da cena](evidencias/fase-04/regressao-cena.json) e **26/26** [regressões do GLB](evidencias/fase-04/regressao-personagem.json), em navegador com WebGL 2 real. Oclusão por raycast, configuração alternativa e sete geometrias/oito materiais descartados uma vez cada. Testes antigos ajustados ao piso e à câmera inclinada, preservando cobertura de resize, recursos e falhas.
+- Evidências visuais: [frontal](evidencias/fase-04/frontal.jpg), [lateral](evidencias/fase-04/lateral.jpg), [pensamento](evidencias/fase-04/pensando.jpg), [resposta](evidencias/fase-04/respondendo.jpg), [produção desktop](evidencias/fase-04/preview.jpg), [viewport estreito](evidencias/fase-04/preview-estreito.jpg).
+- Equipamento/resolução/perfil: Windows, Node 24.15.0, npm 12.0.2, Chromium integrado. Produção em 1280×720 (canvas 795×440) e viewport estreito 420×572; perfil normal. [DOM/console do preview](evidencias/fase-04/preview-navegador.json): um canvas, zero inspetores e zero erros/avisos da página. Sem benchmark de FPS ou teste em celular físico.
+- Limitações ou cobertura não executada: materiais e iluminação provisórios, sem sombras/painéis texturizados; acabamento reservado à fase 05. Ambiente tem 31 meshes e 1.528 triângulos, contados na geometria, sem medição de draw calls/FPS. Teste facial amostra uma região com corpo pausado; as capturas e inspeção visual complementam esse teste, sem provar todos os vértices/instantes. Outras GPUs, navegadores e todas as proporções de tela não foram validados. Aviso de JS acima de 500 kB permanece: 645,40 kB / 164,42 kB gzip, a revisar na fase 12.
+- Decisões e mudanças de contrato: ScenePort preservado. Sala em corte, com frente/lateral direita abertas; medidas em metros. Tampo a 0,82 m do chão; monitores laterais deixam corredor visual para o rosto. `Environment` possui seus recursos e os compartilha somente internamente, separados do GLB. Vista lateral e isolamento de corpo/rosto disponíveis exclusivamente pelo painel de desenvolvimento. Câmera de produção fixa; nenhum controle livre, textura externa ou integração adicionada.
+- Bloqueios e próximo passo concreto: nenhum bloqueio da fase 04. Próxima fase pendente: 05 — materiais, iluminação e painéis, quando solicitada. Núcleo permanece incompleto.
 
 Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões e atualizar o resumo de status correspondente.
 

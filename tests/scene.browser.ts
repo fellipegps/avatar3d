@@ -100,12 +100,12 @@ async function run(): Promise<void> {
     step(1000); step(1016); step(60000);
     check('Delta em segundos e suspensão limitada a 0,05 s',
       deltas[0] === 0 && Math.abs((deltas[1] ?? 0) - 0.016) < 1e-9 && deltas[2] === 0.05, deltas.slice());
-    const reference = controller.scene.children.find((child) => child instanceof Mesh);
-    if (!(reference instanceof Mesh)) throw new Error('Geometria de referência ausente.');
+    const reference = controller.scene.getObjectByName('floor');
+    if (!(reference instanceof Mesh)) throw new Error('Piso do ambiente ausente.');
     const rotation = reference.rotation.y;
     controller.setReducedMotion(true);
     step(60016);
-    check('Movimento reduzido pausa rotação da referência', reference.rotation.y === rotation);
+    check('Movimento reduzido preserva o ambiente estático', reference.rotation.y === rotation);
     controller.setReducedMotion(false);
 
     hidden = true;
@@ -128,8 +128,9 @@ async function run(): Promise<void> {
       const actualHeight = fixture.clientHeight;
       controller.camera.updateMatrixWorld();
       const center = new Vector3(0, 0, 0).project(controller.camera);
-      const x = new Vector3(1, 0, 0).project(controller.camera);
-      const y = new Vector3(0, 1, 0).project(controller.camera);
+      // Medir eixos da câmera: o escritório usa uma vista inclinada para mostrar o tampo.
+      const x = new Vector3(1, 0, 0).applyQuaternion(controller.camera.quaternion).project(controller.camera);
+      const y = new Vector3(0, 1, 0).applyQuaternion(controller.camera.quaternion).project(controller.camera);
       const projectedRatio = ((x.x - center.x) * actualWidth) / ((y.y - center.y) * actualHeight);
       check(`ResizeObserver ${width}×${height}: aspecto, projeção e buffer coerentes`,
         controller.camera.aspect === actualWidth / actualHeight && Math.abs(projectedRatio - 1) < 1e-8
@@ -147,7 +148,7 @@ async function run(): Promise<void> {
     let geometryDisposals = 0;
     let materialDisposals = 0;
     reference.geometry.addEventListener('dispose', () => { geometryDisposals++; });
-    // A geometria de referência tem um único material.
+    // O piso compartilha a geometria com outras peças; descarte deve ocorrer uma única vez.
     const referenceMaterial = Array.isArray(reference.material) ? reference.material[0] : reference.material;
     referenceMaterial?.addEventListener('dispose', () => { materialDisposals++; });
     controller.dispose(); controller.dispose();
