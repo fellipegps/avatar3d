@@ -93,7 +93,31 @@ export function inspectCharacter(gltf: GLTF, manifest: CharacterManifest, bytes:
     bounds: { min: bounds.min.toArray(), max: bounds.max.toArray(), size: size.toArray() } };
 }
 
-export async function loadCharacter(manifest: CharacterManifest, signal: AbortSignal): Promise<LoadedCharacter> {
+/** Prazo inclui download e parse. Parse tardio ainda libera seus próprios recursos. */
+export async function loadCharacter(manifest: CharacterManifest, signal: AbortSignal, timeoutMs = 30_000): Promise<LoadedCharacter> {
+  signal.throwIfAborted();
+  const request = new AbortController();
+  const forwardAbort = (): void => request.abort(signal.reason);
+  signal.addEventListener('abort', forwardAbort, { once: true });
+  const timer = window.setTimeout(() => request.abort(new DOMException('O carregamento demorou demais. Tente novamente.', 'TimeoutError')), timeoutMs);
+  let onAbort: () => void = () => {};
+  try {
+    return await Promise.race([
+      loadWithSignal(manifest, request.signal),
+      new Promise<never>((_resolve, reject) => {
+        onAbort = () => reject(request.signal.reason);
+        request.signal.addEventListener('abort', onAbort, { once: true });
+        if (request.signal.aborted) onAbort();
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+    signal.removeEventListener('abort', forwardAbort);
+    request.signal.removeEventListener('abort', onAbort);
+  }
+}
+
+async function loadWithSignal(manifest: CharacterManifest, signal: AbortSignal): Promise<LoadedCharacter> {
   signal.throwIfAborted();
   const url = new URL(`${import.meta.env.BASE_URL}${manifest.path}`, window.location.href);
   const response = await fetch(url, { signal });

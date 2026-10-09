@@ -1,0 +1,42 @@
+{
+  "base": "http://127.0.0.1:4175/avatar3d/",
+  "entries": [
+    {
+      "path": "/avatar3d/",
+      "status": 200,
+      "encodedBytes": 603,
+      "decodedBytes": 603,
+      "encoding": null
+    },
+    {
+      "path": "/avatar3d/assets/index-Csg7kZy2.js",
+      "status": 200,
+      "encodedBytes": 172115,
+      "decodedBytes": 675751,
+      "encoding": "gzip"
+    },
+    {
+      "path": "/avatar3d/assets/index-C9R2thke.css",
+      "status": 200,
+      "encodedBytes": 2330,
+      "decodedBytes": 7518,
+      "encoding": "gzip"
+    },
+    {
+      "path": "/avatar3d/models/character.glb",
+      "status": 200,
+      "encodedBytes": 8834484,
+      "decodedBytes": 8834484,
+      "encoding": null
+    },
+    {
+      "path": "/avatar3d/images/scene-fallback.svg",
+      "status": 200,
+      "encodedBytes": 878,
+      "decodedBytes": 878,
+      "encoding": null
+    }
+  ],
+  "totalTransferBodyBytes": 9010410,
+  "totalDecodedBytes": 9519234
+}

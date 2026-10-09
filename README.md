@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–11 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. O chat de produção está integrado à personagem, com resposta gradual, reinício cancelável, preferências funcionais e layout adaptado a desktop/celular.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–12 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. O chat de produção está integrado à personagem, com resposta gradual, reinício cancelável, preferências funcionais e layout adaptado a desktop/celular.
 
 ## Ambiente
 
@@ -24,6 +24,44 @@ npm run preview
 ```
 
 O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Preview serve esse build localmente (normalmente `http://localhost:4173`); refazer o build após alterar fontes. Não é um comando de publicação.
+
+## Entrega do núcleo — fase 12
+
+As fases 01–12 estão concluídas. O produto usa uma conversa local sem IA externa, persistência ou áudio. As extensões 13/14 são opcionais e não foram implementadas. [Relatório final, evidências e limites](specs/evidencias/fase-12/verificacao.md).
+
+Se o GLB falhar ou o navegador não conseguir iniciar o WebGL 2, a área 3D mostra uma ilustração estática e **Tentar carregar o 3D**. A conversa permanece disponível. Falha do modelo reutiliza o renderer; falha gráfica permite recriar a cena, preservando conversa e preferências. Uma tentativa por vez. A carga tem prazo de 30 s; uma carga cancelada que termina de analisar depois libera seus recursos. Na perda de contexto, o navegador pode restaurar a cena automaticamente; o botão permite reinício manual.
+
+No Intel i7-1185G7 / Iris Xe disponível, a cena em build de produção ficou próxima de **60 FPS** nos dois perfis, com **59 draw calls** e **28.664 triângulos desenhados**. Janela de 10 s por perfil/resolução, canvas CSS 900×440; não é uma garantia para qualquer dispositivo. Corpos HTTP essenciais totalizaram **9,01 MB** no preview. Dois mapas de 2048 px e o aviso de JS de 675,73 kB permanecem documentados. Mantidos DPR normal até 1,5, econômico até 1 e ausência de shadow maps; sem necessidade medida de compressão avançada.
+
+Para servir em uma subpasta, construir e iniciar o preview com a mesma base:
+
+```sh
+npm run build -- --base=/avatar3d/
+npm run preview -- --base=/avatar3d/
+```
+
+Abrir `/avatar3d/` no endereço informado. GLB e fallback respeitam essa base. Para retornar ao build da raiz, executar `npm run build` novamente.
+
+### Repetir a verificação final
+
+```sh
+npm test
+npm run build
+npm run preview
+```
+
+Em desenvolvimento, as páginas `/tests/scene.html`, `character.html`, `environment.html`, `lighting.html`, `animation.html`, `face.html`, `chat.html`, `app-controller.html` e `accessibility.html` (todas sob `/tests/`) exibem seus resultados. A suíte de resiliência e o benchmark também podem ser compilados separadamente:
+
+```sh
+npm run build -- --config tests/vite.config.ts
+npm run preview -- --outDir .tmp/verification --port 4174
+```
+
+Abrir `/tests/resilience.html` e `/tests/performance.html` na porta 4174. Executar o benchmark sozinho, em aba visível, até suas quatro amostras terminarem (~48 s mais carga); inclui DPR 2 controlado no mesmo computador. A suíte de resiliência simula falhas deliberadas e oferece botões de inspeção. Essas páginas não entram no build normal.
+
+Com o preview normal na porta 4173, `node scripts/measure-transfer.mjs http://127.0.0.1:4173/` registra bytes HTTP compactados e decodificados. A instalação limpa pelo lockfile e o build reproduzível foram verificados numa cópia temporária; os hashes coincidiram.
+
+**Cobertura:** 257 checks passaram, preview desktop e móvel emulado inspecionados, falhas e recuperação exercitadas. Sem celular físico, leitor de tela real, teclado virtual físico ou benchmark prolongado; meta de 30 FPS no celular não verificada. A ocultação nativa da aba ainda requer conferência fora do navegador integrado; suspensão/retomada têm testes controlados.
 
 ## Estrutura e dependências
 
@@ -50,7 +88,7 @@ O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Previ
 - `@types/three`: tipos da biblioteca para TypeScript.
 - `vite` e `typescript`: servidor, empacotamento e checagem estática. Versões diretas exatas e árvore fixada em `package-lock.json`.
 
-Não foi necessário criar `vite.config.ts`: os padrões atendem à fase 01. Planejamento e evidências estão em [specs/README.md](specs/README.md) e [specs/progresso.md](specs/progresso.md).
+O produto usa os padrões do Vite. `tests/vite.config.ts` gera um build separado de verificação, fora de `dist/`. Planejamento e evidências estão em [specs/README.md](specs/README.md) e [specs/progresso.md](specs/progresso.md).
 
 ## Cena e verificação
 
@@ -80,7 +118,7 @@ Na página principal, envie “Olá!”. A personagem passa de repouso para pens
 
 Abra `/tests/app-controller.html` no servidor de desenvolvimento: executa 18 checks de integração com provider/relógio/cena controlados e oferece uma demonstração separada com WebGL/GLB reais. Os botões permitem simular erro do provider, perder/restaurar contexto gráfico e gravar o fluxo integrado. O vídeo compõe o canvas real com o texto apresentado no DOM usando o loop existente; não adiciona loop de produção. Essas ferramentas não entram no build de produção.
 
-[Evidências e limites](specs/evidencias/fase-10/verificacao.md), [vídeo](specs/evidencias/fase-10/fluxo-integrado.webm) e [preview](specs/evidencias/fase-10/preview.jpg). A fase 11 acrescenta os ajustes abaixo; desempenho e entrega final permanecem na fase 12.
+[Evidências e limites](specs/evidencias/fase-10/verificacao.md), [vídeo](specs/evidencias/fase-10/fluxo-integrado.webm) e [preview](specs/evidencias/fase-10/preview.jpg). A fase 11 acrescenta os ajustes abaixo; a fase 12 conclui a entrega e registra o desempenho medido.
 
 ### Responsividade e acessibilidade — fase 11
 
@@ -112,7 +150,7 @@ Abra `/tests/character.html` em desenvolvimento para repetir os 26 checks do GLB
 
 O modelo tem 26.130 triângulos, 155 ossos, 16 meshes e 41 morph targets faciais. O GLB de 8,83 MB já está em `public/models/`; não exige download em tempo de execução de um serviço externo. Consulte [créditos, hashes e preparação reproduzível](assets/credits.md) e [evidências da fase 03](specs/evidencias/fase-03/verificacao.md).
 
-Os caminhos do GLB usam `import.meta.env.BASE_URL`. Também foi verificado build/preview com `--base=/avatar3d/`. Não há benchmark ou teste em celular físico. Duas texturas 2048×2048 e o aviso de chunk JS acima de 500 kB ficam registrados para a fase 12.
+Os caminhos do GLB usam `import.meta.env.BASE_URL`. Também foi verificado build/preview com `--base=/avatar3d/`. Há benchmark desktop na fase 12, sem teste em celular físico. As duas texturas 2048×2048 e o aviso de chunk JS acima de 500 kB foram mantidos com justificativa no relatório final.
 
 ## Sala e verificação da fase 04
 

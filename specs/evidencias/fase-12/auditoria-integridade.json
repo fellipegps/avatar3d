@@ -1,0 +1,31 @@
+{
+  "buildFiles": [
+    {
+      "path": "index.html",
+      "matchesSavedSHA256": true
+    },
+    {
+      "path": "assets\\index-C9R2thke.css",
+      "matchesSavedSHA256": true
+    },
+    {
+      "path": "assets\\index-Dp1tKPrH.js",
+      "matchesSavedSHA256": true
+    },
+    {
+      "path": "images\\scene-fallback.svg",
+      "matchesSavedSHA256": true
+    },
+    {
+      "path": "models\\character.glb",
+      "matchesSavedSHA256": true
+    }
+  ],
+  "missingEvidenceLinks": [],
+  "savedBrowserChecks": {
+    "total": 228,
+    "passed": 228
+  },
+  "performanceSamples": 4,
+  "completePerformanceSamples": true
+}

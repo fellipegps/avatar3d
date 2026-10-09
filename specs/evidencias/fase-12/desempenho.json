@@ -1,0 +1,122 @@
+[
+  {
+    "profile": "normal",
+    "requestedDPR": 1,
+    "nativeDPR": 1,
+    "viewport": [
+      1280,
+      720
+    ],
+    "samples": 598,
+    "durationMs": 9989.600000023842,
+    "meanFrameIntervalMs": 16.705016722447898,
+    "estimatedFPS": 59.862256746874024,
+    "p50Ms": 16.699999928474426,
+    "p95Ms": 19.799999952316284,
+    "maxMs": 34.300000071525574,
+    "over33ms": 1,
+    "stats": {
+      "calls": 59,
+      "triangles": 28664,
+      "geometries": 24,
+      "textures": 32,
+      "programs": 10,
+      "width": 900,
+      "height": 440,
+      "pixelRatio": 1,
+      "shadowMap": false
+    },
+    "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36"
+  },
+  {
+    "profile": "economy",
+    "requestedDPR": 1,
+    "nativeDPR": 1,
+    "viewport": [
+      1280,
+      720
+    ],
+    "samples": 599,
+    "durationMs": 9988.5,
+    "meanFrameIntervalMs": 16.675292153589314,
+    "estimatedFPS": 59.9689643089553,
+    "p50Ms": 16.700000047683716,
+    "p95Ms": 18.899999976158142,
+    "maxMs": 24.699999928474426,
+    "over33ms": 0,
+    "stats": {
+      "calls": 59,
+      "triangles": 28664,
+      "geometries": 24,
+      "textures": 32,
+      "programs": 10,
+      "width": 900,
+      "height": 440,
+      "pixelRatio": 1,
+      "shadowMap": false
+    },
+    "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36"
+  },
+  {
+    "profile": "normal",
+    "requestedDPR": 2,
+    "nativeDPR": 1,
+    "viewport": [
+      1280,
+      720
+    ],
+    "samples": 599,
+    "durationMs": 10001.399999976158,
+    "meanFrameIntervalMs": 16.69682804670477,
+    "estimatedFPS": 59.89161517401843,
+    "p50Ms": 16.600000023841858,
+    "p95Ms": 18.699999928474426,
+    "maxMs": 38.300000071525574,
+    "over33ms": 1,
+    "stats": {
+      "calls": 59,
+      "triangles": 28664,
+      "geometries": 24,
+      "textures": 32,
+      "programs": 10,
+      "width": 900,
+      "height": 440,
+      "pixelRatio": 1.5,
+      "shadowMap": false
+    },
+    "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36"
+  },
+  {
+    "profile": "economy",
+    "requestedDPR": 2,
+    "nativeDPR": 1,
+    "viewport": [
+      1280,
+      720
+    ],
+    "samples": 600,
+    "durationMs": 10003.399999976158,
+    "meanFrameIntervalMs": 16.672333333293597,
+    "estimatedFPS": 59.97960693378551,
+    "p50Ms": 16.700000047683716,
+    "p95Ms": 18.40000009536743,
+    "maxMs": 22.700000047683716,
+    "over33ms": 0,
+    "stats": {
+      "calls": 59,
+      "triangles": 28664,
+      "geometries": 24,
+      "textures": 32,
+      "programs": 10,
+      "width": 900,
+      "height": 440,
+      "pixelRatio": 1,
+      "shadowMap": false
+    },
+    "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36"
+  }
+]

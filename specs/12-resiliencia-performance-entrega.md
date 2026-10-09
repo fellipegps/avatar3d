@@ -1,6 +1,6 @@
 # Fase 12 — Resiliência, desempenho e entrega do núcleo
 
-Status inicial: pendente. Tipo: MVP principal.
+Status: concluída em 09/10/2026. [Evidências e limitações](evidencias/fase-12/verificacao.md). Tipo: MVP principal.
 
 ## Dependências
 
@@ -22,15 +22,15 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Tarefas
 
-- [ ] Finalizar feedback de carregamento, falha de asset e tentativa de recarregar sem duplicar recursos.
-- [ ] Adicionar fallback estático para ausência de WebGL 2, mantendo o chat ativo.
-- [ ] Tratar perda de contexto com feedback e recuperação/reinício controlado.
-- [ ] Medir transferência, triângulos, draw calls e frame time nos equipamentos disponíveis.
-- [ ] Ajustar perfis normal/econômico, pixel ratio e sombras antes de considerar compressão ou efeitos.
-- [ ] Verificar descarte de texturas, materiais, geometrias, mixer, observadores e timers.
-- [ ] Resolver caminhos de assets com a base de publicação do Vite; verificar o build em preview.
-- [ ] Documentar setup, assets, comandos, estados mock, limitações e evidências.
-- [ ] Executar a verificação final do fluxo e preencher a definição de pronto no registro.
+- [x] Finalizar feedback de carregamento, falha de asset e tentativa de recarregar sem duplicar recursos.
+- [x] Adicionar fallback estático para ausência de WebGL 2, mantendo o chat ativo.
+- [x] Tratar perda de contexto com feedback e recuperação/reinício controlado.
+- [x] Medir transferência, triângulos, draw calls e frame time nos equipamentos disponíveis.
+- [x] Ajustar perfis normal/econômico, pixel ratio e sombras antes de considerar compressão ou efeitos.
+- [x] Verificar descarte de texturas, materiais, geometrias, mixer, observadores e timers.
+- [x] Resolver caminhos de assets com a base de publicação do Vite; verificar o build em preview.
+- [x] Documentar setup, assets, comandos, estados mock, limitações e evidências.
+- [x] Executar a verificação final do fluxo e preencher a definição de pronto no registro.
 
 ## Fora do escopo
 
@@ -40,14 +40,14 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Critérios de aceitação
 
-- [ ] Build e typecheck passam, assim como os testes significativos introduzidos.
-- [ ] Fluxo principal funciona na versão de produção em preview.
-- [ ] Erro de GLB, renderer indisponível e perda de contexto recebem tratamento.
-- [ ] Chat continua utilizável quando o 3D não está disponível.
-- [ ] Não há aumento contínuo de canvas/loops/listeners após remontagens.
-- [ ] Metas de desempenho estão medidas ou marcadas como não verificadas com motivo.
-- [ ] Há capturas desktop/móvel, origem dos assets e instruções de execução.
-- [ ] Fases 01–11 e critérios do núcleo estão concluídos; nenhum placeholder é apresentado como personagem final.
+- [x] Build e typecheck passam, assim como os testes significativos introduzidos.
+- [x] Fluxo principal funciona na versão de produção em preview.
+- [x] Erro de GLB, renderer indisponível e perda de contexto recebem tratamento.
+- [x] Chat continua utilizável quando o 3D não está disponível.
+- [x] Não há aumento contínuo de canvas/loops/listeners após remontagens.
+- [x] Metas de desempenho estão medidas ou marcadas como não verificadas com motivo.
+- [x] Há capturas desktop/móvel, origem dos assets e instruções de execução.
+- [x] Fases 01–11 e critérios do núcleo estão concluídos; nenhum placeholder é apresentado como personagem final.
 
 ## Verificação
 

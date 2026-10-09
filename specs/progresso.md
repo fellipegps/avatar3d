@@ -1,6 +1,6 @@
 # Progresso da implementação
 
-As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026; as fases 07–10 foram concluídas em 8 de outubro e a fase 11 em 9 de outubro. Cobertura e limitações estão registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, com transições corporais suaves, piscar automático e boca normalizada. Chat integrado, cancelamento, preferências, layout responsivo, foco e anúncio completo estão implementados. A cobertura móvel é por emulação; a fase 12 continua pendente.
+As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026; as fases 07–10 foram concluídas em 8 de outubro e as fases 11–12 em 9 de outubro. Cobertura e limitações estão registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, com transições corporais suaves, piscar automático e boca normalizada. Chat integrado, cancelamento, preferências, layout responsivo, foco e anúncio completo estão implementados. Núcleo 01–12 concluído: falhas/recarga tratadas, build reproduzível e desempenho desktop medido. A cobertura móvel é por emulação; desempenho em celular físico não verificado.
 
 ## Status das fases
 
@@ -19,7 +19,7 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 | [09 — Estado da conversa e provider local](09-estado-conversa-mock.md) | concluída | 08 | Store imutável por eventos, catálogo normalizado, Promise cancelável de 800 ms e proteção por ID ativo. [Verificação](evidencias/fase-09/verificacao.md), [29 testes](evidencias/fase-09/testes.log), [demonstração](evidencias/fase-09/demonstracao.json), [resposta](evidencias/fase-09/resposta.jpg), [falha DEV](evidencias/fase-09/erro-simulado.jpg). |
 | [10 — Integração entre chat e personagem](10-integracao-chat-personagem.md) | concluída | 09 | AppController, apresentação cancelável, proteção contra resultados antigos e chat sem 3D. [Verificação](evidencias/fase-10/verificacao.md), [18 checks](evidencias/fase-10/checks-integracao.json), [vídeo](evidencias/fase-10/fluxo-integrado.webm), [preview](evidencias/fase-10/preview.jpg). |
 | [11 — Responsividade e acessibilidade](11-responsividade-acessibilidade.md) | concluída | 10 | Quatro larguras, orientação, altura reduzida, teclado, anúncio único e câmera adaptada. Cobertura móvel emulada. [Verificação](evidencias/fase-11/verificacao.md), [28 checks](evidencias/fase-11/checks-acessibilidade.json), [desktop](evidencias/fase-11/desktop-1440.jpg), [móvel](evidencias/fase-11/mobile-390.jpg). |
-| [12 — Resiliência, desempenho e entrega do núcleo](12-resiliencia-performance-entrega.md) | pendente | 11 | — |
+| [12 — Resiliência, desempenho e entrega do núcleo](12-resiliencia-performance-entrega.md) | concluída | 11 | Recarga/fallback, 257 checks, instalação limpa/build reproduzível, ~60 FPS desktop e 9,01 MB transferidos. [Relatório e limites](evidencias/fase-12/verificacao.md), [métricas](evidencias/fase-12/desempenho.json), [desktop](evidencias/fase-12/desktop.png), [móvel emulado](evidencias/fase-12/mobile-390.png). |
 | [13 — Áudio gravado — extensão opcional](13-audio-gravado-opcional.md) | não solicitada | 12 | Extensão opcional. |
 | [14 — Boca pela amplitude — extensão opcional](14-boca-amplitude-opcional.md) | não solicitada | 13 | Extensão opcional. |
 
@@ -58,7 +58,7 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 - Status: concluída.
 - Data: 07/10/2026.
 - Resultado obtido: Vita, de pixiv / VRoid Project (CC0), convertida de VRM 0 para GLB glTF 2.0 autossuficiente e carregada com GLTFLoader no SceneController existente. O cubo foi substituído na aplicação principal. Rig, três clipes próprios e controles faciais do modelo foram validados.
-- Arquivos alterados: [GLB](../public/models/character.glb), [créditos](../assets/credits.md), [preparação reproduzível](../scripts/prepare-character.mjs), [loader](../src/scene/AssetLoader.ts), [manifesto](../src/scene/character.manifest.ts), [reprodução de inspeção](../src/scene/CharacterPreview.ts), `../src/scene/SceneController.ts`, `../src/app/AppController.ts`, `../src/dev/CharacterInspector.ts`, `../src/main.ts`, `../src/styles/base.css`, `../tests/character.html`, `../tests/character.browser.ts`, `../.gitignore`, `../README.md`, `README.md`, `00-escopo-e-contratos.md`, `03-validacao-asset-personagem.md`, este registro e [evidências](evidencias/fase-03/verificacao.md). Nenhuma dependência nova; package.json e lockfile preservados.
+- Arquivos alterados: [GLB](../public/models/character.glb), [créditos](../assets/credits.md), [preparação reproduzível](../scripts/prepare-character.mjs), [loader](../src/scene/AssetLoader.ts), [manifesto](../src/scene/character.manifest.ts), reprodução de inspeção `CharacterPreview.ts` (substituída na fase 06 pelo [CharacterController](../src/scene/CharacterController.ts)), `../src/scene/SceneController.ts`, `../src/app/AppController.ts`, `../src/dev/CharacterInspector.ts`, `../src/main.ts`, `../src/styles/base.css`, `../tests/character.html`, `../tests/character.browser.ts`, `../.gitignore`, `../README.md`, `README.md`, `00-escopo-e-contratos.md`, `03-validacao-asset-personagem.md`, este registro e [evidências](evidencias/fase-03/verificacao.md). Nenhuma dependência nova; package.json e lockfile preservados.
 - Critérios de aceitação atendidos: origem/licença/modificações registradas; materiais PBR utilizáveis no navegador; `idle → Vita_Idle`, `thinking → Vita_Thinking`, `responding → Vita_Responding`; fechar/reabrir olhos e abrir/fechar boca demonstrados manualmente; escala 1, altura 1,713077 m, frente original -Z corrigida por rotação Y de π e chão corrigido para zero; nove meshes faciais e nomes reais de morph targets validados pelo loader.
 - Comandos/checks executados e resultados: `npm run typecheck`, `npm run build` e build com `--base=/avatar3d/` passaram. [Tipos](evidencias/fase-03/typecheck.txt), [build normal](evidencias/fase-03/build.txt), [build em subdiretório](evidencias/fase-03/build-base.txt). **26/26** checks do GLB/loader/animação e **24/24** checks anteriores de ciclo de vida: [resultados da fase 03](evidencias/fase-03/testes-browser.json), [regressão da fase 02](evidencias/fase-03/regressao-fase-02.json). Abort durante download/parse, descarte tardio, 404/HTML e manifesto incompatível exercitados. O parse e os recursos GLB são reais; erros HTTP e ponto de aborto no parse foram controlados pela página de testes.
 - Evidências visuais: [repouso](evidencias/fase-03/corpo-idle.jpg), [pensamento](evidencias/fase-03/corpo-thinking.jpg), [resposta](evidencias/fase-03/corpo-responding.jpg), [rosto neutro](evidencias/fase-03/rosto-neutro.jpg), [olhos fechados e boca aberta](evidencias/fase-03/piscar-boca.jpg), [produção](evidencias/fase-03/preview.jpg), [produção em subdiretório](evidencias/fase-03/preview-base.jpg). [Inventário e amostras de deformação](evidencias/fase-03/inventario.json).
@@ -180,6 +180,22 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 - Decisões e mudanças de contrato: sem mudança de contratos públicos. Histórico visual com `aria-live=off` e região separada polite/atômica; anúncio adiado se fechado, removido no reset e esvaziado ao fechar. Câmera interpola composição compacta/completa apenas em resize; preferência manual de movimento continua prevalecendo sobre o sistema. Formulário no fluxo normal e foco com rolagem nativa, sem fixar envio sobre o teclado.
 - Bloqueios e próximo passo concreto: nenhum bloqueio da fase 11. Próxima fase pendente: 12 — resiliência, desempenho e entrega do núcleo, quando solicitada. Complementar cobertura em celular físico/leitor de tela quando disponíveis. Núcleo permanece incompleto.
 
+### Fase 12 — Resiliência, desempenho e entrega do núcleo
+
+- Status: concluída, com cobertura móvel somente emulada.
+- Auditoria após interrupção por créditos: build atual idêntico à entrega anterior (SHA-256), 29 testes de domínio e 15 checks de resiliência reexecutados com sucesso; nenhuma correção de código necessária. [Rechecagem e limites](evidencias/fase-12/auditoria-interrupcao.md).
+- Data: 09/10/2026.
+- Resultado obtido: fallback SVG local, tentativa de recarregar GLB/recriar cena sem apagar conversa, prazo de carga de 30 s, aborto imediato com descarte do parse tardio, recuperação de contexto, build reproduzível e núcleo 01–12 concluído.
+- Arquivos alterados: `../src/app/AppController.ts`, `../src/scene/AssetLoader.ts`, `../src/main.ts`, `../src/styles/layout.css`, `../public/images/scene-fallback.svg`, `../tests/resilience.html`, `../tests/resilience.browser.ts`, `../tests/performance.html`, `../tests/performance.browser.ts`, `../tests/vite.config.ts`, `../scripts/measure-transfer.mjs`, `../README.md`, `../assets/credits.md`, `README.md`, `12-resiliencia-performance-entrega.md`, este registro e [evidências](evidencias/fase-12/verificacao.md). Nenhuma dependência nova.
+- Critérios atendidos: tipos/build, fluxo de produção, GLB/renderer indisponíveis com chat ativo, perda/restauração de contexto e reinício manual, recargas sem crescimento de recursos, métricas/limites registrados, caminhos na raiz e em `/avatar3d/`, capturas e instruções. Personagem final continua Vita real.
+- Checks: **257/257** (29 Node + 228 navegador). Incluem 15 novos de resiliência; todas as suítes anteriores relevantes reexecutadas. [Tabela e links](evidencias/fase-12/verificacao.md). Tipo passou isoladamente e em cada build. Instalação limpa numa cópia temporária e comparação SHA-256 dos cinco arquivos distribuídos: [reprodução](evidencias/fase-12/build-reproduzivel.json).
+- Evidências visuais: [desktop](evidencias/fase-12/desktop.png), [390×844 emulado](evidencias/fase-12/mobile-390.png), [fallback com chat](evidencias/fase-12/fallback.png), [recuperação](evidencias/fase-12/recuperacao.png), [base de publicação](evidencias/fase-12/preview-base.png).
+- Equipamento/perfil: Windows, i7-1185G7, 16,71 GB RAM, Iris Xe/D3D11, Chromium 155, Node 24.15.0/npm 12.0.2. Cena em build de produção isolado, viewport 1280×720, canvas CSS 900×440, normal/econômico em DPR nativo 1 e solicitado 2 controlado. Quatro janelas de 10 s após 2 s de aquecimento: **59,86–59,98 FPS**, intervalos médios 16,67–16,71 ms, p95 18,40–19,80 ms. [Dados](evidencias/fase-12/desempenho.json).
+- Custos: 59 draw calls, 28.664 triângulos desenhados; personagem 26.130 e ambiente 1.574 únicos. Três recargas mantêm 24 geometrias/32 texturas/10 programas. **9.010.378 bytes** de corpos HTTP essenciais com gzip JS/CSS; 9.519.198 decodificados, sem headers.
+- Limitações: sem celular físico (30 FPS não verificado), leitor de tela/teclado virtual reais, matriz de navegadores, rede móvel, benchmark térmico longo ou análise de heap/VRAM. Visibilidade nativa segue sem cobertura neste navegador; testes controlados passam. O benchmark mede intervalos do loop da cena, sem chat DOM; fluxo completo validado separadamente.
+- Decisões: mantidos DPR 1,5/1, sem shadow maps/pós-processamento, duas texturas de 2048 px e aviso de chunk JS 675,73 kB. Metas de transferência e desktop atendidas; sem necessidade medida de compressão avançada. Não foram suprimidos avisos. Contratos públicos de chat/ScenePort preservados; timeout opcional no loader serve à verificação. SVG criado localmente, sem asset externo.
+- Bloqueios/próximo passo: nenhum bloqueio essencial. Conferir desempenho e teclado em celular físico quando disponível e reduzir custo se ficar abaixo de 30 FPS. Fases 13/14 continuam não solicitadas; nenhuma publicação.
+
 Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões e atualizar o resumo de status correspondente.
 
 ```md
@@ -199,13 +215,13 @@ Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões 
 
 ## Definição de pronto do núcleo
 
-- [ ] Fases principais concluídas com critérios verificados.
-- [ ] Personagem real GLB validada, com rig, clipes e rosto funcional.
-- [ ] Sala, personagem e objetos no mesmo canvas.
+- [x] Fases principais concluídas com critérios verificados.
+- [x] Personagem real GLB validada, com rig, clipes e rosto funcional.
+- [x] Sala, personagem e objetos no mesmo canvas.
 - [x] Chat local e transições funcionando na versão de produção em preview.
 - [x] Reinício impede respostas e apresentações antigas.
 - [x] Layout desktop/móvel emulado, teclado e movimento reduzido verificados; sem celular físico/leitor de tela real.
-- [ ] Falhas de asset/renderer e fallback tratados.
-- [ ] Desempenho medido, com limitações e cobertura registradas.
-- [ ] Origem dos assets e instruções de execução entregues.
-- [ ] Nenhum recurso opcional exigido para concluir o núcleo sem áudio.
+- [x] Falhas de asset/renderer e fallback tratados.
+- [x] Desempenho medido, com limitações e cobertura registradas.
+- [x] Origem dos assets e instruções de execução entregues.
+- [x] Nenhum recurso opcional exigido para concluir o núcleo sem áudio.

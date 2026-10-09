@@ -37,8 +37,14 @@ export class AppController {
   private graphics: SceneAvailability = { available: false, message: 'Inicializando 3D…' };
   private assetStatus = 'Carregando personagem…';
   private assetError = '';
+  private generation = 0;
+  private loading = false;
+  private quality: QualityProfile = 'normal';
+  private reducedMotion = this.motionPreference.matches;
+  private readonly retry = document.createElement('button');
+  private readonly fallbackMessage = document.createElement('span');
 
-  constructor(container: HTMLElement, private readonly status: HTMLElement, private readonly fallback: HTMLElement,
+  constructor(private readonly container: HTMLElement, private readonly status: HTMLElement, private readonly fallback: HTMLElement,
     private readonly options: AppOptions = {}) {
     this.store = options.store ?? new ConversationStore();
     this.provider = options.provider ?? new MockChatProvider();
@@ -50,43 +56,79 @@ export class AppController {
       onReducedMotion: enabled => { this.manualMotion = true; this.setReducedMotion(enabled); },
     }, this.motionPreference.matches) : null;
     this.chat?.setAvailable(true); this.controls?.setEnabled(true, 'Respostas locais · DEMO');
-    try {
-      this.scene = (options.createScene ?? ((element, callback) => new SceneController(element, callback)))(container, state => {
-        if (this.disposed) return;
-        this.graphics = state; this.presentAvailability();
-      });
-      this.graphics = this.scene.availability; this.presentAvailability();
-    } catch {
-      this.graphics = { available: false, message: 'Não foi possível iniciar o 3D. A conversa continua disponível.' };
-      this.presentAvailability();
-    }
+    const image = document.createElement('img');
+    image.src = `${import.meta.env.BASE_URL}images/scene-fallback.svg`; image.alt = ''; image.className = 'scene-fallback-image';
+    this.retry.type = 'button'; this.retry.textContent = 'Tentar carregar o 3D';
+    this.retry.addEventListener('click', this.onRetry);
+    this.fallback.replaceChildren(image, this.fallbackMessage, this.retry);
+    this.createScene();
     this.setReducedMotion(this.motionPreference.matches);
     this.motionPreference.addEventListener('change', this.onMotionChange);
     this.unsubscribe = this.store.subscribe(state => this.presentState(state));
-    const scene = this.scene;
-    if (scene?.availability.available) {
-      void Promise.resolve().then(() => { if (!this.disposed) return scene.loadCharacter(); }).then(async report => {
-        if (this.disposed || !report) return;
-        this.assetStatus = 'Vita · Modelo carregado'; this.presentAvailability();
-        if (import.meta.env.DEV && options.inspector !== false && scene instanceof SceneController) {
-          const { mountCharacterInspector } = await import('../dev/CharacterInspector');
-          if (!this.disposed) this.disposeInspector = mountCharacterInspector(container.parentElement ?? container, scene, report);
-        }
-      }).catch((error: unknown) => {
-        if (this.disposed) return;
-        this.assetStatus = 'Personagem indisponível';
-        this.assetError = error instanceof Error ? error.message : 'Não foi possível carregar a personagem.';
-        this.presentAvailability();
+    void this.loadSceneAsset();
+  }
+
+  private createScene(): void {
+    const generation = ++this.generation;
+    this.disposeInspector?.(); this.disposeInspector = null;
+    try { this.scene?.dispose(); } catch { /* Permitir uma nova tentativa após falha gráfica. */ }
+    this.scene = null;
+    try {
+      this.scene = (this.options.createScene ?? ((element, callback) => new SceneController(element, callback)))(this.container, state => {
+        if (this.disposed || generation !== this.generation) return;
+        this.graphics = state; this.presentAvailability();
       });
+      this.graphics = this.scene.availability;
+      this.commandScene(scene => {
+        scene.setQuality(this.quality); scene.setReducedMotion(this.reducedMotion);
+      });
+    } catch {
+      this.graphics = { available: false, message: 'Não foi possível iniciar o 3D. A conversa continua disponível.' };
+    }
+    this.presentAvailability();
+  }
+
+  private async loadSceneAsset(): Promise<void> {
+    const scene = this.scene, generation = this.generation;
+    if (this.disposed || this.loading || !scene?.availability.available) return;
+    this.loading = true; this.assetError = ''; this.assetStatus = 'Carregando personagem…'; this.presentAvailability();
+    try {
+      const report = await Promise.resolve().then(() => { if (!this.disposed) return scene.loadCharacter(); });
+      if (this.disposed || generation !== this.generation || !report) return;
+      this.assetStatus = 'Vita · Modelo carregado'; this.presentAvailability();
+      if (import.meta.env.DEV && this.options.inspector !== false && scene instanceof SceneController) {
+        const { mountCharacterInspector } = await import('../dev/CharacterInspector');
+        if (!this.disposed && generation === this.generation) this.disposeInspector = mountCharacterInspector(this.container.parentElement ?? this.container, scene, report);
+      }
+    } catch (error: unknown) {
+      if (this.disposed || generation !== this.generation) return;
+      this.assetStatus = 'Personagem indisponível';
+      this.assetError = error instanceof Error ? error.message : 'Não foi possível carregar a personagem.';
+    } finally {
+      if (!this.disposed && generation === this.generation) {
+        this.loading = false;
+        this.presentAvailability();
+      }
     }
   }
+  private readonly onRetry = (): void => {
+    if (this.disposed || this.loading) return;
+    if (!this.graphics.available) {
+      this.createScene();
+      const phase = this.store.getSnapshot().phase;
+      this.commandScene(scene => scene.setCharacterState(phase === 'waiting' ? 'thinking' : phase === 'revealing' ? 'responding' : 'idle'));
+    }
+    void this.loadSceneAsset();
+  };
 
   getSnapshot(): ConversationSnapshot { return this.store.getSnapshot(); }
 
   private presentAvailability(): void {
     const message = this.graphics.available ? this.assetError : this.graphics.message;
     this.status.textContent = this.graphics.available ? this.assetStatus : '3D indisponível';
-    this.fallback.hidden = !message; this.fallback.textContent = message;
+    this.fallback.hidden = !message; this.fallbackMessage.textContent = message;
+    this.retry.disabled = this.loading;
+    this.container.setAttribute('aria-busy', String(this.loading));
   }
   private commandScene(command: (scene: AppScene) => void): void {
     if (!this.scene) return;
@@ -148,10 +190,12 @@ export class AppController {
   }
   setQuality(profile: QualityProfile): void {
     if (this.disposed) return;
+    this.quality = profile;
     this.controls?.setQuality(profile); this.commandScene(scene => scene.setQuality(profile));
   }
   setReducedMotion(enabled: boolean): void {
     if (this.disposed) return;
+    this.reducedMotion = enabled;
     this.controls?.setReducedMotion(enabled); this.commandScene(scene => scene.setReducedMotion(enabled));
     this.chat?.setReducedMotion(enabled);
   }
@@ -161,6 +205,8 @@ export class AppController {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.generation++; this.retry.removeEventListener('click', this.onRetry);
+    this.container.removeAttribute('aria-busy');
     const previous = this.active; this.active = null; previous?.controller.abort();
     this.unsubscribe(); this.chat?.dispose(); this.controls?.dispose(); this.store.dispose();
     this.disposeInspector?.(); this.motionPreference.removeEventListener('change', this.onMotionChange);

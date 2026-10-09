@@ -20,7 +20,7 @@ O original é um contêiner glTF binário com extensão VRM 0, rig, texturas e c
 1. Preserva geometria, pesos, ossos, UVs, texturas de cor e os 41 morph targets. Promove os nomes originais dos targets para `mesh.extras.targetNames`, reconhecido pelo GLTFLoader.
 2. Agrupa primitivas que já compartilham material e atributos (82 → 16), sem alterar os 26.130 triângulos. Nomeia o mesh facial `VitaFace` para identificação estável.
 3. Usa os materiais PBR padrão com as cores/texturas originais; remove a extensão VRM, shaders unlit, normal maps e mapas emissivos. Não inclui MToon, contornos nem física secundária de cabelo/roupa. A aparência resultante foi inspecionada no navegador.
-4. Remove dados não usados, incluindo thumbnail e texturas dos shaders retirados. Preserva duas texturas 2048×2048 do corpo/roupa; as demais têm dimensões de até 1024. Redução adicional fica para a fase de desempenho.
+4. Remove dados não usados, incluindo thumbnail e texturas dos shaders retirados. Preserva duas texturas 2048×2048 do corpo/roupa; as demais têm dimensões de até 1024. Na fase 12, as texturas foram mantidas: transferência e benchmark desktop ficaram dentro das referências; celular físico permanece sem medição. Ver [relatório](../specs/evidencias/fase-12/verificacao.md).
 5. Acrescenta os clipes originais deste projeto `Vita_Idle` (4 s), `Vita_Thinking` (3,2 s) e `Vita_Responding` (2,4 s), feitos diretamente para os ossos `J_Bip_*`. São poses animadas discretas de respiração/cabeça/braços, sem captura de movimento ou retargeting. Não animam morph targets nem translação da raiz.
 
 O modelo é a personagem selecionada para o MVP; o cubo da fase 02 foi removido da experiência principal. A composição final da sala, refinamento/transições corporais e piscar automático pertencem às fases 04–07.
@@ -45,3 +45,7 @@ Nenhum asset da referência Kady foi copiado. A licença do modelo não altera a
 ## Ambiente geométrico — fase 04
 
 Piso, paredes, mesa, monitores, luminária, planta e caneca foram construídos localmente em `src/scene/Environment.ts`, usando primitivas do Three.js e configuração em metros. Não usam modelos, imagens ou texturas de terceiros. Na fase 04, os materiais eram provisórios. A fase 05 acrescentou acabamento, faixas emissivas e três texturas procedurais locais: dois painéis DEMO e uma sombra radial compartilhada. Textos, números fictícios e gráficos são definidos no próprio projeto, sem fontes externas ou fontes tipográficas baixadas. A origem e a licença de Vita acima permanecem aplicáveis à personagem.
+
+## Fallback estático — fase 12
+
+`public/images/scene-fallback.svg` é uma ilustração vetorial do escritório criada localmente para esta aplicação, sem imagens ou modelos de terceiros. Serve aos caminhos de falha do 3D; Vita real continua sendo a personagem final.

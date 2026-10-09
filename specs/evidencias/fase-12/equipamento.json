@@ -1,0 +1,8 @@
+{
+  "cpu": "11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz",
+  "logicalCpus": 8,
+  "memoryGB": 16.714698752,
+  "platform": "win32",
+  "release": "10.0.26200",
+  "node": "v24.15.0"
+}
