@@ -1,0 +1,43 @@
+{
+  "label": "final-preview",
+  "announcement": "Vita: Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?",
+  "canvas": {
+    "height": 440,
+    "width": 820.609375,
+    "x": 33,
+    "y": 101
+  },
+  "canvasCount": 1,
+  "clientWidth": 1265,
+  "draft": "",
+  "focus": "TEXTAREA",
+  "history": {
+    "height": 260,
+    "width": 356.390625,
+    "x": 875.609375,
+    "y": 121
+  },
+  "input": {
+    "height": 89,
+    "width": 320.390625,
+    "x": 893.609375,
+    "y": 465.1875
+  },
+  "messages": [
+    "Olá!",
+    "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+  ],
+  "panel": {
+    "height": 612.75,
+    "width": 358.390625,
+    "x": 874.609375,
+    "y": 39
+  },
+  "quality": "normal",
+  "reducedMotion": false,
+  "scrollWidth": 1265,
+  "viewport": [
+    1280,
+    720
+  ]
+}

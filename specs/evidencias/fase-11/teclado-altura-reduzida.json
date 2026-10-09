@@ -1,0 +1,53 @@
+{
+  "label": "keyboard-height-emulation",
+  "announcement": "Vita: Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?",
+  "canvas": {
+    "height": 220,
+    "width": 341,
+    "x": 17,
+    "y": -472
+  },
+  "canvasCount": 1,
+  "clientWidth": 375,
+  "draft": "Rascunho preservado",
+  "focus": "BUTTON",
+  "history": {
+    "height": 120,
+    "width": 341,
+    "x": 17,
+    "y": -92
+  },
+  "input": {
+    "height": 98,
+    "width": 309,
+    "x": 33,
+    "y": 110.1875
+  },
+  "messages": [
+    "Olá!",
+    "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+  ],
+  "panel": {
+    "height": 473.75,
+    "width": 343,
+    "x": 16,
+    "y": -170
+  },
+  "quality": "normal",
+  "reducedMotion": true,
+  "scrollWidth": 375,
+  "viewport": [
+    390,
+    360
+  ],
+  "send": {
+    "disabled": false,
+    "focused": true,
+    "height": 44,
+    "outline": "rgb(135, 207, 198) solid 3px",
+    "width": 63.125,
+    "withinViewport": true,
+    "x": 278.875,
+    "y": 242.75
+  }
+}

@@ -1,6 +1,6 @@
 # Fase 11 — Responsividade e acessibilidade
 
-Status inicial: pendente. Tipo: MVP principal.
+Status: concluída em 09/10/2026, com cobertura móvel por emulação. Tipo: MVP principal.
 
 ## Dependências
 
@@ -21,14 +21,14 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Tarefas
 
-- [ ] Definir layout desktop com cena predominante e painel de aproximadamente 340–400 px.
-- [ ] Definir layout móvel com cena acima do chat e espaço adequado para envio.
-- [ ] Reenquadrar câmera por proporção do contêiner, preservando rosto e gestos.
-- [ ] Validar resize e teclado virtual usando altura dinâmica da viewport quando necessário.
-- [ ] Garantir navegação por teclado, foco visível e retorno de foco ao abrir/fechar.
-- [ ] Anunciar resposta completa por região acessível, sem anúncio letra por letra.
-- [ ] Respeitar prefers-reduced-motion e permitir preferência manual.
-- [ ] Ajustar rolagem para mensagens longas, preservando leitura anterior e acesso ao fim da conversa.
+- [x] Definir layout desktop com cena predominante e painel de aproximadamente 340–400 px.
+- [x] Definir layout móvel com cena acima do chat e espaço adequado para envio.
+- [x] Reenquadrar câmera por proporção do contêiner, preservando rosto e gestos.
+- [x] Validar resize e teclado virtual usando altura dinâmica da viewport quando necessário.
+- [x] Garantir navegação por teclado, foco visível e retorno de foco ao abrir/fechar.
+- [x] Anunciar resposta completa por região acessível, sem anúncio letra por letra.
+- [x] Respeitar prefers-reduced-motion e permitir preferência manual.
+- [x] Ajustar rolagem para mensagens longas, preservando leitura anterior e acesso ao fim da conversa.
 
 ## Fora do escopo
 
@@ -37,13 +37,13 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Critérios de aceitação
 
-- [ ] Sem overflow horizontal em larguras de 360, 390, 768 e 1440 px.
-- [ ] Rosto permanece visível e o chat é utilizável nesses tamanhos.
-- [ ] O teclado virtual não impede alcançar o campo e o envio.
-- [ ] Todas as ações principais podem ser feitas por teclado.
-- [ ] Movimento reduzido evita gestos/câmera repetitivos e exibição letra por letra.
-- [ ] Mensagem completa é anunciada uma vez.
-- [ ] Alterar orientação não duplica ou perde a cena.
+- [x] Sem overflow horizontal em larguras de 360, 390, 768 e 1440 px.
+- [x] Rosto permanece visível e o chat é utilizável nesses tamanhos.
+- [x] O teclado virtual não impede alcançar o campo e o envio.
+- [x] Todas as ações principais podem ser feitas por teclado.
+- [x] Movimento reduzido evita gestos/câmera repetitivos e exibição letra por letra.
+- [x] Mensagem completa é anunciada uma vez.
+- [x] Alterar orientação não duplica ou perde a cena.
 
 ## Verificação
 
@@ -59,4 +59,10 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 ## Evidências e atualização do progresso
 
 Ao concluir, atualizar a linha desta fase em [progresso.md](progresso.md): status, arquivos alterados, checks executados, evidências e limitações. Não marcar concluída com critérios essenciais pendentes. O relatório deve distinguir o que foi verificado do que ficou sem cobertura.
+
+## Resultado verificado em 09/10/2026
+
+Critérios atendidos no Chromium integrado, com cobertura móvel emulada. Quatro larguras, orientação retrato/paisagem e altura disponível de 360 px verificadas no preview de produção. Navegação por teclado, foco, mensagens longas e acesso ao fim demonstrados. Região acessível publica a resposta completa uma vez; nenhum anúncio parcial, duplicado ou cancelado. Sem teste de teclado virtual físico ou escuta com leitor de tela real.
+
+28 checks novos e regressões de domínio/UI/integração/cena/ambiente/corpo/face passaram: **206 checks/testes**, além de tipos/build. [Matriz, reprodução e limitações](evidencias/fase-11/verificacao.md), [desktop](evidencias/fase-11/desktop-1440.jpg), [móvel](evidencias/fase-11/mobile-390.jpg), [teclado com altura reduzida](evidencias/fase-11/teclado-altura-reduzida.jpg).
 

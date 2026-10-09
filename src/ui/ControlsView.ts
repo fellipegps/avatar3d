@@ -44,7 +44,7 @@ export class ControlsView {
   }
   setReducedMotion(enabled: boolean): void { if (!this.disposed) this.motion.checked = enabled; }
   setQuality(profile: QualityProfile): void { if (!this.disposed) this.quality.value = profile; }
-  focusToggle(): void { if (!this.disposed) this.toggle.focus({ preventScroll: true }); }
+  focusToggle(): void { if (!this.disposed) this.toggle.focus(); }
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true; this.listeners.abort(); this.container.replaceChildren();

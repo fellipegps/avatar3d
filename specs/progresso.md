@@ -1,6 +1,6 @@
 # Progresso da implementação
 
-As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026; as fases 07–10 foram concluídas em 8 de outubro. Cobertura e limitações estão registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, com transições corporais suaves, piscar automático e boca normalizada. Interface DOM, store e provider local estão integrados à personagem em produção, com texto gradual, cancelamento e preferências funcionais. As fases 11–12 continuam pendentes.
+As fases 01–06 foram implementadas e verificadas em 7 de outubro de 2026; as fases 07–10 foram concluídas em 8 de outubro e a fase 11 em 9 de outubro. Cobertura e limitações estão registradas abaixo. Vita compartilha a cena com o escritório iluminado e painéis decorativos DEMO, com transições corporais suaves, piscar automático e boca normalizada. Chat integrado, cancelamento, preferências, layout responsivo, foco e anúncio completo estão implementados. A cobertura móvel é por emulação; a fase 12 continua pendente.
 
 ## Status das fases
 
@@ -18,7 +18,7 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 | [08 — Interface do chat e controles](08-interface-chat-controles.md) | concluída | 07 | Chat DOM, eventos tipados, rascunho/foco/rolagem preservados e fixture DEV. [Verificação](evidencias/fase-08/verificacao.md), [31 checks](evidencias/fase-08/checks-interface.json), [teclado](evidencias/fase-08/eventos-teclado.json), [desktop](evidencias/fase-08/preview.jpg), [estreito](evidencias/fase-08/estreito-dev.jpg). |
 | [09 — Estado da conversa e provider local](09-estado-conversa-mock.md) | concluída | 08 | Store imutável por eventos, catálogo normalizado, Promise cancelável de 800 ms e proteção por ID ativo. [Verificação](evidencias/fase-09/verificacao.md), [29 testes](evidencias/fase-09/testes.log), [demonstração](evidencias/fase-09/demonstracao.json), [resposta](evidencias/fase-09/resposta.jpg), [falha DEV](evidencias/fase-09/erro-simulado.jpg). |
 | [10 — Integração entre chat e personagem](10-integracao-chat-personagem.md) | concluída | 09 | AppController, apresentação cancelável, proteção contra resultados antigos e chat sem 3D. [Verificação](evidencias/fase-10/verificacao.md), [18 checks](evidencias/fase-10/checks-integracao.json), [vídeo](evidencias/fase-10/fluxo-integrado.webm), [preview](evidencias/fase-10/preview.jpg). |
-| [11 — Responsividade e acessibilidade](11-responsividade-acessibilidade.md) | pendente | 10 | — |
+| [11 — Responsividade e acessibilidade](11-responsividade-acessibilidade.md) | concluída | 10 | Quatro larguras, orientação, altura reduzida, teclado, anúncio único e câmera adaptada. Cobertura móvel emulada. [Verificação](evidencias/fase-11/verificacao.md), [28 checks](evidencias/fase-11/checks-acessibilidade.json), [desktop](evidencias/fase-11/desktop-1440.jpg), [móvel](evidencias/fase-11/mobile-390.jpg). |
 | [12 — Resiliência, desempenho e entrega do núcleo](12-resiliencia-performance-entrega.md) | pendente | 11 | — |
 | [13 — Áudio gravado — extensão opcional](13-audio-gravado-opcional.md) | não solicitada | 12 | Extensão opcional. |
 | [14 — Boca pela amplitude — extensão opcional](14-boca-amplitude-opcional.md) | não solicitada | 13 | Extensão opcional. |
@@ -166,6 +166,20 @@ Valores permitidos: pendente, em andamento, bloqueada, concluída. Fases opciona
 - Decisões e mudanças de contrato: `ScenePort.resetFace()` explicita método existente; dependências opcionais do AppController preservam construtor anterior. Texto a 55 pontos de código/s por tempo decorrido com timer de 32 ms, cancelável; zero atualizações por letra no store. Movimento reduzido apresenta imediatamente e escolha manual prevalece sobre futuras mudanças do sistema. Guardas de ID/identidade e AbortSignal impedem efeitos tardios, incluindo finally. Ferramentas de gravação/falha apenas em DEV.
 - Bloqueios e próximo passo concreto: nenhum bloqueio da fase 10. Próxima fase pendente: 11 — responsividade e acessibilidade, quando solicitada. Núcleo permanece incompleto.
 
+### Fase 11 — Responsividade e acessibilidade
+
+- Status: concluída, com cobertura móvel por emulação e publicação acessível verificada no DOM/ARIA.
+- Data: 09/10/2026.
+- Resultado obtido: painel desktop de 340–400 px; cena acima do chat até 880 px; alturas dinâmicas e formulário alcançável com pouca altura. Câmera frontal adapta composição à proporção sem animação contínua. Ações com alvos de 44 px, foco visível e retorno ao controle externo/campo. Histórico mantém leitura anterior e oferece acesso ao fim. Resposta completa publicada uma vez, sem anúncios por letra ou repetição ao reabrir.
+- Arquivos alterados: [layout](../src/styles/layout.css), [chat CSS](../src/styles/chat.css), [ChatView](../src/ui/ChatView.ts), [ControlsView](../src/ui/ControlsView.ts), [cena](../src/scene/SceneController.ts), [configuração da cena](../src/scene/scene.config.ts), [entrada](../src/main.ts), [página de verificação](../tests/accessibility.html), [checks](../tests/accessibility.browser.ts), [README do projeto](../README.md), [guia](README.md), [contratos da spec](00-escopo-e-contratos.md), [fase 11](11-responsividade-acessibilidade.md), este registro e [evidências](evidencias/fase-11/verificacao.md). Sem dependências novas; contratos de domínio/provider/ScenePort preservados.
+- Critérios de aceitação atendidos: sem overflow nas quatro larguras; rosto/mãos enquadrados e chat funcional; campo/envio alcançáveis com altura reduzida; ações principais por teclado; preferência de movimento reduzido inicial/dinâmica/manual; publicação acessível única; resize/orientação sem duplicar cena nem perder conversa. [Matriz detalhada](evidencias/fase-11/verificacao.md).
+- Comandos/checks executados e resultados: `npm test` **29/29**, `npm run typecheck` e `npm run build`, saída 0 ([domínio](evidencias/fase-11/testes-dominio.log), [tipos](evidencias/fase-11/typecheck.log), [build](evidencias/fase-11/build.log)). Navegador: **28/28** novos, **31/31** interface, **18/18** integração, **24/24** cena, **14/14** ambiente, **21/21** corpo e **41/41** face. **206** checks/testes aprovados, com [links para resultados](evidencias/fase-11/verificacao.md).
+- Evidências visuais: [1440](evidencias/fase-11/desktop-1440.jpg), [360](evidencias/fase-11/mobile-360.jpg), [390](evidencias/fase-11/mobile-390.jpg), [768](evidencias/fase-11/tablet-768.jpg), [tamanhos/overflow](evidencias/fase-11/tamanhos.json), [orientação](evidencias/fase-11/orientacao.json), [paisagem](evidencias/fase-11/paisagem.jpg), [teclado](evidencias/fase-11/teclado.json), [envio com altura reduzida](evidencias/fase-11/teclado-altura-reduzida.jpg), [histórico longo](evidencias/fase-11/historico-longo.json). [Console e limites](evidencias/fase-11/verificacao.md).
+- Equipamento/resolução/perfil: Windows, Node 24.15.0/npm 12.0.2, Chromium integrado/WebGL 2. Viewports emulados 1440×900, 360×800, 390×844, 768×1024, 844×390 e 390×360. Desktop com perfil econômico; demais capturas principais com normal/movimento reduzido. Um canvas por aplicação; sem benchmark novo.
+- Limitações ou cobertura não executada: sem celular físico, teclado virtual nativo, leitor de tela real ou matriz de navegadores/GPU. Anúncio único comprovado por MutationObserver/ARIA; não se afirma fala idêntica em todos os leitores. Projeções de cabeça/mãos são amostras, complementadas pela inspeção visual. Suítes completas de loader/iluminação não reexecutadas. JS 673,59 kB / 172,87 kB gzip; aviso acima de 500 kB permanece para fase 12.
+- Decisões e mudanças de contrato: sem mudança de contratos públicos. Histórico visual com `aria-live=off` e região separada polite/atômica; anúncio adiado se fechado, removido no reset e esvaziado ao fechar. Câmera interpola composição compacta/completa apenas em resize; preferência manual de movimento continua prevalecendo sobre o sistema. Formulário no fluxo normal e foco com rolagem nativa, sem fixar envio sobre o teclado.
+- Bloqueios e próximo passo concreto: nenhum bloqueio da fase 11. Próxima fase pendente: 12 — resiliência, desempenho e entrega do núcleo, quando solicitada. Complementar cobertura em celular físico/leitor de tela quando disponíveis. Núcleo permanece incompleto.
+
 Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões e atualizar o resumo de status correspondente.
 
 ```md
@@ -190,7 +204,7 @@ Copiar o bloco abaixo para cada fase executada. Manter histórico das decisões 
 - [ ] Sala, personagem e objetos no mesmo canvas.
 - [x] Chat local e transições funcionando na versão de produção em preview.
 - [x] Reinício impede respostas e apresentações antigas.
-- [ ] Layout desktop/móvel, teclado e movimento reduzido verificados.
+- [x] Layout desktop/móvel emulado, teclado e movimento reduzido verificados; sem celular físico/leitor de tela real.
 - [ ] Falhas de asset/renderer e fallback tratados.
 - [ ] Desempenho medido, com limitações e cobertura registradas.
 - [ ] Origem dos assets e instruções de execução entregues.

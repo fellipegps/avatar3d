@@ -50,5 +50,6 @@ export const sceneConfig = {
     frontDirection: [0, 0.15, 1],
     sideDirection: [1, 0.2, 0.7],
     halfHeight: 1.12, halfWidth: 1.55,
+    compact: { aspect: 1, fullAspect: 1.7, target: [0, 1.17, 0.25], halfHeight: 0.85, halfWidth: 0.75 },
   },
 } as const;

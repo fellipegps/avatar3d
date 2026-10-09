@@ -27,6 +27,10 @@ export class ChatView {
   private readonly validation: HTMLElement;
   private readonly counter: HTMLElement;
   private readonly form: HTMLFormElement;
+  private readonly announcement: HTMLElement;
+  private readonly latest: HTMLButtonElement;
+  private readonly announced = new Set<string>();
+  private pendingAnnouncement: ChatMessage | null = null;
   private readonly messages = new Map<string, { item: HTMLLIElement; author: HTMLElement; text: HTMLElement }>();
   private phase: ConversationPhase = 'idle';
   private stateMessage = '';
@@ -58,10 +62,12 @@ export class ChatView {
         <div><h2 id="${prefix}-title">Conversa local</h2><span class="panel-meta">DEMO</span></div>
         <button type="button" class="button-quiet" data-close aria-label="Fechar conversa">Fechar</button>
       </header>
-      <div class="chat-history" tabindex="0" aria-label="Histórico da conversa">
+      <div id="${prefix}-history" class="chat-history" role="region" tabindex="0" aria-label="Histórico da conversa">
         <p class="chat-empty">Sua conversa fica aqui.<br />Escreva uma mensagem para começar.</p>
-        <ul class="chat-messages" role="log" aria-label="Mensagens da conversa" aria-live="polite" aria-relevant="additions text"></ul>
+        <ul class="chat-messages" role="log" aria-label="Mensagens da conversa" aria-live="off"></ul>
       </div>
+      <button type="button" class="button-quiet chat-latest" aria-controls="${prefix}-history" hidden>Ver mensagens recentes</button>
+      <p class="sr-only chat-announcement" role="status" aria-live="polite" aria-atomic="true"></p>
       <p class="chat-status" role="status"></p><p class="chat-error" role="alert" hidden></p>
       <form class="chat-form" novalidate>
         <label for="${prefix}-input">Mensagem</label>
@@ -75,7 +81,13 @@ export class ChatView {
     this.list = find('.chat-messages'); this.scroller = find('.chat-history'); this.empty = find('.chat-empty');
     this.status = find('.chat-status'); this.error = find('.chat-error'); this.validation = find('.chat-validation');
     this.counter = find(`#${prefix}-count`); this.form = find('form');
+    this.announcement = find('.chat-announcement'); this.latest = find('.chat-latest');
     const options = { signal: this.listeners.signal };
+    this.scroller.addEventListener('scroll', () => this.updateLatest(), options);
+    this.latest.addEventListener('click', () => {
+      this.scroller.focus({ preventScroll: true });
+      this.scroller.scrollTop = this.scroller.scrollHeight; this.updateLatest();
+    }, options);
     this.form.addEventListener('submit', event => { event.preventDefault(); this.submit(); }, options);
     this.input.addEventListener('keydown', event => {
       if (event.key !== 'Enter' || event.shiftKey || event.isComposing || event.keyCode === 229) return;
@@ -144,6 +156,10 @@ export class ChatView {
 
   renderMessages(messages: readonly ChatMessage[]): void {
     if (this.disposed) return;
+    if (messages.length === 0) {
+      this.pendingAnnouncement = null; this.announced.clear();
+      if (this.announcement.textContent) this.announcement.textContent = '';
+    }
     const atBottom = this.open ? this.scroller.scrollHeight - this.scroller.scrollTop - this.scroller.clientHeight <= 40 : this.closedAtBottom;
     const previousTop = this.open ? this.scroller.scrollTop : this.closedScrollTop;
     const ids = new Set(messages.map(message => message.id));
@@ -166,6 +182,18 @@ export class ChatView {
     this.empty.hidden = messages.length > 0;
     if (this.open) this.scroller.scrollTop = atBottom ? this.scroller.scrollHeight : previousTop;
     else { this.closedAtBottom = atBottom; this.closedScrollTop = previousTop; }
+    this.updateLatest();
+  }
+
+  private updateLatest(): void {
+    this.latest.hidden = this.scroller.scrollHeight - this.scroller.scrollTop - this.scroller.clientHeight <= 40;
+  }
+
+  private announce(reply: ChatMessage): void {
+    if (this.announced.has(reply.id)) return;
+    if (!this.open) { this.pendingAnnouncement = reply; return; }
+    this.pendingAnnouncement = null; this.announced.add(reply.id);
+    this.announcement.textContent = `Vita: ${reply.text}`;
   }
 
   setOpen(open: boolean): void {
@@ -173,15 +201,19 @@ export class ChatView {
     if (!open) {
       this.closedScrollTop = this.scroller.scrollTop;
       this.closedAtBottom = this.scroller.scrollHeight - this.scroller.scrollTop - this.scroller.clientHeight <= 40;
+      // Reexpor o painel não deve reexpor um anúncio antigo preenchido.
+      this.announcement.textContent = '';
     }
     this.open = open; this.container.hidden = !open;
     if (open) {
       this.scroller.scrollTop = this.closedAtBottom ? this.scroller.scrollHeight : this.closedScrollTop;
+      this.updateLatest();
       this.focusInput();
+      if (this.pendingAnnouncement) this.announce(this.pendingAnnouncement);
     }
   }
 
-  focusInput(): void { if (!this.disposed && this.open) this.input.focus({ preventScroll: true }); }
+  focusInput(): void { if (!this.disposed && this.open) this.input.focus(); }
 
   setReducedMotion(enabled: boolean): void {
     if (this.disposed) return;
@@ -211,7 +243,7 @@ export class ChatView {
       const finish = (): void => {
         if (settled) return;
         if (signal.aborted || this.disposed) { abort(); return; }
-        settled = true; cleanup(); this.renderMessages(messages); resolve();
+        settled = true; cleanup(); this.renderMessages(messages); this.announce(reply); resolve();
       };
       const session = { abort, finish }; this.presentation = session;
       const tick = (): void => {

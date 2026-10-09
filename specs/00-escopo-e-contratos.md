@@ -101,6 +101,12 @@ Nenhuma atualização por frame da personagem passa pelo store. Nenhum texto do 
 
 ## Ciclo da conversa
 
+### Responsividade e acessibilidade da fase 11
+
+Contratos de domínio, provider e ScenePort preservados. No desktop, o painel mede 340–400 px; até 880 px, cena e chat ficam empilhados, com alturas em `dvh` e fallback `vh`, formulário no fluxo normal e alvos de ação de pelo menos 44 px. O enquadramento frontal interpola os parâmetros compactos e completos pela proporção real do contêiner, somente em resize, sem animar a câmera.
+
+O histórico continua navegável por teclado com `role=log`, mas `aria-live=off` impede anúncios da apresentação parcial. Uma região separada `role=status`, polite e atômica recebe apenas a resposta completa, uma vez por ID ao terminar a apresentação. Se o painel estiver fechado, o anúncio espera a reabertura; reset remove o anúncio pendente. A ação “Ver mensagens recentes” leva ao fim sem perder o foco no histórico. Atualizações não retiram o leitor de mensagens anteriores.
+
 ### Integração da fase 10
 
 `ScenePort.resetFace()` passa a explicitar o método já existente para neutralizar olhos/boca ao reiniciar ou encerrar a conversa. `AppController` recebe contêineres de UI e dependências opcionais de provider/store/fábrica de cena para verificação; monta as views e coordena uma única solicitação com AbortController e ID do store. O construtor de três argumentos permanece compatível com os testes anteriores de cena.

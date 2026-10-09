@@ -1,6 +1,6 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–10 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. O chat de produção está integrado à personagem, com resposta gradual, reinício cancelável e preferências funcionais.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–11 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. O chat de produção está integrado à personagem, com resposta gradual, reinício cancelável, preferências funcionais e layout adaptado a desktop/celular.
 
 ## Ambiente
 
@@ -80,7 +80,19 @@ Na página principal, envie “Olá!”. A personagem passa de repouso para pens
 
 Abra `/tests/app-controller.html` no servidor de desenvolvimento: executa 18 checks de integração com provider/relógio/cena controlados e oferece uma demonstração separada com WebGL/GLB reais. Os botões permitem simular erro do provider, perder/restaurar contexto gráfico e gravar o fluxo integrado. O vídeo compõe o canvas real com o texto apresentado no DOM usando o loop existente; não adiciona loop de produção. Essas ferramentas não entram no build de produção.
 
-[Evidências e limites](specs/evidencias/fase-10/verificacao.md), [vídeo](specs/evidencias/fase-10/fluxo-integrado.webm) e [preview](specs/evidencias/fase-10/preview.jpg). Responsividade/acessibilidade completa e desempenho permanecem nas fases 11 e 12.
+[Evidências e limites](specs/evidencias/fase-10/verificacao.md), [vídeo](specs/evidencias/fase-10/fluxo-integrado.webm) e [preview](specs/evidencias/fase-10/preview.jpg). A fase 11 acrescenta os ajustes abaixo; desempenho e entrega final permanecem na fase 12.
+
+### Responsividade e acessibilidade — fase 11
+
+Desktop reserva 340–400 px ao chat e o restante à cena. Até 880 px, a cena fica acima do chat. Alturas dinâmicas (`dvh`, com fallback `vh`) ajustam cena/histórico, e o formulário permanece no fluxo normal da página, permitindo rolar até o campo e o envio quando sobra pouca altura. Botões e seletor têm pelo menos 44 px de altura; textarea móvel usa fonte de 16 px. O enquadramento frontal muda somente no resize, aproximando rosto e mãos em proporções estreitas. Parâmetros em `sceneConfig.composition.compact`.
+
+Tab navega pelos controles, fechamento, histórico, campo e ações. Enter envia, Shift+Enter quebra a linha, Enter/Espaço ativam botões; fechar devolve o foco ao controle externo e abrir leva ao campo, com rolagem nativa de foco. Ao ler mensagens anteriores, as atualizações preservam a posição. **Ver mensagens recentes** leva ao fim e deixa o foco no histórico.
+
+A região visual do histórico não anuncia letras. Uma região acessível separada publica a resposta completa uma vez por ID. Com o painel fechado, o anúncio espera a reabertura; reiniciar cancela o anúncio pendente. Movimento reduzido segue o sistema até uma escolha manual, suspende gestos/piscar e entrega texto imediatamente, sem câmera animada.
+
+Abra `/tests/accessibility.html` em desenvolvimento para 28 verificações de anúncio, cancelamento, foco, rolagem, preferência e enquadramento com GLB/renderer reais. A demonstração permite preparar histórico longo. Regressões de interface, integração, cena, ambiente, corpo e face também foram reexecutadas. [Matriz e evidências](specs/evidencias/fase-11/verificacao.md).
+
+Preview verificado em larguras de 360, 390, 768 e 1440 px, orientação retrato/paisagem e altura reduzida de 360 px. Cobertura móvel apenas por emulação; sem teste de teclado virtual físico ou leitor de tela real. A publicação única foi verificada no DOM/ARIA, sem afirmar comportamento idêntico de todos os leitores de tela.
 
 ### Renderer e ciclo de vida
 

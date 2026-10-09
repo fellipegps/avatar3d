@@ -1,0 +1,151 @@
+[
+  {
+    "action": "close-enter",
+    "state": {
+      "focus": "Abrir conversa",
+      "panelHidden": true
+    }
+  },
+  {
+    "action": "open-enter",
+    "state": {
+      "focus": "TEXTAREA",
+      "panelHidden": false
+    }
+  },
+  {
+    "action": "reply-reduced-motion",
+    "state": {
+      "label": "desktop-1440",
+      "announcement": "Vita: Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?",
+      "canvas": {
+        "height": 440,
+        "width": 954,
+        "x": 33,
+        "y": 244
+      },
+      "canvasCount": 1,
+      "clientWidth": 1440,
+      "draft": "",
+      "focus": "TEXTAREA",
+      "history": {
+        "height": 260,
+        "width": 398,
+        "x": 1009,
+        "y": 264
+      },
+      "input": {
+        "height": 89,
+        "width": 362,
+        "x": 1027,
+        "y": 608.1875
+      },
+      "messages": [
+        "Olá!",
+        "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+      ],
+      "panel": {
+        "height": 612.75,
+        "width": 400,
+        "x": 1008,
+        "y": 182
+      },
+      "quality": "economy",
+      "reducedMotion": true,
+      "scrollWidth": 1440,
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  },
+  {
+    "action": "shift-enter",
+    "state": {
+      "label": "multiline",
+      "announcement": "Vita: Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?",
+      "canvas": {
+        "height": 440,
+        "width": 954,
+        "x": 33,
+        "y": 244
+      },
+      "canvasCount": 1,
+      "clientWidth": 1440,
+      "draft": "Primeira linha\n",
+      "focus": "TEXTAREA",
+      "history": {
+        "height": 260,
+        "width": 398,
+        "x": 1009,
+        "y": 264
+      },
+      "input": {
+        "height": 89,
+        "width": 362,
+        "x": 1027,
+        "y": 608.1875
+      },
+      "messages": [
+        "Olá!",
+        "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+      ],
+      "panel": {
+        "height": 612.75,
+        "width": 400,
+        "x": 1008,
+        "y": 182
+      },
+      "quality": "economy",
+      "reducedMotion": true,
+      "scrollWidth": 1440,
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  },
+  {
+    "action": "reset-enter",
+    "state": {
+      "label": "reset",
+      "announcement": "",
+      "canvas": {
+        "height": 440,
+        "width": 954,
+        "x": 33,
+        "y": 244
+      },
+      "canvasCount": 1,
+      "clientWidth": 1440,
+      "draft": "",
+      "focus": "TEXTAREA",
+      "history": {
+        "height": 260,
+        "width": 398,
+        "x": 1009,
+        "y": 264
+      },
+      "input": {
+        "height": 89,
+        "width": 362,
+        "x": 1027,
+        "y": 608.1875
+      },
+      "messages": [],
+      "panel": {
+        "height": 612.75,
+        "width": 400,
+        "x": 1008,
+        "y": 182
+      },
+      "quality": "economy",
+      "reducedMotion": true,
+      "scrollWidth": 1440,
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  }
+]

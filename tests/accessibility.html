@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Responsividade e acessibilidade · Fase 11</title></head>
+<body><div id="app">
+  <header class="app-header"><div><p class="eyebrow">Verificação · Fase 11</p><h1>Responsividade e acessibilidade</h1></div></header>
+  <p id="summary" role="status">Executando…</p>
+  <div id="test-host"></div>
+  <details><summary>Resultados automatizados</summary><pre id="results" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+  <section class="chat-demo"><p>Demonstração com cena real · Somente desenvolvimento</p>
+    <button id="long-history" class="button-quiet">Preparar histórico longo</button>
+    <pre id="inspection" style="white-space:pre-wrap"></pre>
+  </section>
+  <nav id="live-controls" aria-label="Controles da experiência"></nav>
+  <main id="live-layout" class="app-layout">
+    <section class="scene-panel"><header class="panel-header"><h2>Espaço 3D</h2><span id="live-status" class="panel-meta" role="status"></span></header>
+      <div id="live-scene" class="scene-container"><p id="live-fallback" class="scene-placeholder" role="alert" hidden></p></div>
+      <p class="scene-caption">Vita em escritório 3D · Painéis DEMO</p></section>
+    <aside id="live-panel" class="interface-panel"></aside>
+  </main>
+</div><script type="module" src="./accessibility.browser.ts"></script></body></html>

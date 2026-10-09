@@ -166,9 +166,14 @@ export class SceneController implements ScenePort {
     if (this.environment) this.environment.root.visible = view === 'room' || view === 'side';
     if (view === 'room' || view === 'side') {
       const config = sceneConfig.composition;
-      const distance = Math.max(config.halfHeight, config.halfWidth / this.camera.aspect)
+      // Ajuste estático por proporção, sem tween ou movimento contínuo de câmera.
+      const compact = config.compact;
+      const blend = view === 'side' ? 1 : Math.min(1, Math.max(0, (this.camera.aspect - compact.aspect) / (compact.fullAspect - compact.aspect)));
+      const halfHeight = compact.halfHeight + (config.halfHeight - compact.halfHeight) * blend;
+      const halfWidth = compact.halfWidth + (config.halfWidth - compact.halfWidth) * blend;
+      const distance = Math.max(halfHeight, halfWidth / this.camera.aspect)
         / Math.tan(this.camera.fov * Math.PI / 360);
-      const target = new Vector3(...config.target);
+      const target = new Vector3(...compact.target).lerp(new Vector3(...config.target), blend);
       const direction = view === 'side' ? config.sideDirection : config.frontDirection;
       this.camera.position.copy(new Vector3(...direction).normalize().multiplyScalar(distance).add(target));
       this.camera.lookAt(target);

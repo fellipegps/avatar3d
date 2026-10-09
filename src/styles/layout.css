@@ -1,7 +1,7 @@
 .experience-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-bottom: 18px; }
-.experience-controls label { display: flex; align-items: center; gap: 8px; color: #b8c6d3; font-size: 0.8rem; }
+.experience-controls label { display: flex; align-items: center; gap: 8px; min-height: 44px; color: #b8c6d3; font-size: 0.8rem; }
 .controls-notice { color: #9eafc0; font-size: 0.75rem; }
-.app-layout { grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr); align-items: start; }
+.app-layout { grid-template-columns: minmax(0, 1fr) clamp(340px, 28vw, 400px); align-items: start; }
 .app-layout.chat-is-closed { grid-template-columns: minmax(0, 1fr); }
 .chat-demo { margin-top: 18px; padding: 16px; border: 1px dashed #526578; border-radius: 10px; font-size: 0.8rem; color: #b8c6d3; }
 .chat-demo p { margin-bottom: 12px; line-height: 1.5; }
@@ -9,7 +9,12 @@
 .chat-demo details { margin-top: 12px; }
 .chat-demo pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 200px; overflow: auto; }
 @media (max-width: 880px) {
+  #app { padding: 20px 16px max(20px, env(safe-area-inset-bottom)); }
+  .app-header { flex-wrap: wrap; margin-bottom: 20px; }
   .app-layout { grid-template-columns: minmax(0, 1fr); }
   .experience-controls { align-items: flex-start; gap: 12px; }
   .controls-notice { flex-basis: 100%; }
+  .scene-container { height: clamp(220px, 40vh, 340px); height: clamp(220px, 40dvh, 340px); }
+  .panel-header { padding: 16px; flex-wrap: wrap; }
+  .scene-caption { padding: 12px 16px; }
 }

@@ -1,0 +1,232 @@
+[
+  {
+    "name": "Rejeita mesh inexistente no carregamento",
+    "passed": true,
+    "details": "Error: Mesh facial ausente: missing"
+  },
+  {
+    "name": "Rejeita olhos inexistentes no carregamento",
+    "passed": true,
+    "details": "Error: Controle facial ausente ou inválido em VitaFace: missing"
+  },
+  {
+    "name": "Rejeita boca inexistente no carregamento",
+    "passed": true,
+    "details": "Error: Controle facial ausente ou inválido em VitaFace: missing"
+  },
+  {
+    "name": "Rejeita lista facial vazia no carregamento",
+    "passed": true,
+    "details": "Error: Mapeamento facial inválido."
+  },
+  {
+    "name": "Rejeita controles sobrepostos no carregamento",
+    "passed": true,
+    "details": "Error: Mapeamento facial inválido."
+  },
+  {
+    "name": "Índice inválido é rejeitado",
+    "passed": true,
+    "details": "Error: Controle facial ausente ou inválido em VitaFace: Face.M_F00_000_00_Fcl_MTH_A"
+  },
+  {
+    "name": "Configuração de tempo inválida é rejeitada",
+    "passed": true,
+    "details": "Error: Tempos do piscar inválidos."
+  },
+  {
+    "name": "Nove meshes começam com olhos e boca neutros",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Boca 0 alcança todos os meshes sem mudar olhos",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Boca 0.5 alcança todos os meshes sem mudar olhos",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Boca 1 alcança todos os meshes sem mudar olhos",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Clamp facial de -5",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Clamp facial de 4",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Clamp facial de NaN",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Clamp facial de Infinity",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Clamp facial de -Infinity",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Deformação real da boca é não nula e intermediária em 0,5",
+    "passed": true,
+    "details": {
+      "vertex": 231,
+      "displacementAtOne": 0.012836259603961208,
+      "halfError": 5.421010862427522e-20
+    }
+  },
+  {
+    "name": "Olhos fechados não alteram boca intermediária",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Boca máxima não abre olhos fechados",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Reset neutraliza ambos os canais imediatamente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Intervalos configuráveis cobrem mínimo e máximo",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Piscar fecha e reabre suavemente preservando boca",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Teste alcança piscar em andamento",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Movimento reduzido cancela o piscar e desativa repetição",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Ajustes manuais estáticos funcionam em movimento reduzido",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Retomada espera novo intervalo sem rajada de piscadas",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Piscar automático pode ser desativado",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Delta de suspensão não comprime vários piscados",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Deltas inválidos preservam expressão",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Descarte neutraliza face e ignora comandos tardios",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Mesmo tempo produz a mesma abertura a 30 e 120 atualizações/s",
+    "passed": true,
+    "details": [
+      0.7407407407408,
+      0.7407407407408948
+    ]
+  },
+  {
+    "name": "Piscar automático durante idle, boca 0 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante idle, boca 0.5 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante idle, boca 1 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante thinking, boca 0 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante thinking, boca 0.5 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante thinking, boca 1 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante responding, boca 0 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante responding, boca 0.5 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Piscar automático durante responding, boca 1 e corpo ativo",
+    "passed": true,
+    "details": {
+      "peak": 1
+    }
+  },
+  {
+    "name": "Reset do controlador corporal neutraliza rosto",
+    "passed": true,
+    "details": null
+  }
+]
