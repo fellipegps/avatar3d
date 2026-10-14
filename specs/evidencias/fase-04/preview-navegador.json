@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-07",
+  "url": "http://127.0.0.1:4173/",
+  "dom": "- banner:\n  - paragraph: MVP · Fase 04\n  - heading \"Avatar 3D\" [level=1]\n  - generic: Cena WebGL 2\n- main:\n  - region \"Espaço 3D\":\n    - heading \"Espaço 3D\" [level=2]\n    - status: Vita · Modelo carregado\n    - img \"Vita atrás da mesa no escritório 3D, com monitores, luminária, planta e caneca\"\n    - paragraph: Vita · Personagem por pixiv / VRoid Project (CC0) · Escritório 3D em construção\n  - complementary \"Conversa local\":\n    - heading \"Conversa local\" [level=2]\n    - generic: DEMO\n    - text: Interface\n    - heading \"Vamos conversar por aqui.\" [level=3]\n    - paragraph: Esta área receberá o histórico, a entrada de mensagens e os controles da experiência.\n    - paragraph: Chat disponível em uma fase futura.\n- contentinfo: Protótipo local · Estrutura inicial",
+  "observed": {
+    "canvas": {
+      "height": 440,
+      "width": 795
+    },
+    "canvases": 1,
+    "height": 720,
+    "inspectors": 0,
+    "status": "Vita · Modelo carregado",
+    "width": 1280
+  },
+  "logs": []
+}

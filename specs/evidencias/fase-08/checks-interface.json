@@ -1,0 +1,157 @@
+[
+  {
+    "name": "Chat DOM independente de canvas",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Produção começa com envio/reinício e preferências indisponíveis",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Envio indisponível não emite intenção",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Entrada vazia é rejeitada com orientação",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Enter emite mensagem completa normalizada",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "View preserva rascunho até decisão da coordenação",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Shift+Enter libera quebra de linha sem envio",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Enter durante composição IME não envia",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "waiting: preserva texto, seleção e foco",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "waiting: bloqueia envio e permite continuar digitando/reiniciar",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "revealing: preserva texto, seleção e foco",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "revealing: bloqueia envio e permite continuar digitando/reiniciar",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "error: preserva texto, seleção e foco",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Erro é texto literal em região de alerta",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "idle: preserva texto, seleção e foco",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "API limita rascunho e textarea declara maxlength",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Truncamento não deixa metade de emoji",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Submissão defensiva rejeita texto maior que o limite",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Evento input aplica limite e atualiza contador",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Tags HTML são texto; nenhum elemento executável é criado",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Snapshots e estados não recriam mensagem nem textarea",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Nova conversa acompanha o final quando já estava no final",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Novas mensagens preservam leitura de histórico antigo",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Mensagem longa sem espaços não causa rolagem horizontal",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Fechar emite evento, oculta painel e devolve foco ao botão externo",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Reabrir preserva mensagens, rascunho, rolagem e foco de escrita",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Controles têm rótulos e relação de expansão acessíveis",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Campo de escrita tem foco visível",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Qualidade e movimento emitem valores tipados",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Reinício emite intenção sem apagar dados por conta própria",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Descarte idempotente remove DOM/listeners e ignora trabalho tardio",
+    "passed": true,
+    "details": null
+  }
+]

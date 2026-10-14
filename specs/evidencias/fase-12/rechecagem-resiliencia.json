@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Download travado termina com TimeoutError e aborta a requisição",
+    "passed": true
+  },
+  {
+    "name": "Aborto encerra a espera mesmo com parse pendente",
+    "passed": true
+  },
+  {
+    "name": "Parse tardio libera cada geometria uma única vez",
+    "passed": true,
+    "details": {
+      "geometries": 16,
+      "disposed": 16
+    }
+  },
+  {
+    "name": "HTTP 404 mostra fallback estático e tentativa habilitada",
+    "passed": true
+  },
+  {
+    "name": "Chat responde com GLB indisponível",
+    "passed": true
+  },
+  {
+    "name": "Tentativa mostra carregamento, bloqueia repetição e preserva histórico",
+    "passed": true
+  },
+  {
+    "name": "Recarga de GLB reutiliza renderer e um canvas",
+    "passed": true
+  },
+  {
+    "name": "Três recargas estabilizam geometrias/texturas/programas",
+    "passed": true,
+    "details": [
+      {
+        "calls": 59,
+        "triangles": 28664,
+        "geometries": 24,
+        "textures": 32,
+        "programs": 10,
+        "width": 820,
+        "height": 440,
+        "pixelRatio": 1,
+        "shadowMap": false
+      },
+      {
+        "calls": 59,
+        "triangles": 28664,
+        "geometries": 24,
+        "textures": 32,
+        "programs": 10,
+        "width": 820,
+        "height": 440,
+        "pixelRatio": 1,
+        "shadowMap": false
+      },
+      {
+        "calls": 59,
+        "triangles": 28664,
+        "geometries": 24,
+        "textures": 32,
+        "programs": 10,
+        "width": 820,
+        "height": 440,
+        "pixelRatio": 1,
+        "shadowMap": false
+      },
+      {
+        "calls": 59,
+        "triangles": 28664,
+        "geometries": 24,
+        "textures": 32,
+        "programs": 10,
+        "width": 820,
+        "height": 440,
+        "pixelRatio": 1,
+        "shadowMap": false
+      }
+    ]
+  },
+  {
+    "name": "Perda real de contexto mostra feedback e mantém chat",
+    "passed": true
+  },
+  {
+    "name": "Chat completa resposta durante perda de contexto",
+    "passed": true
+  },
+  {
+    "name": "Recuperação nativa retoma o mesmo canvas e modelo",
+    "passed": true
+  },
+  {
+    "name": "Reinício manual após perda troca renderer sem duplicar canvas ou conversa",
+    "passed": true
+  },
+  {
+    "name": "Sem WebGL 2: zero canvas, imagem de fallback e conversa completa",
+    "passed": true
+  },
+  {
+    "name": "Nova tentativa recupera renderer ausente sem apagar conversa",
+    "passed": true
+  },
+  {
+    "name": "Descarte repetido remove canvas e estado de carregamento",
+    "passed": true
+  }
+]

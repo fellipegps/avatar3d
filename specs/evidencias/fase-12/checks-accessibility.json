@@ -1,0 +1,494 @@
+[
+  {
+    "name": "Histórico navegável, sem live por letra; região completa polite e atômica",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Texto parcial não publica anúncio acessível",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Resposta completa publicada uma única vez",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Render repetido e conclusão duplicada não repetem anúncio",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Respostas iguais com IDs diferentes são anunciadas uma vez cada",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Abort durante texto não anuncia resposta cancelada",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Fechar esvazia região para não reexpor anúncio antigo ao abrir",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Painel fechado adia anúncio até ficar acessível",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Reabrir anuncia resposta pendente uma vez e foca campo",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Reabrir novamente não repete resposta",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Reinício limpa anúncio e resposta pendente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Atualização longa preserva leitura anterior e oferece acesso ao fim",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Acesso ao fim mostra última mensagem e mantém foco no histórico",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Botões principais têm área de pelo menos 44 px",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Preferência inicial do sistema reduz movimento e apresenta texto imediatamente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Mudança do sistema atualiza controles e cena antes de escolha manual",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Preferência manual prevalece sobre alteração posterior do sistema",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Descarte remove listener da preferência",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "326×300: cabeça/mãos dentro do quadro nos três estados",
+    "passed": true,
+    "details": [
+      {
+        "state": "idle",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.00040129198045678983,
+              0.36442083174451106,
+              0.926460840016917
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.228282711983411,
+              -0.17904860987940266,
+              0.9272989775368028
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.22907493108272417,
+              -0.17904835724876222,
+              0.92729895116987
+            ]
+          }
+        ]
+      },
+      {
+        "state": "thinking",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              0.004628582294073759,
+              0.36376589498695194,
+              0.9263937469930142
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.22829814415754474,
+              -0.17908220924697987,
+              0.9272939275263493
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.23798585336729544,
+              -0.17238876412649037,
+              0.9259789821037525
+            ]
+          }
+        ]
+      },
+      {
+        "state": "responding",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.00040115544174293026,
+              0.3643120267432766,
+              0.9264865427311579
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.22833275905174266,
+              -0.17915697641598616,
+              0.9272826001802456
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.3024431454591475,
+              -0.12587990673255733,
+              0.9242059980398484
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "326×300: resize conserva canvas/câmera e aspecto correto",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "356×337: cabeça/mãos dentro do quadro nos três estados",
+    "passed": true,
+    "details": [
+      {
+        "state": "idle",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.0004184384102752788,
+              0.3619757167562624,
+              0.9254285060157165
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.23795362832916533,
+              -0.18874135630824848,
+              0.9263045528308157
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.2387794099658367,
+              -0.1887411047802893,
+              0.9263045257484798
+            ]
+          }
+        ]
+      },
+      {
+        "state": "thinking",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              0.004825880519697589,
+              0.36127175550218904,
+              0.9253688878057356
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.23798854400366948,
+              -0.18881591091108696,
+              0.9262934455091303
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.2481457806197797,
+              -0.18220422460038294,
+              0.9249426430516126
+            ]
+          }
+        ]
+      },
+      {
+        "state": "responding",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.0004182435413233508,
+              0.3618285691763299,
+              0.9254641666925135
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.23802501715532126,
+              -0.18889297570699357,
+              0.926281842725165
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.3154533182387393,
+              -0.13528685116046568,
+              0.923120901146388
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "356×337: resize conserva canvas/câmera e aspecto correto",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "734×340: cabeça/mãos dentro do quadro nos três estados",
+    "passed": true,
+    "details": [
+      {
+        "state": "idle",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.00015899156682516665,
+              0.4034983667922119,
+              0.9425429381871888
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.09064566061971488,
+              -0.025597768827694985,
+              0.9430724719262467
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.09096022529845858,
+              -0.025597527574985228,
+              0.9430724555132044
+            ]
+          }
+        ]
+      },
+      {
+        "state": "thinking",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              0.0018333219188808787,
+              0.40297713363160503,
+              0.9425069629963369
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.09065598104421228,
+              -0.02563704323501027,
+              0.9430657625287788
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.0941530629464628,
+              -0.018253475294390066,
+              0.9422504451220363
+            ]
+          }
+        ]
+      },
+      {
+        "state": "responding",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.00015893409920965002,
+              0.4033691496163227,
+              0.9425644297083212
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.090666817953257,
+              -0.025677647440135624,
+              0.9430587173602281
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.11905935341361236,
+              0.02092737125884155,
+              0.9411607497209733
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "734×340: resize conserva canvas/câmera e aspecto correto",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "956×440: cabeça/mãos dentro do quadro nos três estados",
+    "passed": true,
+    "details": [
+      {
+        "state": "idle",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.00015797416833124046,
+              0.40349841654421625,
+              0.9425429297890161
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.09006559157560677,
+              -0.025597737153287965,
+              0.9430724772968655
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.09037814325968131,
+              -0.02559749590173665,
+              0.9430724608838182
+            ]
+          }
+        ]
+      },
+      {
+        "state": "thinking",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              0.0018215901025159008,
+              0.40297713363160503,
+              0.9425069629963369
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.09007585416576049,
+              -0.02563704323501027,
+              0.9430657625287788
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.09355055749812215,
+              -0.018253475294390066,
+              0.9422504451220363
+            ]
+          }
+        ]
+      },
+      {
+        "state": "responding",
+        "projected": [
+          {
+            "name": "J_Bip_C_Head",
+            "ndc": [
+              -0.00015791697812984776,
+              0.4033689934216474,
+              0.9425644553102478
+            ]
+          },
+          {
+            "name": "J_Bip_L_Hand",
+            "ndc": [
+              0.09008664678930098,
+              -0.025677741189873277,
+              0.9430587009621536
+            ]
+          },
+          {
+            "name": "J_Bip_R_Hand",
+            "ndc": [
+              -0.1182986638603798,
+              0.02094049207915814,
+              0.9411602931280519
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "956×440: resize conserva canvas/câmera e aspecto correto",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Movimento reduzido congela clipes e não anima câmera",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Canvas tem descrição textual e não recebe foco essencial do chat",
+    "passed": true,
+    "details": null
+  }
+]

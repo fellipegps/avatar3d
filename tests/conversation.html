@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Conversa local · Fase 09</title></head>
+  <body><main id="app">
+    <p class="eyebrow">Verificação · Fase 09 · Somente desenvolvimento</p>
+    <h1>Conversa local</h1>
+    <p>Respostas pré-definidas, sem rede, UI 3D ou apresentação gradual. Latência: 800 ms.</p>
+    <p>Após receber o texto completo, use Concluir apresentação para voltar ao estado pronto.</p>
+    <div class="experience-controls" style="margin-top:20px">
+      <button id="toggle" class="button-quiet" aria-expanded="true" aria-controls="chat-panel">Fechar conversa</button>
+      <label><input id="simulate-error" type="checkbox" /> Simular falha na próxima resposta</label>
+      <button id="cancel" class="button-quiet" disabled>Cancelar resposta</button>
+      <button id="complete" class="button-quiet" disabled>Concluir apresentação</button>
+    </div>
+    <aside id="chat-panel" class="interface-panel" style="max-width:520px;margin:20px 0"></aside>
+    <p id="domain-status" role="status"></p>
+    <details><summary>Estado e transições</summary><pre id="domain-state" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+  </main><script type="module" src="./conversation.browser.ts"></script></body>
+</html>

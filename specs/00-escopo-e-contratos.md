@@ -6,9 +6,15 @@ Versão da especificação: 1.0. Data: 5 de outubro de 2026. Este arquivo define
 
 A arquitetura se baseia no e-mail de Marlon fornecido por Fellipe e na captura do site Kady. O e-mail informa JavaScript modular com Vite, UI no DOM, Three.js, modelos do Blender em GLB, animação esquelética, atlas facial e abertura de boca pela amplitude do áudio. O funcionamento do site ao vivo e seu código não foram verificados.
 
-Assumimos uma personagem estilizada atrás de uma mesa, sala escura com monitores, luminária, planta e caneca, acentos luminosos e chat lateral. Não existe um GLB fornecido nesta documentação. A aparência final depende do asset escolhido; selecionar modelo próprio ou licenciado e registrar a origem.
+Assumimos uma personagem estilizada atrás de uma mesa, sala escura com monitores, luminária, planta e caneca, acentos luminosos e chat lateral. O planejamento original não fornecia um GLB. Na fase 03, em 07/10/2026, foi selecionada Vita (pixiv / VRoid Project, CC0), adaptada para GLB com clipes feitos no próprio rig. [Origem e adaptações](../assets/credits.md); [validação](evidencias/fase-03/verificacao.md). Na fase 04, foi construída e verificada a composição geométrica atrás da mesa, com materiais e iluminação provisórios; [evidências](evidencias/fase-04/verificacao.md).
 
 ## Resultado do núcleo
+
+Na fase 05, o escritório recebeu materiais escuros, acentos emissivos, luzes ambiente/rosto/contorno, luz explícita da luminária e painéis CanvasTexture locais identificados como DEMO. Foram escolhidas sombras de contato radiais, sem shadow maps. Os contratos públicos abaixo permanecem iguais; [verificação e métricas](evidencias/fase-05/verificacao.md).
+
+Na fase 06, `CharacterController` passou a executar os três clipes mapeados com mistura ajustável de 0,3 s no loop existente. Cada estado é sustentado em loop até outro comando; `idle` encerra a resposta. Comandos repetidos preservam o tempo, trocas durante uma mistura partem dos pesos atuais e movimento reduzido congela a pose até a retomada, guardando o último pedido. Cópias dos clipes excluem animação do transform global e translação dos nós de root motion definidos no manifesto; morph targets corporais são rejeitados. `ScenePort` permanece igual; [verificação e vídeo](evidencias/fase-06/verificacao.md).
+
+Na fase 07, `FaceController` passou a resolver os índices de olhos/boca pelo manifesto, com a mesma validação usada no carregamento. Atualização facial após o mixer no loop único; piscar automático com espera de 2,5–5,5 s e ciclo de 0,2 s, configuráveis. Movimento reduzido suspende o piscar e permite ajustes manuais estáticos. Boca normalizada de 0 a 1; não há simulação automática de fala. `resetFace()` na personagem/cena neutraliza os dois canais, preservando a preferência de automático; ajuste manual de olhos o desativa até nova ativação explícita. Esses métodos adicionais de coordenação/inspeção não alteram o contrato mínimo de `ScenePort`; [evidências e limites](evidencias/fase-07/verificacao.md).
 
 - Personagem 3D com rig e clipes para repouso, pensamento e resposta.
 - Piscar e controle de abertura da boca compatíveis com o modelo.
@@ -68,6 +74,7 @@ interface ChatProvider {
 interface ScenePort {
   setCharacterState(state: CharacterState): void;
   setMouthOpen(value: number): void;
+  resetFace(): void;
   setReducedMotion(enabled: boolean): void;
   setQuality(profile: QualityProfile): void;
   dispose(): void;
@@ -93,6 +100,30 @@ Nomes lógicos dos estados não equivalem aos nomes reais dos clipes. O manifest
 Nenhuma atualização por frame da personagem passa pelo store. Nenhum texto do chat é interpretado dentro da cena. A UI recebe a mensagem completa do domínio; a apresentação gradual é uma atividade cancelável da UI, sem gravar uma nova versão no store a cada letra.
 
 ## Ciclo da conversa
+
+### Responsividade e acessibilidade da fase 11
+
+Contratos de domínio, provider e ScenePort preservados. No desktop, o painel mede 340–400 px; até 880 px, cena e chat ficam empilhados, com alturas em `dvh` e fallback `vh`, formulário no fluxo normal e alvos de ação de pelo menos 44 px. O enquadramento frontal interpola os parâmetros compactos e completos pela proporção real do contêiner, somente em resize, sem animar a câmera.
+
+O histórico continua navegável por teclado com `role=log`, mas `aria-live=off` impede anúncios da apresentação parcial. Uma região separada `role=status`, polite e atômica recebe apenas a resposta completa, uma vez por ID ao terminar a apresentação. Se o painel estiver fechado, o anúncio espera a reabertura; reset remove o anúncio pendente. A ação “Ver mensagens recentes” leva ao fim sem perder o foco no histórico. Atualizações não retiram o leitor de mensagens anteriores.
+
+### Integração da fase 10
+
+`ScenePort.resetFace()` passa a explicitar o método já existente para neutralizar olhos/boca ao reiniciar ou encerrar a conversa. `AppController` recebe contêineres de UI e dependências opcionais de provider/store/fábrica de cena para verificação; monta as views e coordena uma única solicitação com AbortController e ID do store. O construtor de três argumentos permanece compatível com os testes anteriores de cena.
+
+`ChatView.presentMessages(messages, replyId, signal)` recebe o texto completo e apresenta uma cópia parcial no DOM, usando timer cancelável e tempo decorrido; não grava letras no store. Movimento reduzido exibe a resposta imediatamente. Reinício/descarte abortam provider e apresentação antes de limpar o histórico. Preferência manual de movimento prevalece sobre mudanças posteriores do sistema durante a sessão.
+
+### Contratos adicionais entregues na fase 09
+
+`ConversationSnapshot` contém mensagens somente de leitura, fase, erro opcional e `activeRequestId` numérico ou `null`. `ConversationStore` oferece início, recebimento, conclusão de apresentação, falha, cancelamento, reinício e inscrição; mutações de uma solicitação exigem seu ID ativo. O ID nunca é reutilizado no mesmo store, inclusive após reinício, impedindo escrita tardia. O histórico conserva o texto original; a normalização pertence somente à seleção de intenção do provider.
+
+O limite de 2.000 unidades UTF-16 é uma constante compartilhada nos contratos, preservando o valor e a exportação atual da UI. O provider usa 800 ms por padrão, com agendador/latência injetáveis para testes sem espera real. Cancelamento rejeita com `AbortError` e libera timer/listener. O store não chama provider nem aborta sinais: essa coordenação pertence ao AppController, entregue na fase 10. Falha simulada fica em módulo DEV/verificação separado, sem gatilho textual no provider de produção. [Evidências da fase 09](evidencias/fase-09/verificacao.md).
+
+### Camada DOM entregue na fase 08
+
+`ChatView` recebe snapshots `readonly ChatMessage[]`, fase visual e disponibilidade; emite intenções de envio, reinício e fechamento. `ControlsView` emite abertura, `QualityProfile` e movimento reduzido. Ambas liberam listeners no descarte e não importam Three.js, store ou provider. O limite de entrada é de 2.000 unidades UTF-16 (`maxlength`). A coordenação decide quando limpar o rascunho; a view preserva texto, seleção e foco ao receber estados. Mensagens usam `textContent` e IDs estáveis, com rolagem preservada quando o leitor estiver longe do final.
+
+A fixture DEV da fase 08 demonstra esses eventos sem respostas ou comandos à personagem em `/tests/chat.html`. Store/provider foram entregues separadamente na fase 09. A fase 10 habilita envio, reinício e preferências na aplicação principal, com apresentação gradual e comandos à personagem. `ChatProvider` permanece igual; `ScenePort` explicita `resetFace()` conforme registrado acima.
 
 | Evento | Fase | Personagem |
 | --- | --- | --- |

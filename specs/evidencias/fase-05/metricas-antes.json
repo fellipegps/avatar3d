@@ -1,0 +1,11 @@
+{
+  "calls": 51,
+  "triangles": 28618,
+  "geometries": 23,
+  "textures": 29,
+  "programs": 8,
+  "width": 795,
+  "height": 440,
+  "pixelRatio": 1,
+  "shadowMap": false
+}

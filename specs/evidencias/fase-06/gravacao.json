@@ -1,0 +1,58 @@
+{
+  "mimeType": "video/webm;codecs=vp9",
+  "bytes": 569652,
+  "elapsed": 8.00029999999995,
+  "frames": 828,
+  "commands": [
+    {
+      "at": 0,
+      "observedAt": 0.0085,
+      "state": "idle"
+    },
+    {
+      "at": 1,
+      "observedAt": 1.0003999999999935,
+      "state": "thinking"
+    },
+    {
+      "at": 2.3,
+      "observedAt": 2.300299999999983,
+      "state": "responding"
+    },
+    {
+      "at": 3.8,
+      "observedAt": 3.8002999999999783,
+      "state": "idle"
+    },
+    {
+      "at": 5,
+      "observedAt": 5.000199999999977,
+      "state": "thinking"
+    },
+    {
+      "at": 5.1,
+      "observedAt": 5.100099999999971,
+      "state": "responding"
+    },
+    {
+      "at": 5.2,
+      "observedAt": 5.200199999999977,
+      "state": "idle"
+    },
+    {
+      "at": 5.3,
+      "observedAt": 5.300399999999974,
+      "state": "thinking"
+    },
+    {
+      "at": 5.4,
+      "observedAt": 5.400199999999976,
+      "state": "responding"
+    },
+    {
+      "at": 6.7,
+      "observedAt": 6.7003999999999655,
+      "state": "idle"
+    }
+  ]
+}

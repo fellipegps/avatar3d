@@ -1,0 +1,13 @@
+{
+  "canvases": 1,
+  "inspectionPanels": 0,
+  "scripts": [
+    "http://127.0.0.1:4174/avatar3d/assets/index-DR0OMyDa.js"
+  ],
+  "status": "Vita · Modelo carregado",
+  "url": "http://127.0.0.1:4174/avatar3d/",
+  "viewport": {
+    "height": 720,
+    "width": 1280
+  }
+}

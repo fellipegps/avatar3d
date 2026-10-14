@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": [],
+    "noEmit": false,
+    "rootDir": ".",
+    "outDir": ".tmp/domain-tests"
+  },
+  "include": ["src/app/contracts.ts", "src/app/ConversationStore.ts", "src/chat/**/*.ts", "src/dev/MockChatFailure.ts"]
+}

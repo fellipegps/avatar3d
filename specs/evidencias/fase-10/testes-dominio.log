@@ -1,0 +1,39 @@
+npm notice run avatar3d@0.1.0 test
+npm notice run tsc -p tsconfig.domain-tests.json && node --test tests/conversation.test.mjs tests/mock-chat.test.mjs
+✔ Store independente de DOM, snapshot inicial e inscrição imediata (2.6718ms)
+✔ Fluxo waiting → revealing → idle, texto original e resposta completa em uma mudança (0.3251ms)
+✔ Branco/excesso não mudam estado nem notificam; limite de 2000 é aceito (0.2244ms)
+✔ Uma resposta ativa em waiting e revealing; chamadas inválidas não notificam (0.1866ms)
+✔ Erro libera solicitação, mantém histórico e permite recuperação sem erro antigo (0.2614ms)
+✔ Cancelar em waiting é normal, conserva histórico e invalida ID (0.2046ms)
+✔ Reinício em waiting limpa histórico e rejeita resposta/falha/finalização antigas (0.2168ms)
+✔ Cancelar em revealing é normal, conserva histórico e invalida ID (0.1992ms)
+✔ Reinício em revealing limpa histórico e rejeita resposta/falha/finalização antigas (0.337ms)
+✔ IDs únicos em mensagens, reinícios e instâncias; resposta não pode duplicar ID (0.5241ms)
+✔ Snapshots e mensagens não podem ser alterados por consumidores; snapshots antigos estáveis (1.2488ms)
+✔ Notificações reentrantes mantêm ordem e remoção de assinante é respeitada (0.5049ms)
+✔ Corrida: Promise antiga resolvida após reset não altera solicitação nova (0.5312ms)
+✔ Dispose idempotente libera inscrições/histórico e ignora trabalho tardio (0.4423ms)
+✔ Catálogo greeting: caixa, acentos e limites de palavras (2.2464ms)
+✔ Catálogo introduction: caixa, acentos e limites de palavras (0.5313ms)
+✔ Catálogo scene: caixa, acentos e limites de palavras (0.3611ms)
+✔ Catálogo help: caixa, acentos e limites de palavras (0.3461ms)
+✔ Catálogo fallback: caixa, acentos e limites de palavras (1.3109ms)
+✔ Provider roda em Node sem DOM, renderer ou rede; latência padrão é 800 ms (0.5251ms)
+✔ Latência configurável zero continua assíncrona (0.1948ms)
+✔ Sinal já abortado rejeita AbortError sem agendar ou reter listener (1.8776ms)
+✔ Abortar durante latência libera timer/listener e impede resolução tardia (1.2855ms)
+✔ Abortar após resolver não muda resposta nem retém listener (0.71ms)
+✔ Cancelamento é isolado por sinal; IDs não colidem entre chamadas e instâncias (2.163ms)
+✔ Latências negativas, infinitas e NaN são rejeitadas (0.3405ms)
+✔ Erro do agendador não deixa listener e permite rejeição observável (0.2827ms)
+✔ Provider DEV falha explicitamente após latência; catálogo normal não tem gatilho de erro (0.3406ms)
+✔ Provider DEV respeita cancelamento como AbortError, sem falha simulada tardia (0.1848ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.3245

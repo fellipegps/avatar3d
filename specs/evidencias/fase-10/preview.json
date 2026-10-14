@@ -1,0 +1,22 @@
+{
+  "waiting": {
+    "canvasCount": 1,
+    "draft": "Meu próximo assunto",
+    "sendDisabled": true,
+    "status": "Aguardando resposta…"
+  },
+  "completed": {
+    "canvases": 1,
+    "draft": "Meu próximo assunto",
+    "messages": [
+      "Olá!",
+      "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+    ],
+    "quality": "economy",
+    "sendDisabled": false,
+    "status": [
+      "Vita · Modelo carregado",
+      "Pronto para escrever."
+    ]
+  }
+}

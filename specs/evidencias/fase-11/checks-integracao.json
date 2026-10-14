@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Envio inicia thinking/waiting, permite digitar e bloqueia segunda solicitação",
+    "passed": true
+  },
+  {
+    "name": "Resposta entra completa no store e começa vazia na UI, com responding",
+    "passed": true
+  },
+  {
+    "name": "Apresentação gradual não grava letras no store nem perde rascunho/foco",
+    "passed": true
+  },
+  {
+    "name": "Fechar/reabrir durante apresentação preserva nós, histórico e rascunho",
+    "passed": true
+  },
+  {
+    "name": "Fluxo completa idle → thinking → responding → idle e libera envio",
+    "passed": true
+  },
+  {
+    "name": "Controles aplicam qualidade e movimento sem recriar cena",
+    "passed": true
+  },
+  {
+    "name": "Reset aborta sinal; resolução e finally antigos não alteram nova espera",
+    "passed": true
+  },
+  {
+    "name": "Nova solicitação conclui após descarte de resultado antigo",
+    "passed": true
+  },
+  {
+    "name": "Corrida reset entre resolução e microtask não insere resposta",
+    "passed": true
+  },
+  {
+    "name": "Reset na apresentação remove timer, texto parcial e efeitos tardios",
+    "passed": true
+  },
+  {
+    "name": "Erro atual retorna personagem/rosto a repouso, mostra recuperação e libera envio",
+    "passed": true
+  },
+  {
+    "name": "Envio depois do erro recupera fluxo e remove alerta",
+    "passed": true
+  },
+  {
+    "name": "Rejeição antiga não troca espera atual por erro",
+    "passed": true
+  },
+  {
+    "name": "Movimento reduzido apresenta texto completo sem timers",
+    "passed": true
+  },
+  {
+    "name": "Ativar movimento reduzido durante texto conclui e limpa timer",
+    "passed": true
+  },
+  {
+    "name": "Falha de criação do renderer mantém chat completo e fallback",
+    "passed": true
+  },
+  {
+    "name": "Dispose na espera aborta e ignora resposta tardia sem DOM remanescente",
+    "passed": true
+  },
+  {
+    "name": "Dispose durante apresentação remove timers/listeners e finalização tardia",
+    "passed": true
+  }
+]

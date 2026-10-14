@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Um canvas: personagem e ambiente pertencem à mesma cena",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Sala e todos os objetos essenciais são meshes 3D",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Nenhuma geometria de teste permanece na raiz da cena",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Mesa à frente do corpo e tampo na altura configurada",
+    "passed": true,
+    "details": {
+      "min": [
+        -1.25,
+        0.74,
+        0.2
+      ],
+      "max": [
+        1.25,
+        0.8200000000000001,
+        1.1
+      ]
+    }
+  },
+  {
+    "name": "Profundidade: tampo intercepta a linha de visão para o corpo atrás da mesa",
+    "passed": true,
+    "details": {
+      "bodyPoint": [
+        0,
+        0.65,
+        0
+      ],
+      "firstSurface": "desk-top"
+    }
+  },
+  {
+    "name": "Frontal idle: região do rosto dentro da câmera e sem objetos à frente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Frontal thinking: região do rosto dentro da câmera e sem objetos à frente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Frontal responding: região do rosto dentro da câmera e sem objetos à frente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Vista lateral temporária usa a mesma câmera e mantém rosto livre",
+    "passed": true,
+    "details": {
+      "position": [
+        2.4877483052823823,
+        1.5175496610564765,
+        2.0914238136976673
+      ]
+    }
+  },
+  {
+    "name": "Inspeção isolada oculta ambiente e retorno restaura composição",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Retorno à sala restaura geometria e câmera frontal",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Configuração altera medidas e posição sem editar a geometria",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Peças compartilham materiais e geometrias",
+    "passed": true,
+    "details": {
+      "meshes": 39,
+      "triangles": 1574,
+      "geometries": 8,
+      "materials": 14
+    }
+  },
+  {
+    "name": "Descarte duplo libera cada recurso compartilhado exatamente uma vez",
+    "passed": true,
+    "details": {
+      "geometries": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "materials": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  }
+]

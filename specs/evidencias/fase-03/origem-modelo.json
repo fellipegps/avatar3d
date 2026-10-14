@@ -1,0 +1,58 @@
+{
+  "sourceMeta": {
+    "version": "",
+    "author": "",
+    "contactInformation": "",
+    "reference": "",
+    "title": "Vita",
+    "texture": 27,
+    "allowedUserName": "Everyone",
+    "violentUssageName": "Allow",
+    "sexualUssageName": "Allow",
+    "commercialUssageName": "Allow",
+    "otherPermissionUrl": "",
+    "licenseName": "CC0",
+    "otherLicenseUrl": ""
+  },
+  "sourceMeshes": [
+    {
+      "name": "Face.baked",
+      "primitives": 10
+    },
+    {
+      "name": "Body.baked",
+      "primitives": 7
+    },
+    {
+      "name": "Hair001.baked",
+      "primitives": 65
+    }
+  ],
+  "sourceClips": [],
+  "facialPresets": [
+    {
+      "name": "A",
+      "presetName": "a",
+      "binds": [
+        {
+          "mesh": 0,
+          "index": 29,
+          "weight": 100
+        }
+      ],
+      "materialValues": []
+    },
+    {
+      "name": "Blink",
+      "presetName": "blink",
+      "binds": [
+        {
+          "mesh": 0,
+          "index": 12,
+          "weight": 100
+        }
+      ],
+      "materialValues": []
+    }
+  ]
+}

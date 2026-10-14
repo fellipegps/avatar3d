@@ -1,0 +1,255 @@
+[
+  {
+    "stage": "waiting",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-1",
+            "role": "user",
+            "text": "OLÁ!"
+          }
+        ],
+        "phase": "waiting",
+        "activeRequestId": 1
+      },
+      "transitions": [
+        "idle",
+        "waiting"
+      ]
+    },
+    "sendEnabled": false
+  },
+  {
+    "stage": "greeting",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-1",
+            "role": "user",
+            "text": "OLÁ!"
+          },
+          {
+            "id": "local-1-reply-1",
+            "role": "assistant",
+            "text": "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+          }
+        ],
+        "phase": "revealing",
+        "activeRequestId": 1
+      },
+      "transitions": [
+        "idle",
+        "waiting",
+        "revealing"
+      ]
+    },
+    "draft": "Rascunho durante espera"
+  },
+  {
+    "stage": "simulated-error",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-1",
+            "role": "user",
+            "text": "OLÁ!"
+          },
+          {
+            "id": "local-1-reply-1",
+            "role": "assistant",
+            "text": "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+          },
+          {
+            "id": "conversation-1-user-2",
+            "role": "user",
+            "text": "Quem é você?"
+          }
+        ],
+        "phase": "error",
+        "error": "Falha simulada do provider local. Tente novamente.",
+        "activeRequestId": null
+      },
+      "transitions": [
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "error"
+      ]
+    }
+  },
+  {
+    "stage": "fallback-recovery",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-1",
+            "role": "user",
+            "text": "OLÁ!"
+          },
+          {
+            "id": "local-1-reply-1",
+            "role": "assistant",
+            "text": "Olá! Sou Vita. Esta é uma conversa local com respostas pré-definidas. Como posso ajudar?"
+          },
+          {
+            "id": "conversation-1-user-2",
+            "role": "user",
+            "text": "Quem é você?"
+          },
+          {
+            "id": "conversation-1-user-3",
+            "role": "user",
+            "text": "astronomia quântica"
+          },
+          {
+            "id": "local-1-reply-2",
+            "role": "assistant",
+            "text": "Ainda não tenho uma resposta para esse assunto. Experimente dizer “olá”, perguntar “quem é você?”, sobre o cenário ou pedir ajuda."
+          }
+        ],
+        "phase": "revealing",
+        "activeRequestId": 3
+      },
+      "transitions": [
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "error",
+        "waiting",
+        "revealing"
+      ]
+    }
+  },
+  {
+    "stage": "reset-and-new-request",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-5",
+            "role": "user",
+            "text": "ajuda nova"
+          },
+          {
+            "id": "local-1-reply-3",
+            "role": "assistant",
+            "text": "Você pode me cumprimentar, perguntar quem sou ou conhecer o cenário. Enter envia e Shift+Enter quebra a linha. Reiniciar limpa a conversa."
+          }
+        ],
+        "phase": "revealing",
+        "activeRequestId": 5
+      },
+      "transitions": [
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "error",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "idle",
+        "waiting",
+        "revealing"
+      ]
+    }
+  },
+  {
+    "stage": "cancelled",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-5",
+            "role": "user",
+            "text": "ajuda nova"
+          },
+          {
+            "id": "local-1-reply-3",
+            "role": "assistant",
+            "text": "Você pode me cumprimentar, perguntar quem sou ou conhecer o cenário. Enter envia e Shift+Enter quebra a linha. Reiniciar limpa a conversa."
+          },
+          {
+            "id": "conversation-1-user-6",
+            "role": "user",
+            "text": "cenário cancelado"
+          }
+        ],
+        "phase": "idle",
+        "activeRequestId": null
+      },
+      "transitions": [
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "error",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "idle"
+      ]
+    }
+  },
+  {
+    "stage": "after-cancel-deadline",
+    "state": {
+      "snapshot": {
+        "messages": [
+          {
+            "id": "conversation-1-user-5",
+            "role": "user",
+            "text": "ajuda nova"
+          },
+          {
+            "id": "local-1-reply-3",
+            "role": "assistant",
+            "text": "Você pode me cumprimentar, perguntar quem sou ou conhecer o cenário. Enter envia e Shift+Enter quebra a linha. Reiniciar limpa a conversa."
+          },
+          {
+            "id": "conversation-1-user-6",
+            "role": "user",
+            "text": "cenário cancelado"
+          }
+        ],
+        "phase": "idle",
+        "activeRequestId": null
+      },
+      "transitions": [
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "error",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "idle",
+        "waiting",
+        "revealing",
+        "idle",
+        "waiting",
+        "idle"
+      ]
+    }
+  }
+]

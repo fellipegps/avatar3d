@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Verificação facial · Fase 07</title></head>
+  <body style="padding:24px">
+    <h1>Rosto e piscar · Fase 07</h1><p id="summary" role="status">Executando…</p>
+    <div id="fixture" style="width:440px;max-width:100%;height:440px"></div>
+    <fieldset id="controls" disabled><legend>Demonstração manual · sem áudio</legend>
+      <label>Estado corporal <select id="state"><option value="idle">Repouso</option><option value="thinking">Pensando</option><option value="responding">Respondendo</option></select></label>
+      <label>Abertura da boca <select id="mouth"><option value="0">0 · Fechada</option><option value="0.5">0,5 · Intermediária</option><option value="1">1 · Máxima do asset</option></select></label>
+      <label>Fechar olhos manualmente <select id="eyes"><option value="0">0 · Abertos</option><option value="0.5">0,5 · Parcial</option><option value="1">1 · Fechados</option></select></label>
+      <label><input id="automatic" type="checkbox" checked /> Piscar automaticamente</label>
+      <label><input id="reduced" type="checkbox" /> Movimento reduzido</label>
+      <button id="reset">Restaurar rosto neutro</button>
+      <button id="capture">Capturar próximo piscar automático</button>
+    </fieldset>
+    <p id="capture-status" role="status">Captura ainda não solicitada.</p>
+    <img id="blink-capture" hidden width="440" alt="Quadro real do piscar automático, capturado do canvas" />
+    <pre id="capture-info"></pre><pre id="capture-data" hidden></pre>
+    <pre id="results" style="white-space:pre-wrap"></pre>
+    <script type="module" src="./face.browser.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "accessibility": [],
+  "productionAndRegressions": [
+    {
+      "level": "error",
+      "message": "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+      "timestamp": "2026-10-09T12:41:18.548Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    }
+  ],
+  "animationAndFace": [],
+  "finalProduction": []
+}

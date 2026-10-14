@@ -1,0 +1,109 @@
+[
+  {
+    "name": "Clipe ausente não usa fallback silencioso",
+    "passed": true,
+    "details": "Error: Clipe ausente ou inválido: thinking (Vita_Thinking)"
+  },
+  {
+    "name": "Clipe facial é rejeitado na fronteira corporal",
+    "passed": true,
+    "details": "Error: O clipe corporal Vita_Idle sobrescreve controles faciais."
+  },
+  {
+    "name": "Inicialização aplica idle sem T-pose",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Repetir estado não reinicia tempo nem cria transição",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Comando de troca preserva a pose instantânea",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Metade da transição mistura os dois estados com pesos normalizados",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Interromper mistura preserva pose e contribuições correntes",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Comando repetido durante transição não reinicia o fade ou o clipe",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Responder conclui blend e para as ações que saíram",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Estado sustentado atravessa vários ciclos até comando seguinte",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Trocas rápidas mantêm soma dos pesos e continuidade sem salto",
+    "passed": true,
+    "details": {
+      "maxJointStepRadians": 0.0076001303515843876
+    }
+  },
+  {
+    "name": "Root motion incompatível removido; posição, escala e orientação estáveis",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Filtragem não modifica os clipes de origem",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Encerrar resposta retorna ao repouso em 0,3 s",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Movimento reduzido congela pose/fade e guarda somente comando mais recente",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Retomada começa da pose congelada sem salto",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Retomada conclui o estado solicitado",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Misturas corporais preservam olhos e boca independentes",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Delta inválido não corrompe animação",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Descarte interrompe ações e ignora comandos tardios",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Comando anterior à carga é preservado no controlador da cena",
+    "passed": true,
+    "details": null
+  }
+]

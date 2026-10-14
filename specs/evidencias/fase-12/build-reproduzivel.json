@@ -1,0 +1,32 @@
+[
+  {
+    "path": "index.html",
+    "bytes": 585,
+    "sha256": "AEB7882AFC22DE5B780A129F81EFED1468BC00F51F1018EE27C7C61889332474",
+    "matchesCleanBuild": true
+  },
+  {
+    "path": "assets\\index-C9R2thke.css",
+    "bytes": 7518,
+    "sha256": "1DE14D3C2DE0C1A249CBDFC1DDEE3C1ED96E8A9B5A8D12F81BF18527C846EE43",
+    "matchesCleanBuild": true
+  },
+  {
+    "path": "assets\\index-Dp1tKPrH.js",
+    "bytes": 675733,
+    "sha256": "65EBF4B5ED683FFCB39FBFC755C2F2B42738F19D86DFCEF995AC35D4AF737E19",
+    "matchesCleanBuild": true
+  },
+  {
+    "path": "images\\scene-fallback.svg",
+    "bytes": 878,
+    "sha256": "DC28669A01E7F84E568E300873E3043025DC804D038DD98B33016B41CCFE19BF",
+    "matchesCleanBuild": true
+  },
+  {
+    "path": "models\\character.glb",
+    "bytes": 8834484,
+    "sha256": "FA9F18268325DA1044A9B83136131371C07BEA66A3BF38A1859841FA5947DF87",
+    "matchesCleanBuild": true
+  }
+]

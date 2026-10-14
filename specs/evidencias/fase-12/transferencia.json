@@ -1,0 +1,42 @@
+{
+  "base": "http://127.0.0.1:4173/",
+  "entries": [
+    {
+      "path": "/",
+      "status": 200,
+      "encodedBytes": 585,
+      "decodedBytes": 585,
+      "encoding": null
+    },
+    {
+      "path": "/assets/index-Dp1tKPrH.js",
+      "status": 200,
+      "encodedBytes": 172101,
+      "decodedBytes": 675733,
+      "encoding": "gzip"
+    },
+    {
+      "path": "/assets/index-C9R2thke.css",
+      "status": 200,
+      "encodedBytes": 2330,
+      "decodedBytes": 7518,
+      "encoding": "gzip"
+    },
+    {
+      "path": "/models/character.glb",
+      "status": 200,
+      "encodedBytes": 8834484,
+      "decodedBytes": 8834484,
+      "encoding": null
+    },
+    {
+      "path": "/images/scene-fallback.svg",
+      "status": 200,
+      "encodedBytes": 878,
+      "decodedBytes": 878,
+      "encoding": null
+    }
+  ],
+  "totalTransferBodyBytes": 9010378,
+  "totalDecodedBytes": 9519198
+}

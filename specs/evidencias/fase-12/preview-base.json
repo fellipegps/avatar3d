@@ -1,0 +1,12 @@
+{
+  "canvasCount": 1,
+  "fallbackImage": "/avatar3d/images/scene-fallback.svg",
+  "imageLoaded": true,
+  "status": "Vita · Modelo carregado",
+  "url": "http://127.0.0.1:4175/avatar3d/",
+  "viewport": [
+    1440,
+    900
+  ],
+  "logs": []
+}

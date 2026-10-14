@@ -1,10 +1,10 @@
 # Avatar 3D — MVP
 
-Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01 e 02 preparam a estrutura visual, os contratos e uma cena WebGL 2 de referência. Personagem, sala e chat serão implementados nas fases seguintes.
+Base web em Vite vanilla-ts, TypeScript estrito e HTML/CSS no DOM. As fases 01–12 entregam a estrutura, os contratos, o ciclo de vida WebGL 2 e Vita em um escritório escuro, com iluminação, painéis decorativos locais, transições corporais suaves, piscar automático, interface DOM do chat e domínio/provider local independente. O chat de produção está integrado à personagem, com resposta gradual, reinício cancelável, preferências funcionais e layout adaptado a desktop/celular.
 
 ## Ambiente
 
-- Node.js `^20.19.0 || >=22.12.0`, conforme `engines` do Vite 8.3.3 instalado. Ambiente verificado: Node 22.20.0 e npm 11.7.0.
+- Node.js `^20.19.0 || >=22.12.0`, conforme `engines` do Vite 8.3.3 instalado. Ambiente verificado na fase 03: Node 24.15.0 e npm 12.0.2.
 - npm e navegador moderno. O requisito do Node deve ser conferido novamente ao atualizar o Vite: `node -p "JSON.stringify(require('./node_modules/vite/package.json').engines)"`.
 
 ## Execução local
@@ -18,33 +18,172 @@ Abrir o endereço informado pelo Vite (normalmente `http://localhost:5173`).
 
 ```sh
 npm run typecheck
+npm test
 npm run build
 npm run preview
 ```
 
 O build executa a checagem de tipos antes do empacotamento e gera `dist/`. Preview serve esse build localmente (normalmente `http://localhost:4173`); refazer o build após alterar fontes. Não é um comando de publicação.
 
+## Entrega do núcleo — fase 12
+
+As fases 01–12 estão concluídas. O produto usa uma conversa local sem IA externa, persistência ou áudio. As extensões 13/14 são opcionais e não foram implementadas. [Relatório final, evidências e limites](specs/evidencias/fase-12/verificacao.md).
+
+Se o GLB falhar ou o navegador não conseguir iniciar o WebGL 2, a área 3D mostra uma ilustração estática e **Tentar carregar o 3D**. A conversa permanece disponível. Falha do modelo reutiliza o renderer; falha gráfica permite recriar a cena, preservando conversa e preferências. Uma tentativa por vez. A carga tem prazo de 30 s; uma carga cancelada que termina de analisar depois libera seus recursos. Na perda de contexto, o navegador pode restaurar a cena automaticamente; o botão permite reinício manual.
+
+No Intel i7-1185G7 / Iris Xe disponível, a cena em build de produção ficou próxima de **60 FPS** nos dois perfis, com **59 draw calls** e **28.664 triângulos desenhados**. Janela de 10 s por perfil/resolução, canvas CSS 900×440; não é uma garantia para qualquer dispositivo. Corpos HTTP essenciais totalizaram **9,01 MB** no preview. Dois mapas de 2048 px e o aviso de JS de 675,73 kB permanecem documentados. Mantidos DPR normal até 1,5, econômico até 1 e ausência de shadow maps; sem necessidade medida de compressão avançada.
+
+Para servir em uma subpasta, construir e iniciar o preview com a mesma base:
+
+```sh
+npm run build -- --base=/avatar3d/
+npm run preview -- --base=/avatar3d/
+```
+
+Abrir `/avatar3d/` no endereço informado. GLB e fallback respeitam essa base. Para retornar ao build da raiz, executar `npm run build` novamente.
+
+### Repetir a verificação final
+
+```sh
+npm test
+npm run build
+npm run preview
+```
+
+Em desenvolvimento, as páginas `/tests/scene.html`, `character.html`, `environment.html`, `lighting.html`, `animation.html`, `face.html`, `chat.html`, `app-controller.html` e `accessibility.html` (todas sob `/tests/`) exibem seus resultados. A suíte de resiliência e o benchmark também podem ser compilados separadamente:
+
+```sh
+npm run build -- --config tests/vite.config.ts
+npm run preview -- --outDir .tmp/verification --port 4174
+```
+
+Abrir `/tests/resilience.html` e `/tests/performance.html` na porta 4174. Executar o benchmark sozinho, em aba visível, até suas quatro amostras terminarem (~48 s mais carga); inclui DPR 2 controlado no mesmo computador. A suíte de resiliência simula falhas deliberadas e oferece botões de inspeção. Essas páginas não entram no build normal.
+
+Com o preview normal na porta 4173, `node scripts/measure-transfer.mjs http://127.0.0.1:4173/` registra bytes HTTP compactados e decodificados. A instalação limpa pelo lockfile e o build reproduzível foram verificados numa cópia temporária; os hashes coincidiram.
+
+**Cobertura:** 257 checks passaram, preview desktop e móvel emulado inspecionados, falhas e recuperação exercitadas. Sem celular físico, leitor de tela real, teclado virtual físico ou benchmark prolongado; meta de 30 FPS no celular não verificada. A ocultação nativa da aba ainda requer conferência fora do navegador integrado; suspensão/retomada têm testes controlados.
+
 ## Estrutura e dependências
 
 - `index.html`: documento em português e único script de entrada, `src/main.ts`.
 - `src/main.ts`: inicialização única e contêineres semânticos da aplicação, cena e interface.
-- `src/app/AppController.ts`: coordenação da disponibilidade do 3D e da preferência de movimento reduzido.
+- `src/app/AppController.ts`: coordenação do store, provider, UI, estados da personagem, disponibilidade do 3D e preferências.
 - `src/app/contracts.ts`: fronteiras tipadas da especificação 00, sem implementações antecipadas.
+- `src/app/ConversationStore.ts`: histórico em memória, snapshots imutáveis, inscrição e transições protegidas pelo ID da solicitação ativa.
+- `src/chat/MockChatProvider.ts` e `responses.ts`: catálogo local, normalização e Promise com latência cancelável de 800 ms por padrão.
 - `src/scene/SceneController.ts`: renderer, câmera, ResizeObserver, loop, inscrição de atualizações e descarte idempotente.
 - `src/scene/scene.config.ts`: parâmetros de enquadramento, pixel ratio e delta máximo.
+- `src/scene/Environment.ts`: piso, paredes, mesa, dois monitores, luminária, planta e caneca, com recursos compartilhados e descarte próprio.
+- `src/scene/PanelTexture.ts`: conteúdo fictício DEMO desenhado em CanvasTexture, com atualização apenas quando muda.
 - `src/styles/base.css`: aparência inicial e empilhamento em telas estreitas.
-- `three`: renderer e geometria de referência, importados somente pela camada da cena na aplicação.
+- `src/ui/ChatView.ts` e `ControlsView.ts`: mensagens seguras, estados visuais, rascunho, foco, rolagem e eventos tipados, sem importação de Three.js.
+- `src/styles/layout.css` e `chat.css`: painel lateral, empilhamento, controles e foco visível.
+- `src/dev/ChatDemo.ts`: fixture de interface e registro de eventos, somente em desenvolvimento.
+- `src/scene/AssetLoader.ts`: carregamento cancelável do GLB, inspeção, validação do manifesto e liberação dos recursos.
+- `src/scene/character.manifest.ts`: clipes, meshes, controles faciais e transformações reais de Vita.
+- `src/scene/CharacterController.ts`: mixer, transições corporais, canais faciais independentes e descarte, no loop existente.
+- `src/scene/FaceController.ts`: índices faciais validados e resolvidos uma vez, boca normalizada, piscar por delta, reset e movimento reduzido.
+- `public/models/character.glb`: modelo local autossuficiente; [créditos e preparação](assets/credits.md).
+- `three`: renderer, GLTFLoader e animação, importados somente pela camada da cena na aplicação.
 - `@types/three`: tipos da biblioteca para TypeScript.
 - `vite` e `typescript`: servidor, empacotamento e checagem estática. Versões diretas exatas e árvore fixada em `package-lock.json`.
 
-Não foi necessário criar `vite.config.ts`: os padrões atendem à fase 01. Planejamento e evidências estão em [specs/README.md](specs/README.md) e [specs/progresso.md](specs/progresso.md).
+O produto usa os padrões do Vite. `tests/vite.config.ts` gera um build separado de verificação, fora de `dist/`. Planejamento e evidências estão em [specs/README.md](specs/README.md) e [specs/progresso.md](specs/progresso.md).
 
-## Cena e verificação da fase 02
+## Cena e verificação
 
-O navegador precisa suportar WebGL 2. Falhas são apresentadas na área 3D e mantêm a área de interface disponível. O cubo com material normal é uma referência temporária, não a personagem final. A câmera é fixa; não há controles de órbita.
+### Interface da conversa — fase 08
 
-O controlador mantém um loop de `requestAnimationFrame` e permite registrar módulos com `registerUpdater(deltaSeconds)`, que retorna uma função de remoção. O primeiro delta é zero e os demais são limitados a 0,05 s. Uma aba oculta ou um contêiner sem área pausa o loop. O perfil normal limita pixel ratio a 1,5; o econômico a 1. A preferência de movimento reduzido suspende a rotação da referência.
+A fixture da fase 08 está em `/tests/chat.html`, com mensagens de exemplo e eventos de interface. A aplicação principal usa a integração da fase 10 descrita abaixo. Enter envia; Shift+Enter insere uma linha. O limite é de 2.000 unidades UTF-16 (`maxlength`).
 
-`dispose()` cancela o frame, desconecta o observador, remove listeners, libera geometria/material/renderer e perde o contexto descartado. Os recursos da referência pertencem ao controlador; futuros módulos devem descartar seus próprios recursos antes da desmontagem da cena. HMR e saída da página descartam o controlador; restauração pelo bfcache recarrega a aplicação.
+`ChatView` expõe `renderMessages`, `setState`, `setAvailable`, `getDraft`, `setDraft`, `setOpen`, `focusInput` e `dispose`; recebe callbacks de envio, reinício e fechamento. `ControlsView` emite abertura, qualidade e movimento reduzido, com `setEnabled`, `setOpen`, `focusToggle` e `dispose`. A coordenação decide quando limpar o campo. Mensagens usam `textContent` e IDs estáveis. Atualizações preservam o campo e a leitura do histórico; não passam pelo loop 3D.
+
+Abra `/tests/chat.html` em desenvolvimento para os 31 checks de interface e uma fixture interativa sem canvas. [Evidências da fase 08](specs/evidencias/fase-08/verificacao.md): tipos/build, teclado real, desktop/tela estreita e 24 checks de regressão do ciclo de vida.
+
+### Domínio e provider local — fase 09
+
+`npm test` compila somente os módulos de domínio em `.tmp/domain-tests/` e executa 29 testes com o runner nativo do Node, sem DOM, Three.js, rede ou timers reais. O diretório de saída é ignorado pelo Git. [Evidências](specs/evidencias/fase-09/verificacao.md).
+
+`ConversationStore` oferece `getSnapshot`, `subscribe` (entrega inicial imediata e função de remoção), `begin(text)`, `receive(id, reply)`, `complete(id)`, `fail(id, error?)`, `cancel(id)`, `reset` e `dispose`. `begin` retorna ID ou `null`; operações de solicitação retornam se foram aceitas. Texto original fica no histórico. Só uma solicitação pode permanecer ativa em waiting/revealing; respostas e finalizações antigas são ignoradas após reset/cancelamento. Snapshots, arrays e mensagens são congelados. Assinantes devem tratar suas próprias exceções.
+
+`MockChatProvider` implementa `ChatProvider.reply(text, signal)`. Há saudação, apresentação, cenário, ajuda e resposta padrão. Seleção ignora caixa, acentos e pontuação; usa palavras/frases inteiras com prioridade ajuda → apresentação → cenário → saudação. Latência padrão fixa de 800 ms, configurável por `latencyMs`; `schedule` pode ser injetado para verificação. Cancelar rejeita `AbortError` e limpa timer/listener. IDs identificam cada instância/resposta; não há persistência ou chamadas externas.
+
+Em desenvolvimento, abra `/tests/conversation.html`. Envie “OLÁ!”, “quem é você?”, “cenário”, “ajuda” ou assunto desconhecido. Resposta chega completa e fica em revealing até **Concluir apresentação**. **Cancelar resposta** conserva histórico; **Reiniciar conversa** aborta e limpa. **Simular falha na próxima resposta** usa um provider DEV separado e permite conferir recuperação. A página não monta renderer nem modifica a aplicação principal; animação e apresentação gradual entram na fase 10.
+
+### Integração entre chat e personagem — fase 10
+
+Na página principal, envie “Olá!”. A personagem passa de repouso para pensamento durante os 800 ms do provider, gesticula enquanto a UI revela o texto e volta ao repouso. É possível preparar o próximo rascunho durante a espera; o segundo envio fica bloqueado até a conclusão. A resposta completa entra no store de uma vez. A UI mostra 55 pontos de código por segundo usando tempo decorrido e um timer cancelável de 32 ms, independente do loop 3D.
+
+**Reiniciar conversa** aborta provider/apresentação, limpa histórico e rascunho e neutraliza a face. ID e identidade da solicitação impedem que uma resposta ou `finally` antigos afetem a conversa nova. Fechar/reabrir preserva histórico e rascunho, sem remontar a cena. Qualidade comanda o perfil do renderer. Movimento reduzido congela animações conforme a cena e apresenta o texto imediatamente; a escolha manual prevalece sobre alterações posteriores da preferência do sistema nesta sessão. Falhas do 3D mantêm o chat disponível.
+
+Abra `/tests/app-controller.html` no servidor de desenvolvimento: executa 18 checks de integração com provider/relógio/cena controlados e oferece uma demonstração separada com WebGL/GLB reais. Os botões permitem simular erro do provider, perder/restaurar contexto gráfico e gravar o fluxo integrado. O vídeo compõe o canvas real com o texto apresentado no DOM usando o loop existente; não adiciona loop de produção. Essas ferramentas não entram no build de produção.
+
+[Evidências e limites](specs/evidencias/fase-10/verificacao.md), [vídeo](specs/evidencias/fase-10/fluxo-integrado.webm) e [preview](specs/evidencias/fase-10/preview.jpg). A fase 11 acrescenta os ajustes abaixo; a fase 12 conclui a entrega e registra o desempenho medido.
+
+### Responsividade e acessibilidade — fase 11
+
+Desktop reserva 340–400 px ao chat e o restante à cena. Até 880 px, a cena fica acima do chat. Alturas dinâmicas (`dvh`, com fallback `vh`) ajustam cena/histórico, e o formulário permanece no fluxo normal da página, permitindo rolar até o campo e o envio quando sobra pouca altura. Botões e seletor têm pelo menos 44 px de altura; textarea móvel usa fonte de 16 px. O enquadramento frontal muda somente no resize, aproximando rosto e mãos em proporções estreitas. Parâmetros em `sceneConfig.composition.compact`.
+
+Tab navega pelos controles, fechamento, histórico, campo e ações. Enter envia, Shift+Enter quebra a linha, Enter/Espaço ativam botões; fechar devolve o foco ao controle externo e abrir leva ao campo, com rolagem nativa de foco. Ao ler mensagens anteriores, as atualizações preservam a posição. **Ver mensagens recentes** leva ao fim e deixa o foco no histórico.
+
+A região visual do histórico não anuncia letras. Uma região acessível separada publica a resposta completa uma vez por ID. Com o painel fechado, o anúncio espera a reabertura; reiniciar cancela o anúncio pendente. Movimento reduzido segue o sistema até uma escolha manual, suspende gestos/piscar e entrega texto imediatamente, sem câmera animada.
+
+Abra `/tests/accessibility.html` em desenvolvimento para 28 verificações de anúncio, cancelamento, foco, rolagem, preferência e enquadramento com GLB/renderer reais. A demonstração permite preparar histórico longo. Regressões de interface, integração, cena, ambiente, corpo e face também foram reexecutadas. [Matriz e evidências](specs/evidencias/fase-11/verificacao.md).
+
+Preview verificado em larguras de 360, 390, 768 e 1440 px, orientação retrato/paisagem e altura reduzida de 360 px. Cobertura móvel apenas por emulação; sem teste de teclado virtual físico ou leitor de tela real. A publicação única foi verificada no DOM/ARIA, sem afirmar comportamento idêntico de todos os leitores de tela.
+
+### Renderer e ciclo de vida
+
+O navegador precisa suportar WebGL 2. Falhas de renderer/modelo são apresentadas na área 3D e mantêm a área de interface disponível. Vita e escritório compartilham uma cena, uma câmera e um canvas. O cubo de teste foi removido. A câmera de produção é fixa; não há controles de órbita.
+
+O controlador mantém um loop de `requestAnimationFrame`, atualiza o mixer da personagem e permite registrar módulos com `registerUpdater(deltaSeconds)`, que retorna uma função de remoção. O primeiro delta é zero e os demais são limitados a 0,05 s. Uma aba oculta ou um contêiner sem área pausa o loop. O perfil normal limita pixel ratio a 1,5; o econômico a 1. A preferência de movimento reduzido suspende a animação corporal.
+
+`dispose()` cancela carga/frame, desconecta o observador, remove listeners, libera mixer/geometrias/materiais/texturas/skeletons/renderer e perde o contexto descartado. Recursos compartilhados do GLB são liberados uma única vez por asset; um parse terminado após cancelamento é descartado. HMR e saída da página descartam o controlador; restauração pelo bfcache recarrega a aplicação.
 
 Para repetir as verificações, execute `npm run dev` e abra `/tests/scene.html` no endereço do servidor. Essa página usa WebGL/ResizeObserver reais e instrumenta relógio, visibilidade e DPR para verificar os casos de suspensão e os recursos remanescentes. Também testa a extensão `WEBGL_lose_context`, remontagens e indisponibilidade de WebGL 2. Há botões para conferir visualmente contêiner pequeno, sem área e falha de inicialização. A página de testes não é entrada do build de produção, e sua instrumentação não é importada pela aplicação.
+
+## Personagem e verificação da fase 03
+
+Em desenvolvimento, a página principal oferece um painel para selecionar repouso/pensamento/resposta, inspecionar a sala frontalmente ou pela lateral, isolar o corpo/rosto, variar olhos/boca, ativar piscar automático e congelar o corpo. Esse painel é removido do JavaScript de produção. Mudanças corporais usam a mistura gradual da fase 06; o controle facial da fase 07 está descrito abaixo.
+
+Abra `/tests/character.html` em desenvolvimento para repetir os 26 checks do GLB, animações, manifesto, cancelamento e erros. A página carrega o modelo real, registra inventário e amostras de limites da geometria deformada, e simula somente os pontos necessários de falha HTTP/aborto de parse. Os 24 checks de ciclo de vida da fase 02 também foram reexecutados com sucesso.
+
+O modelo tem 26.130 triângulos, 155 ossos, 16 meshes e 41 morph targets faciais. O GLB de 8,83 MB já está em `public/models/`; não exige download em tempo de execução de um serviço externo. Consulte [créditos, hashes e preparação reproduzível](assets/credits.md) e [evidências da fase 03](specs/evidencias/fase-03/verificacao.md).
+
+Os caminhos do GLB usam `import.meta.env.BASE_URL`. Também foi verificado build/preview com `--base=/avatar3d/`. Há benchmark desktop na fase 12, sem teste em celular físico. As duas texturas 2048×2048 e o aviso de chunk JS acima de 500 kB foram mantidos com justificativa no relatório final.
+
+## Sala e verificação da fase 04
+
+`environmentConfig`, em `src/scene/scene.config.ts`, concentra medidas em metros, posições e cores dos materiais. A sala mede 4 × 2,7 × 3,6 m e usa um corte com frente e lateral direita abertas. O tampo de 2,5 × 0,9 m fica a 0,82 m do chão, à frente da personagem, sem modificar o transform do manifesto. A câmera e seu alvo ficam em `sceneConfig.composition`.
+
+Abra `/tests/environment.html` em desenvolvimento para repetir os 14 checks de integração, oclusão por raycast, enquadramento, configuração alternativa e descarte único de recursos compartilhados. As regressões da cena (24 checks) e do GLB (26 checks) passaram com o ambiente integrado. As verificações e capturas estão em [evidências da fase 04](specs/evidencias/fase-04/verificacao.md).
+
+Na entrega da fase 04, o ambiente tinha 31 meshes e 1.528 triângulos, com materiais e iluminação provisórios. A fase 05 acrescentou o acabamento descrito abaixo.
+
+## Materiais, luzes e painéis — fase 05
+
+`visualConfig` define os acentos azul/verde/roxo, exposição, luz ambiente, luz do rosto, luz de contorno e luz explícita da luminária. Renderer com saída sRGB e tone mapping ACES. Faixas e monitores têm materiais emissivos; somente as luzes explícitas iluminam os objetos próximos. Sem bloom, pós-processamento ou mapas de sombra.
+
+Sombras de contato são manchas radiais em cinco planos no piso, compartilhando uma textura local de 128×128. Não acompanham contornos do corpo ou projeções de luz; pressupõem a personagem e a mesa nas posições atuais. Os monitores usam CanvasTexture 768×384, com gráficos e números fixos identificados como DEMO / DADOS FICTÍCIOS. Não há consultas externas nem texto do chat nos painéis. `PanelTexture.update()` compara conteúdo antes de redesenhar e marcar upload; não é chamado pelo loop.
+
+Abra `/tests/lighting.html` em desenvolvimento para repetir os dez checks de custo, texturas, ausência de uploads durante 45 quadros e descarte/falha parcial. A página mostra snapshots de `renderer.info`. Na Intel Iris Xe disponível, canvas 795×440 / DPR 1: 59 draw calls e 28.664 triângulos desenhados por frame, contra 51 / 28.618 antes. Sem sombras de contato, 54 / 28.654. Essas contagens não são benchmark de FPS. O ambiente atual tem 39 meshes, 1.574 triângulos únicos, oito geometrias, 14 materiais e três texturas locais.
+
+Tipos, build, preview e 74 checks passaram; veja [evidências da fase 05](specs/evidencias/fase-05/verificacao.md). O aviso do chunk JS acima de 500 kB permanece registrado para a fase 12. Não houve medição sustentada de FPS nem teste em celular físico.
+
+## Animações corporais — fase 06
+
+`CharacterController` substitui a reprodução de inspeção, usando os mesmos três clipes reais do manifesto e o mixer atualizado exclusivamente por `SceneController`. A duração da mistura é ajustável em `characterManifest.animation.transitionSeconds` (0,3 s). Pesos normalizados com interpolação suave preservam a contribuição corrente ao interromper uma troca. Repetir o estado solicitado mantém o tempo do clipe e da transição.
+
+Os clipes ficam em loop até o próximo comando. `setCharacterState('idle')` encerra a resposta; não há retorno automático pelo fim do clipe. Movimento reduzido congela corpo e mistura, guarda o último estado solicitado e retoma da pose congelada. O transform global não é animado; translações dos nós `Root` e `J_Bip_C_Hips` são removidas de cópias dos clipes para impedir root motion incompatível. Canais de morph targets são rejeitados nos clipes corporais, preservando boca e olhos manuais.
+
+Abra `/tests/animation.html` em desenvolvimento para executar 21 checks e gravar uma sequência de aproximadamente oito segundos, incluindo trocas rápidas e retorno ao repouso. A gravação usa `MediaRecorder` sobre o canvas, sem áudio, e os comandos são agendados pelo loop já existente da cena. Essas ferramentas não integram o build de produção. Tipos/build e 85 checks passaram (21 novos, 26 da personagem, 24 da cena e 14 do ambiente). Veja [verificação e limites](specs/evidencias/fase-06/verificacao.md) e [vídeo](specs/evidencias/fase-06/transicoes.webm).
+
+## Piscar e controles faciais — fase 07
+
+`FaceController` usa somente os morph targets de Vita definidos no manifesto, com índices resolvidos e validados para os nove meshes faciais. `setMouthOpen` limita valores finitos a 0–1; valores não finitos viram zero. Zero fecha a boca, 0,5 é intermediário e 1 usa o máximo do morph `Face.M_F00_000_00_Fcl_MTH_A`. `resetFace()` na personagem/cena neutraliza olhos e boca imediatamente, preservando a preferência de piscar automático.
+
+`characterManifest.face.blinkTiming` configura espera aleatória entre 2,5 e 5,5 s, fechamento de 0,06 s, pausa fechada de 0,04 s e abertura de 0,1 s. A espera começa novamente após cada piscada. O rosto é atualizado depois do mixer, no mesmo loop da cena, sem timers ou outro RAF. Movimento reduzido interrompe o piscar automático e deixa os olhos abertos; ajustes manuais estáticos continuam permitidos. A retomada espera um novo intervalo. `setBlink` desativa o automático para inspeção até `setAutoBlink(true)`; o botão de restauração do inspetor também o reativa. Deltas acima de 0,25 s reiniciam a espera, evitando acumular piscadas após suspensão.
+
+A boca permanece no valor solicitado até novo comando/reset, inclusive durante piscar e transições corporais. Não há sincronização de fala ou movimento sintético automático da boca nesta fase.
+
+Abra `/tests/face.html` em desenvolvimento para os 41 checks faciais e controles de demonstração. O botão de captura registra um quadro efetivamente renderizado durante o fechamento automático. Tipos/build, 41 checks novos e 71 regressões passaram: **112/112**. Veja [verificação, imagens e limites](specs/evidencias/fase-07/verificacao.md).

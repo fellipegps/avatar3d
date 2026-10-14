@@ -1,0 +1,19 @@
+npm notice run avatar3d@0.1.0 build
+npm notice run npm run typecheck && vite build
+npm notice run avatar3d@0.1.0 typecheck
+npm notice run tsc --noEmit
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.58 kB │ gzip:   0.37 kB
+dist/assets/index-D7natdQG.css    6.38 kB │ gzip:   1.98 kB
+dist/assets/index-DVLpjP9w.js   663.30 kB │ gzip: 169.94 kB
+
+✓ built in 1.36s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

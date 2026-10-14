@@ -1,0 +1,23 @@
+{
+  "dom": {
+    "canvas": [
+      {
+        "cssHeight": 300,
+        "cssWidth": 368,
+        "height": 300,
+        "label": "Vita atrás da mesa no escritório 3D, com monitores, luminária, planta e caneca",
+        "width": 368
+      }
+    ],
+    "canvasCount": 1,
+    "inspectorCount": 0,
+    "title": "Avatar 3D · MVP",
+    "url": "http://127.0.0.1:4173/",
+    "viewport": {
+      "dpr": 1,
+      "height": 570,
+      "width": 425
+    }
+  },
+  "logs": []
+}

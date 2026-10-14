@@ -1,6 +1,6 @@
 # Fase 04 — Sala e objetos 3D
 
-Status inicial: pendente. Tipo: MVP principal.
+Status atual: concluída em 07/10/2026. Tipo: MVP principal. [Verificação e limites](evidencias/fase-04/verificacao.md).
 
 ## Dependências
 
@@ -20,13 +20,13 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Tarefas
 
-- [ ] Definir medidas e posições de paredes, piso e mesa em configuração.
-- [ ] Criar geometrias simples para mesa, monitores, luminária, planta e caneca.
-- [ ] Usar materiais provisórios compartilhados quando fizer sentido.
-- [ ] Posicionar a personagem atrás da mesa com o transform do manifesto.
-- [ ] Escolher câmera e alvo para manter rosto e gestos visíveis em desktop.
-- [ ] Garantir profundidade e oclusão entre corpo, mesa e objetos na mesma cena.
-- [ ] Remover geometrias de teste e acrescentar descarte dos recursos do ambiente.
+- [x] Definir medidas e posições de paredes, piso e mesa em configuração.
+- [x] Criar geometrias simples para mesa, monitores, luminária, planta e caneca.
+- [x] Usar materiais provisórios compartilhados quando fizer sentido.
+- [x] Posicionar a personagem atrás da mesa com o transform do manifesto.
+- [x] Escolher câmera e alvo para manter rosto e gestos visíveis em desktop.
+- [x] Garantir profundidade e oclusão entre corpo, mesa e objetos na mesma cena.
+- [x] Remover geometrias de teste e acrescentar descarte dos recursos do ambiente.
 
 ## Fora do escopo
 
@@ -35,12 +35,12 @@ Os caminhos orientam a implementação. Reutilizar módulos equivalentes de um r
 
 ## Critérios de aceitação
 
-- [ ] A sala contém todos os objetos essenciais em geometria 3D.
-- [ ] Personagem e ambiente compartilham renderer, cena e câmera.
-- [ ] A mesa oculta partes do corpo de forma espacialmente coerente.
-- [ ] O rosto não é cortado pela câmera ou encoberto por objetos.
-- [ ] O layout do ambiente pode ser ajustado por configuração.
-- [ ] O ambiente pode ser descartado sem liberar duas vezes recursos compartilhados.
+- [x] A sala contém todos os objetos essenciais em geometria 3D.
+- [x] Personagem e ambiente compartilham renderer, cena e câmera.
+- [x] A mesa oculta partes do corpo de forma espacialmente coerente.
+- [x] O rosto não é cortado pela câmera ou encoberto por objetos.
+- [x] O layout do ambiente pode ser ajustado por configuração.
+- [x] O ambiente pode ser descartado sem liberar duas vezes recursos compartilhados.
 
 ## Verificação
 

@@ -1,0 +1,27 @@
+[
+  {
+    "event": "submit",
+    "value": "Primeira linha\nSegunda linha <b>literal</b>"
+  },
+  {
+    "event": "visual-state",
+    "value": "error"
+  },
+  {
+    "event": "close"
+  },
+  {
+    "event": "open"
+  },
+  {
+    "event": "quality",
+    "value": "economy"
+  },
+  {
+    "event": "reduced-motion",
+    "value": true
+  },
+  {
+    "event": "reset"
+  }
+]
